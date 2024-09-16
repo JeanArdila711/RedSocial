@@ -1,0 +1,19 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.navbar-brand img {
+    border-radius: 50%;
+}
+
+.btn-outline-light {
+    margin: 0 5px;
+}
+nav a.btn-light {
+    color: #000000; /* Color del texto del botón */
+    border: 1px solid #ced4da; /* Borde del botón */
+}
+.d-inline a{
+    color: darkslategrey;
+}
+

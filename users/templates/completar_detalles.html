@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Completar Detalles</title>
+</head>
+<body>
+    <h1>Completar Detalles</h1>
+    <form method="post">
+        {% csrf_token %}
+        <h2>Idiomas</h2>
+        {{ idioma_form.as_p }}
+        <h2>Formación</h2>
+        {{ formacion_form.as_p }}
+        <button type="submit">Guardar</button>
+    </form>
+</body>
+</html>

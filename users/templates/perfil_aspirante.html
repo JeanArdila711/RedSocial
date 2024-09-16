@@ -1,0 +1,41 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h2>Perfil de {{ aspirante.usuario.nombre }}</h2>
+
+  <!-- Mostrar idiomas -->
+  <h3>Idiomas</h3>
+  <ul>
+    {% for idioma in aspirante.idiomas.all %}
+      <li>{{ idioma.idioma }}</li>
+    {% empty %}
+      <li>No hay idiomas añadidos.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Mostrar formaciones -->
+  <h3>Formación</h3>
+  <ul>
+    {% for formacion in aspirante.formaciones.all %}
+      <li>{{ formacion.titulo }} en {{ formacion.institucion }} ({{ formacion.fecha_inicio }} - {{ formacion.fecha_fin }})</li>
+    {% empty %}
+      <li>No hay formaciones añadidas.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Formulario para añadir idioma -->
+  <h3>Agregar Idioma</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ idioma_form.as_p }}
+    <button type="submit" name="add_idioma">Agregar Idioma</button>
+  </form>
+
+  <!-- Formulario para añadir formación -->
+  <h3>Agregar Formación</h3>
+  <form method="post">
+    {% csrf_token %}
+    {{ formacion_form.as_p }}
+    <button type="submit" name="add_formacion">Agregar Formación</button>
+  </form>
+{% endblock %}
