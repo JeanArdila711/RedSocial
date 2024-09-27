@@ -49,25 +49,25 @@ class Idiomas(models.TextChoices):
 
 
 class SalarioRango(models.TextChoices):
-    rango0 = '500000-1000000', '500,000 - 1,000,000',
-    rango1 = '1000000-1500000', '1,000,000 - 1,500,000',
-    rango2 = '1500000-2000000', '1,500,000 - 2,000,000',
-    rango3 = '2000000-2500000', '2,000,000 - 2,500,000',
-    rango4 = '2500000-3000000', '2,500,000 - 3,000,000',
-    rango5 = '3000000-3500000', '3,000,000 - 3,500,000',
-    rango6 = '3500000-4000000', '3,500,000 - 4,000,000',
-    rango7 = '4000000-4500000', '4,000,000 - 4,500,000',
-    rango8 = '4500000-5000000', '4,500,000 - 5,000,000',
-    rango9 = '5000000-6000000', '5,000,000 - 6,000,000',
-    rango10 = '6000000-7000000', '6,000,000 - 7,000,000',
-    rango11 = '7000000-8000000', '7,000,000 - 8,000,000',
-    rango12 = '8000000-9000000', '8,000,000 - 9,000,000',
-    rango13 = '9000000-10000000', '9,000,000 - 10,000,000',
-    rango14 = '10000000-12000000', '10,000,000 - 12,000,000',
-    rango15 = '12000000-14000000', '12,000,000 - 14,000,000',
-    rango16 = '14000000-16000000', '14,000,000 - 16,000,000',
-    rango17 = '16000000-18000000', '16,000,000 - 18,000,000',
-    rango18 = '18000000-20000000', '18,000,000 - 20,000,000',
+    rango0 = '500000-1000000', '500,000 - 1,000,000'
+    rango1 = '1000000-1500000', '1,000,000 - 1,500,000'
+    rango2 = '1500000-2000000', '1,500,000 - 2,000,000'
+    rango3 = '2000000-2500000', '2,000,000 - 2,500,000'
+    rango4 = '2500000-3000000', '2,500,000 - 3,000,000'
+    rango5 = '3000000-3500000', '3,000,000 - 3,500,000'
+    rango6 = '3500000-4000000', '3,500,000 - 4,000,000'
+    rango7 = '4000000-4500000', '4,000,000 - 4,500,000'
+    rango8 = '4500000-5000000', '4,500,000 - 5,000,000'
+    rango9 = '5000000-6000000', '5,000,000 - 6,000,000'
+    rango10 = '6000000-7000000', '6,000,000 - 7,000,000'
+    rango11 = '7000000-8000000', '7,000,000 - 8,000,000'
+    rango12 = '8000000-9000000', '8,000,000 - 9,000,000'
+    rango13 = '9000000-10000000', '9,000,000 - 10,000,000'
+    rango14 = '10000000-12000000', '10,000,000 - 12,000,000'
+    rango15 = '12000000-14000000', '12,000,000 - 14,000,000'
+    rango16 = '14000000-16000000', '14,000,000 - 16,000,000'
+    rango17 = '16000000-18000000', '16,000,000 - 18,000,000'
+    rango18 = '18000000-20000000', '18,000,000 - 20,000,000'
     rango19 = '20000000+', 'Más de 20,000,000'
 
 
@@ -469,7 +469,7 @@ class Paises(models.TextChoices):
 class UserManager(BaseUserManager):
     def create_user(self, email, nombre, password=None, **extra_fields):
         if not email:
-            raise ValueError('El usuario debe tener un email')
+            raise ValueError('The Email field must be set')
         email = self.normalize_email(email)
         user = self.model(email=email, nombre=nombre, **extra_fields)
         user.set_password(password)
@@ -477,8 +477,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, email, nombre, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
+        extra_fields.setdefault('is_staff', True)
         return self.create_user(email, nombre, password, **extra_fields)
 
 
@@ -503,7 +503,7 @@ class TipoUsuario(models.TextChoices):
     RECLUTADOR = 'reclutador', 'Reclutador'
 
 
-class User(AbstractBaseUser):
+class User(AbstractBaseUser, PermissionsMixin):
     nombre = models.CharField(max_length=255)
     email = models.EmailField(unique=True)
     documento_identidad = models.CharField(max_length=20)
@@ -515,18 +515,19 @@ class User(AbstractBaseUser):
 
     tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices)
     is_active = models.BooleanField(default=True)
-    is_admin = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_superuser = models.BooleanField(default=False)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ['nombre', 'tipo_usuario']
+    REQUIRED_FIELDS = ['nombre']
 
     def __str__(self):
         return self.email
 
 
-class Reclutador(models.Model):
+class Reclutador_empresa(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     nombre_empresa = models.CharField(max_length=255)
     NIT = models.CharField(max_length=50)

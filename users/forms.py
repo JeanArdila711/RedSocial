@@ -1,5 +1,6 @@
 from django import forms
-from .models import User, Aspirante, Reclutador, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales
+from .models import User, Aspirante, Reclutador_empresa, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales
+from django.contrib.auth.forms import UserCreationForm
 
 
 class RedesSocialesForm(forms.ModelForm):
@@ -28,7 +29,7 @@ class RepresentanteLegalForm(forms.ModelForm):
         }
 
 
-class CustomUserCreationForm(forms.ModelForm):
+class CustomUserCreationForm(UserCreationForm):
     class Meta:
         model = User
         fields = ['nombre', 'email', 'documento_identidad', 'indicativo_pais', 'telefono', 'pais', 'ciudad', 'foto_perfil', 'tipo_usuario']
@@ -71,7 +72,7 @@ class AspiranteCreationForm(forms.ModelForm):
 
 class ReclutadorCreationForm(forms.ModelForm):
     class Meta:
-        model = Reclutador
+        model = Reclutador_empresa
         fields = ['nombre_empresa', 'NIT', 'mision', 'vision', 'cantidad_empleados', 'sede_principal', 'registro_camara_comercio']
         widgets = {
             'mision': forms.Textarea(attrs={'class': 'form-control'}),

@@ -40,24 +40,24 @@ def registrar_aspirante(request):
 
 def registrar_reclutador(request):
     if request.method == 'POST':
-        user_form = CustomUserCreationForm(request.POST, request.FILES)
-        representante_legal_form = RepresentanteLegalForm(request.POST, request.FILES)
-        reclutador_form = ReclutadorCreationForm(request.POST, request.FILES)
+        user_form = CustomUserCreationForm(request.POST, request.FILES, prefix='user')
+        reclutador_form = ReclutadorCreationForm(request.POST, request.FILES, prefix='reclutador')
+        representante_legal_form = RepresentanteLegalForm(request.POST, request.FILES, prefix='representante_legal')
 
         if user_form.is_valid() and representante_legal_form.is_valid() and reclutador_form.is_valid():
             user = user_form.save()
             representante_legal = representante_legal_form.save()
-            reclutador = reclutador_form.save(commit=False)
-            reclutador.usuario = user
-            reclutador.representante_legal = representante_legal
-            reclutador.save()
+            reclutador_empresa = reclutador_form.save(commit=False)
+            reclutador_empresa.usuario = user
+            reclutador_empresa.representante_legal = representante_legal
+            reclutador_empresa.save()
 
-            login(request, user)  # Auto-login after registration
+            login(request, user)
             return redirect('home_empresa')
     else:
-        user_form = CustomUserCreationForm()
-        representante_legal_form = RepresentanteLegalForm()
-        reclutador_form = ReclutadorCreationForm()
+        user_form = CustomUserCreationForm(prefix='user')
+        representante_legal_form = RepresentanteLegalForm(prefix='representante_legal')
+        reclutador_form = ReclutadorCreationForm(prefix='reclutador')
 
     return render(request, 'register_empresa.html', {
         'user_form': user_form,
@@ -116,8 +116,8 @@ def home_aspirante(request):
 
 
 @login_required
-def home_reclutador(request):
-    return render(request, 'home_reclutador.html')
+def home_empresa(request):
+    return render(request, 'home_empresa.html')
 
 
 def landing(request):

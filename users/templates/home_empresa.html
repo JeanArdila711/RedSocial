@@ -1,10 +1,17 @@
+{% extends 'navbar_reclutador.html' %} {% block content %} {% load static %}
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Home Reclutador</title>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Home_teacher</title>
 </head>
 <body>
-    <h1>Bienvenido Reclutador</h1>
-    <!-- Contenido específico para reclutadores -->
+
+    <h1>{{user.nombre}}</h1>
 </body>
 </html>
+{% endblock content %}
