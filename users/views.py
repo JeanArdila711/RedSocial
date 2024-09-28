@@ -5,7 +5,7 @@ from .models import Aspirante, Reclutador_empresa, RedesSociales
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
-from redSocialMagneto import obtener_recomendacion
+from redSocialMagneto.services import obtener_recomendacion
 
 def registrar_aspirante(request):
     if request.method == 'POST':

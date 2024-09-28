@@ -1,7 +1,7 @@
 import openai
 from django.conf import settings
 
-openai.api_key = settings.OPENAI_API_KEY
+openai.api_key = settings.OPEN_API_KEY
 
 def obtener_recomendacion(mensaje):
     response = openai.ChatCompletion.create(
