@@ -139,6 +139,7 @@ AUTH_USER_MODEL = 'users.User'
 LOGIN_REDIRECT_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
 
+<<<<<<< HEAD
 CURRENCIES = ('COP', 'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'BTC', 'ETH')
 CURRENCY_CHOICES = [
     ('COP', 'Peso colombiano (COP)'),
@@ -151,3 +152,7 @@ CURRENCY_CHOICES = [
     ('ETH', 'Ethereum (ETH)'),
 ]
 
+=======
+# Clave chatgpt
+OPEN_API_KEY = os.getenv('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')
+>>>>>>> 71d91d9ff778aa7da0f3507d65999dc8e0ca6bc7
