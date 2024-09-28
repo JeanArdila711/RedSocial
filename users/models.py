@@ -511,8 +511,8 @@ class User(AbstractBaseUser, PermissionsMixin):
     telefono = models.CharField(max_length=20)
     pais = models.CharField(max_length=50, choices=Paises.choices)
     ciudad = models.CharField(max_length=100)
-    foto_perfil = models.ImageField(upload_to='fotos_perfil/', null=True, blank=True)
-
+    foto_perfil = models.ImageField(upload_to='profile_photos/', default='profile_photos/default_profile.png',
+                                        null=True, blank=True)
     tipo_usuario = models.CharField(max_length=10, choices=TipoUsuario.choices)
     is_active = models.BooleanField(default=True)
     is_staff = models.BooleanField(default=False)
