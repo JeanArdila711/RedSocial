@@ -39,6 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'users',
+    'empleos_reclutador',
+    'buscador_reclutador',
+    'buscador_aspirante',
+
 ]
 
 MIDDLEWARE = [
@@ -134,4 +138,16 @@ AUTH_USER_MODEL = 'users.User'
 
 LOGIN_REDIRECT_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
+
+CURRENCIES = ('COP', 'USD', 'EUR', 'GBP', 'CAD', 'AUD', 'BTC', 'ETH')
+CURRENCY_CHOICES = [
+    ('COP', 'Peso colombiano (COP)'),
+    ('USD', 'Dólar estadounidense (USD)'),
+    ('EUR', 'Euro (EUR)'),
+    ('GBP', 'Libra esterlina (GBP)'),
+    ('CAD', 'Dólar canadiense (CAD)'),
+    ('AUD', 'Dólar australiano (AUD)'),
+    ('BTC', 'Bitcoin (BTC)'),
+    ('ETH', 'Ethereum (ETH)'),
+]
 

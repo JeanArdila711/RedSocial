@@ -23,6 +23,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
+    path('', include('empleos_reclutador.urls')),
+    path('', include('buscador_reclutador.urls')),
+    path('', include('buscador_aspirante.urls')),
+
 ]
 
 if settings.DEBUG:

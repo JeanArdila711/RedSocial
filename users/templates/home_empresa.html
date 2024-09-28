@@ -1,17 +1,14 @@
-{% extends 'navbar_reclutador.html' %} {% block content %} {% load static %}
+{% extends 'base_reclutador.html' %}
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Home_teacher</title>
-</head>
-<body>
+{% block title %}Home teacher{% endblock %}
 
-    <h1>{{user.nombre}}</h1>
-</body>
-</html>
-{% endblock content %}
+{% block content %}
+    <h1>Bienvenido, {{ reclutador.usuario.nombre }}</h1>
+    <p>Nombre de la empresa: {{ reclutador.nombre_empresa }}</p>
+    <p>NIT: {{ reclutador.NIT }}</p>
+    <p>Misión: {{ reclutador.mision }}</p>
+    <p>Visión: {{ reclutador.vision }}</p>
+    <p>Cantidad de empleados: {{ reclutador.cantidad_empleados }}</p>
+
+
+{% endblock %}

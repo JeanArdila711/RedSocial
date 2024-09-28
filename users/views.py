@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm
-from .models import Aspirante
+from .models import Aspirante, Reclutador_empresa, RedesSociales
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -15,7 +15,10 @@ def registrar_aspirante(request):
 
 
         if user_form.is_valid() and aspirante_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
+            user.tipo_usuario = 'Aspirante'  # Set the user type
+            user.save()
+
             aspirante = aspirante_form.save(commit=False)
             redes_sociales = redes_sociales_form.save()
             aspirante.usuario = user
@@ -45,7 +48,10 @@ def registrar_reclutador(request):
         representante_legal_form = RepresentanteLegalForm(request.POST, request.FILES, prefix='representante_legal')
 
         if user_form.is_valid() and representante_legal_form.is_valid() and reclutador_form.is_valid():
-            user = user_form.save()
+            user = user_form.save(commit=False)
+            user.tipo_usuario = 'Reclutador'  # Set the user type
+            user.save()
+
             representante_legal = representante_legal_form.save()
             reclutador_empresa = reclutador_form.save(commit=False)
             reclutador_empresa.usuario = user
@@ -112,13 +118,72 @@ def login_view(request):
 
 @login_required
 def home_aspirante(request):
-    return render(request, 'home_aspirante.html')
+    aspirante = Aspirante.objects.get(usuario=request.user)
+    return render(request, 'home_aspirante.html', {'aspirante': aspirante})
 
 
 @login_required
 def home_empresa(request):
-    return render(request, 'home_empresa.html')
+    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
+    return render(request, 'home_empresa.html', {'reclutador': reclutador})
 
 
 def landing(request):
     return render(request, 'landing.html')
+
+
+@login_required()
+def editar_perfil_reclutador(request):
+    user = request.user  # Assuming the user is logged in
+    reclutador_instance = Reclutador_empresa.objects.get(usuario=user)
+    representante_legal_instance = reclutador_instance.representante_legal
+
+    if request.method == 'POST':
+        user_form = CustomUserCreationForm(request.POST, request.FILES, instance=user)
+        reclutador_form = ReclutadorCreationForm(request.POST, request.FILES, instance=reclutador_instance)
+        representante_legal_form = RepresentanteLegalForm(request.POST, instance=representante_legal_instance)
+
+        if user_form.is_valid() and reclutador_form.is_valid() and representante_legal_form.is_valid():
+            user_form.save()
+            reclutador_form.save()
+            representante_legal_form.save()
+            return redirect('mi_perfil')  # Redirect to the same page after saving
+
+    else:
+        user_form = CustomUserCreationForm(instance=user)
+        reclutador_form = ReclutadorCreationForm(instance=reclutador_instance)
+        representante_legal_form = RepresentanteLegalForm(instance=representante_legal_instance)
+
+    return render(request, 'editar_perfil_reclutador.html', {
+        'user_form': user_form,
+        'reclutador_form': reclutador_form,
+        'representante_legal_form': representante_legal_form,
+    })
+
+@login_required()
+def editar_perfil_aspirante(request):
+    user = request.user  # Assuming the user is logged in
+    aspirante_instance = Aspirante.objects.get(usuario=user)
+    redes_sociales_instance = aspirante_instance.redes_sociales
+
+    if request.method == 'POST':
+        user_form = CustomUserCreationForm(request.POST, request.FILES, instance=user)
+        aspirante_form = AspiranteCreationForm(request.POST, request.FILES, instance=aspirante_instance)
+        redes_sociales_form = RedesSocialesForm(request.POST, instance=redes_sociales_instance)
+
+        if user_form.is_valid() and aspirante_form.is_valid() and redes_sociales_form.is_valid():
+            user_form.save()
+            aspirante_form.save()
+            redes_sociales_form.save()
+            return redirect('mi_perfil')  # Redirect to the same page after saving
+
+    else:
+        user_form = CustomUserCreationForm(instance=user)
+        aspirante_form = AspiranteCreationForm(instance=aspirante_instance)
+        redes_sociales_form = RedesSocialesForm(instance=redes_sociales_instance)
+
+    return render(request, 'editar_perfil_aspirante.html', {
+        'user_form': user_form,
+        'aspirante_form': aspirante_form,
+        'redes_sociales_form': redes_sociales_form,
+    })

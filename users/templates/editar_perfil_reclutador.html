@@ -1,0 +1,25 @@
+{% extends 'base_reclutador.html' %}
+{% block content %}
+<div class="container">
+    <h2>Mis Datos</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <h2>Datos Empresa</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ reclutador_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <h2>Datos Representante Legal</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ representante_legal_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>
+{% endblock %}

@@ -1,10 +1,5 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Home Aspirante</title>
-</head>
-<body>
-    <h1>Bienvenido Aspirante</h1>
-    <!-- Contenido específico para aspirantes -->
-</body>
-</html>
+{% extends 'base_aspirante.html' %}
+{% block title %}Home teacher{% endblock %}
+{% block content %}
+    <h1>Bienvenido, {{ aspirante.usuario.nombre }}</h1>
+{% endblock %}

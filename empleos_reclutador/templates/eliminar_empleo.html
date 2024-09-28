@@ -1,0 +1,14 @@
+{% extends 'base_reclutador.html' %}
+
+{% block content %}
+<div class="container">
+    <h1>Eliminar {{ empleo.titulo }}</h1>
+    <p>¿Estás seguro de que deseas eliminar este empleo?</p>
+    
+    <form method="POST">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Eliminar</button>
+        <a href="{% url 'detalle_empleo' empleo.id %}" class="btn btn-secondary">Cancelar</a>
+    </form>
+</div>
+{% endblock %}

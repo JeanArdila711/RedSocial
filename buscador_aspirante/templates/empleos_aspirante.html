@@ -1,0 +1,43 @@
+{% extends 'base_aspirante.html' %}
+
+{% block title %}Empleos disponibles{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Empleos disponibles</h1>
+
+    {% if empleos %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Sector</th>
+                    <th>Salario</th>
+                    <th>País</th>
+                    <th>Ciudad</th>
+                    <th>Fecha de creación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for empleo in empleos %}
+                    <tr>
+                        <td>{{ empleo.titulo }}</td>
+                        <td>{{ empleo.sector_laboral }}</td>
+                        <td>{{ empleo.salario }}</td>
+                        <td>{{ empleo.pais }}</td>
+                        <td>{{ empleo.ciudad }}</td>
+                        <td>{{ empleo.fecha_creacion|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'detalle_empleo_aspirante' empleo.id %}" class="btn btn-info btn-sm">Ver</a>
+                            <a href="#" class="btn btn-danger btn-sm">Añadir a favoritos</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No hay empleos disponibles.</p>
+    {% endif %}
+</div>
+{% endblock %}

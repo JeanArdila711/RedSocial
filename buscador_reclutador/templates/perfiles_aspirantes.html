@@ -1,0 +1,14 @@
+{% extends 'base_reclutador.html' %}
+{% block content %}
+    <h1>Lista de Empleos</h1>
+
+    {% if empleos %}
+        <ul>
+            {% for empleo in empleos %}
+                <li>{{ empleo.titulo }} - {{ empleo.descripcion }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No hay empleos disponibles Aspirantes.</p>
+    {% endif %}
+{% endblock %}

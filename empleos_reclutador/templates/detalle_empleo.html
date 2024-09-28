@@ -1,0 +1,50 @@
+{% extends 'base_reclutador.html' %}
+
+{% block title %}Empleos creados por el Reclutador{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-8">
+            <h1 class="mb-4">{{ empleo.titulo }}</h1>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item">
+                    <strong class="fw-bold">Sector laboral:</strong> {{ empleo.sector_laboral }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Salario:</strong> {{ empleo.salario }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">País:</strong> {{ empleo.pais }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Ciudad:</strong> {{ empleo.ciudad }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Descripción:</strong> {{ empleo.descripcion }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Habilidades requeridas:</strong> {{ empleo.habilidades }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Experiencia:</strong> {{ empleo.experiencia }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Nivel de estudios:</strong> {{ empleo.nivel_estudios }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Modalidad de trabajo:</strong> {{ empleo.modalidad_trabajo }}
+                </li>
+                <li class="list-group-item">
+                    <strong class="fw-bold">Tipo de contrato:</strong> {{ empleo.tipo_contrato }}
+                </li>
+            </ul>
+            <div class="mt-4">
+                <a href="{% url 'editar_empleo' empleo.id %}" class="btn btn-warning me-2">Editar</a>
+                <a href="{% url 'eliminar_empleo' empleo.id %}" class="btn btn-danger me-2">Eliminar</a>
+                <a href="{% url 'mis_empleos' %}" class="btn btn-secondary">Volver a la lista</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

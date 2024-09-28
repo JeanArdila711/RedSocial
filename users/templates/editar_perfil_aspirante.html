@@ -1,0 +1,25 @@
+{% extends 'base_aspirante.html' %}
+{% block content %}
+<div class="container">
+    <h2>Mis Datos</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ user_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <h2>Datos Empleo</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ aspirante_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+
+    <h2>Mis redes</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ redes_sociales_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>
+{% endblock %}
