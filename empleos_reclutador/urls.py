@@ -7,5 +7,8 @@ urlpatterns = [
     path('empleo/<int:empleo_id>/', views.detalle_empleo, name='detalle_empleo'),
     path('empleo/<int:empleo_id>/editar/', views.editar_empleo, name='editar_empleo'),
     path('empleo/<int:empleo_id>/eliminar/', views.eliminar_empleo, name='eliminar_empleo'),
+    path('empleo/<int:empleo_id>/cargar-video-post-empleo', views.cargar_video_post_empleo, name='cargar_video_post_empleo'),
+    path('videos/editar/<int:video_id>/', views.editar_video, name='editar_video'),
+    path('videos/eliminar/<int:video_id>/', views.eliminar_video, name='eliminar_video'),
 
 ]

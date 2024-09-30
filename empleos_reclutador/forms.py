@@ -1,9 +1,8 @@
 from django import forms
-from .models import Empleo
+from .models import Empleo, VideoPostEmpleo
 
 
 class EmpleoForm(forms.ModelForm):
-    palabras_clave = forms.CharField(required=False, help_text="Ingresa palabras clave separadas por comas.")
     class Meta:
         model = Empleo
         fields = [
@@ -17,14 +16,25 @@ class EmpleoForm(forms.ModelForm):
             'sector_laboral': forms.Select(attrs={'class': 'form-control'}),
             'pais': forms.Select(attrs={'class': 'form-control'}),
             'ciudad': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'rows': 5}),
-            'habilidades': forms.Textarea(attrs={'rows': 3}),
-            'experiencia': forms.Textarea(attrs={'rows': 3}),
-            'nivel_estudios': forms.Textarea(attrs={'rows': 3}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+            'habilidades': forms.Textarea(attrs={'class': 'form-control'}),
+            'experiencia': forms.Textarea(attrs={'class': 'form-control'}),
+            'nivel_estudios': forms.Textarea(attrs={'class': 'form-control'}),
             'modalidad_trabajo': forms.Select(attrs={'class': 'form-control'}),
             'tipo_contrato': forms.Select(attrs={'class': 'form-control'}),
-            'competencias_tecnicas': forms.Textarea(attrs={'rows': 3}),
+            'palabras_clave': forms.Textarea(attrs={'class': 'form-control'}),
+            'competencias_tecnicas': forms.Textarea(attrs={'class': 'form-control'}),
             'video_presentacion': forms.ClearableFileInput(attrs={'class': 'form-control'}),
 
         }
 
+
+class VideoPostEmpleo_form(forms.ModelForm):
+    class Meta:
+        model = VideoPostEmpleo
+        fields = ['video_file', 'thumbnail']
+
+        widgets = {
+            'video_file': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'thumbnail': forms.ClearableFileInput(attrs={'class': 'form-control'})
+                }

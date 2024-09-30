@@ -1,5 +1,10 @@
 body {
-    background-color: #ffffff;
+    background-color: #dbdbdb;
 }
 
-
+textarea {
+    width: 100%; /* Ajusta el ancho al 100% del contenedor */
+    max-width: 100%; /* Evita que se extienda más allá de su contenedor */
+    height: 100px; /* Ajusta la altura según sea necesario */
+    max-height: 150px; /* Altura máxima */
+}

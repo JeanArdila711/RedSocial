@@ -33,19 +33,17 @@
                 <a class="nav-link" href="{% url 'mis_empleos' %}">Mis empleos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'editar_perfil_reclutador' %}">Mi perfil</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="#">Postulaciones</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown link</a>
-
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">funcion1</a>
-                <a class="dropdown-item" href="#">funcion2</a>
-                <a class="dropdown-item" href="#">funcion3</a>
-            </div>
+                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    Perfil
+                </button>
+                <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="{% url 'mi_perfil_reclutador' %}">Mi Perfil</a></li>
+                    <li><a class="dropdown-item" href="{% url 'editar_perfil_reclutador' %}">Editar Perfil</a></li>
+                    <li><a class="dropdown-item" href="#">Estadisticas</a></li>
+                </ul>
             </li>
         </ul>
         <form class="d-flex ms-auto me-5">
@@ -60,7 +58,7 @@
     {% endblock content %}
 </main>
 
-<footer class="bg-dark text-white pt-4">
+<footer class="bg-dark text-white pt-4 mt-4">
     <div class="container">
         <div class="row">
             <!-- Sección de información de la empresa -->

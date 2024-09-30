@@ -3,12 +3,12 @@
 {% block title %}Empleos creados por el Reclutador{% endblock %}
 
 {% block content %}
-<div class="container">
+<div class="container mt-5 bg-success-subtle rounded-4 p-5">
     <h1>Empleos creados</h1>
 
     {% if empleos %}
-        <table class="table table-striped">
-            <thead>
+        <table class="table table-success table-striped table-borderless table-hover">
+            <thead >
                 <tr>
                     <th>Título</th>
                     <th>Sector</th>
@@ -32,6 +32,7 @@
                             <a href="{% url 'detalle_empleo' empleo.id %}" class="btn btn-info btn-sm">Ver</a>
                             <a href="{% url 'editar_empleo' empleo.id %}" class="btn btn-warning btn-sm">Editar</a>
                             <a href="{% url 'eliminar_empleo' empleo.id %}" class="btn btn-danger btn-sm">Eliminar</a>
+                            <a href="{% url 'cargar_video_post_empleo' empleo.id %}" class="btn btn-success btn-sm">Crear Video</a>
                         </td>
                     </tr>
                 {% endfor %}

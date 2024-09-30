@@ -1,9 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import EmpleoForm
-from .models import Empleo
+from .forms import EmpleoForm, VideoPostEmpleo_form
+from .models import Empleo, VideoPostEmpleo
 from users.models import Reclutador_empresa, Aspirante
-
-
 
 
 def crear_empleo(request):
@@ -29,7 +27,9 @@ def mis_empleos(request):
 
 def detalle_empleo(request, empleo_id):
     empleo = get_object_or_404(Empleo, id=empleo_id)
-    return render(request, 'detalle_empleo.html', {'empleo': empleo})
+    videos_empleo = VideoPostEmpleo.objects.filter(empleo=empleo)  # Asegúrate de usar .objects
+
+    return render(request, 'detalle_empleo.html', {'empleo': empleo, 'videos_empleo': videos_empleo})
 
 
 def editar_empleo(request, empleo_id):
@@ -67,3 +67,38 @@ def eliminar_empleo(request, empleo_id):
         return redirect('mis_empleos')
 
     return render(request, 'eliminar_empleo.html', {'empleo': empleo})
+
+
+def cargar_video_post_empleo(request, empleo_id):
+    empleo = get_object_or_404(Empleo, id=empleo_id)
+    if request.method == 'POST':
+        form = VideoPostEmpleo_form(request.POST, request.FILES)
+        if form.is_valid():
+            video_post = form.save(commit=False)
+            video_post.empleo = empleo  # Asignar el usuario actual
+            video_post.save()
+            return redirect('home_empresa')  # Redirigir a la lista de videos
+    else:
+        form = VideoPostEmpleo_form()
+    return render(request, 'cargar_video_post_empleo.html', {'form': form})
+
+
+def eliminar_video(request, video_id):
+    video = get_object_or_404(VideoPostEmpleo, id=video_id)
+    video.delete()
+    return redirect('detalle_empleo', empleo_id=video.empleo.id)
+
+
+def editar_video(request, video_id):
+    video = get_object_or_404(VideoPostEmpleo, id=video_id)
+    if request.method == 'POST':
+        form = VideoPostEmpleo_form(request.POST, request.FILES, instance=video)
+        if form.is_valid():
+            form.save()
+            return redirect('detalle_empleo', empleo_id=video.empleo.id)
+    else:
+        form = VideoPostEmpleo_form(instance=video)
+
+    return render(request, 'editar_video.html', {'form': form, 'video': video})
+
+

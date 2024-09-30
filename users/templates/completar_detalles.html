@@ -2,20 +2,14 @@
 {% block content %}
 <div class="container mt-5">
     <h1 class="mb-4">Completar Detalles</h1>
-    <form method="post">
+    <form method="POST">
         {% csrf_token %}
-
-        <h2 class="h4">Idiomas</h2>
-        <div class="mb-4">
-            {{ idioma_form.as_p }}
-        </div>
-
         <h2 class="h4">Formación</h2>
         <div class="mb-4">
             {{ formacion_form.as_p }}
         </div>
-
-        <button type="submit" class="btn btn-primary">Guardar</button>
+        <button type="submit" name="añadir mas" class="btn btn-primary">Agregar más</button>
+        <button type="submit" name="finish" class="btn btn-success">Finalizar</button>
     </form>
 </div>
 {% endblock %}

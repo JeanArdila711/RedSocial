@@ -1,16 +1,18 @@
 {% extends 'base_reclutador.html' %}
 {% block content %}
-    <h1>Lista de aspirantes</h1>
+{% load static %}
 
+<div class="container-fluid p-5">
+    <h1 class="mb-4">Lista Aspirantes</h1>
     {% if aspirantes %}
         <div class="row">
             {% for aspirante in aspirantes %}
                 <div class="col-md-4">
-                    <div class="card mb-4 shadow-sm">
+                    <div class="card text-bg-dark mb-3 ">
                         {% if aspirante.usuario.foto_perfil %}
                             <img src="{{ aspirante.usuario.foto_perfil.url }}" class="card-img-top" alt="Foto de perfil">
                         {% else %}
-                            <img src="{{ MEDIA_URL }}default_profile.jpg" class="card-img-top" alt="Default profile">
+                            <img src="{% static 'default_profile.jpg' %}" class="card-img-top" alt="Default profile">
                         {% endif %}
                         <div class="card-body">
                             <h5 class="card-title">{{ aspirante.usuario.nombre }}</h5>
@@ -25,3 +27,4 @@
         <p>No hay aspirantes disponibles.</p>
     {% endif %}
 {% endblock %}
+</div>

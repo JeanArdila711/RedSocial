@@ -33,7 +33,7 @@ class Empleo(models.Model):
     nivel_estudios = models.TextField()
     MODALIDAD_TRABAJO = [('virtual', 'virtual'), ('presencial', 'presencial'), ('mixto', 'mixto')]
     modalidad_trabajo = models.CharField(max_length=50, choices=MODALIDAD_TRABAJO)
-    palabras_clave = models.TextField(null=True, blank=True)
+    palabras_clave = models.TextField()
     CONTRATO_CHOICES = [
         ('termino_fijo', 'Contrato a Término Fijo'),
         ('termino_indefinido', 'Contrato a Término Indefinido'),
@@ -54,3 +54,19 @@ class Empleo(models.Model):
 
     def __str__(self):
         return self.titulo
+
+
+class VideoPostEmpleo(models.Model):
+    empleo = models.ForeignKey(Empleo, on_delete=models.CASCADE, related_name='videos_empleo')
+    video_file = models.FileField(upload_to='post_video_empleo/')
+    thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+    likes = models.PositiveIntegerField(default=0)
+
+
+class Like(models.Model):
+    Empleo = models.ForeignKey(Empleo, on_delete=models.CASCADE)
+    VideoPostEmpleo = models.ForeignKey(VideoPostEmpleo, on_delete=models.CASCADE)
+
+    class Meta:
+        unique_together = ('Empleo', 'VideoPostEmpleo')

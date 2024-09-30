@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Aspirante, Reclutador_empresa, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales
+from .models import User, Aspirante, Reclutador_empresa, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales, Idiomas
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -41,7 +41,7 @@ class CustomUserCreationForm(UserCreationForm):
             'pais': forms.Select(attrs={'class': 'form-control'}),
             'ciudad': forms.TextInput(attrs={'class': 'form-control'}),
             'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'tipo_usuario': forms.Select(attrs={'class': 'form-control'}),
+            'tipo_usuario': forms.Select(attrs={'class': 'form-select'}),
         }
 
 
@@ -62,6 +62,9 @@ class AspiranteCreationForm(forms.ModelForm):
             'proyectos': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'video_presentacion': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'disponibilidad_de_empezar': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'competencias_tecnicas': forms.Textarea(attrs={'class': 'form-control'}),
+            'habilidades_blandas': forms.Textarea(attrs={'class': 'form-control'}),
+
         }
     def save(self, commit=True):
         aspirante = super().save(commit=False)
@@ -81,14 +84,12 @@ class ReclutadorCreationForm(forms.ModelForm):
         }
 
 
-
-class IdiomaAspiranteForm(forms.ModelForm):
-    class Meta:
-        model = IdiomaAspirante
-        fields = ['idioma']
-        widgets = {
-            'idioma': forms.Select(attrs={'class': 'form-control'}),
-        }
+class IdiomaAspiranteForm(forms.Form):  # Cambiamos a forms.Form en vez de forms.ModelForm
+    idiomas = forms.MultipleChoiceField(
+        choices=Idiomas.choices,  # Usamos las choices del TextChoices
+        widget=forms.CheckboxSelectMultiple,  # O puedes usar SelectMultiple si prefieres dropdown
+        label="Selecciona tus idiomas"
+    )
 
 
 class FormacionAspiranteForm(forms.ModelForm):

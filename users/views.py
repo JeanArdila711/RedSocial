@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm
-from .models import Aspirante, Reclutador_empresa, RedesSociales
+from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirante
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -12,9 +12,9 @@ def registrar_aspirante(request):
         user_form = CustomUserCreationForm(request.POST, request.FILES)
         aspirante_form = AspiranteCreationForm(request.POST, request.FILES)
         redes_sociales_form = RedesSocialesForm(request.POST, request.FILES, prefix='redes_sociales')
+        idioma_form = IdiomaAspiranteForm(request.POST)
 
-
-        if user_form.is_valid() and aspirante_form.is_valid():
+        if user_form.is_valid() and aspirante_form.is_valid() and redes_sociales_form.is_valid() and idioma_form.is_valid():
             user = user_form.save(commit=False)
             user.tipo_usuario = 'Aspirante'  # Set the user type
             user.save()
@@ -25,21 +25,25 @@ def registrar_aspirante(request):
             aspirante.redes_sociales = redes_sociales
             aspirante.save()
 
+            idiomas_seleccionados = idioma_form.cleaned_data['idiomas']
+            for idioma in idiomas_seleccionados:
+                IdiomaAspirante.objects.create(aspirante=aspirante, idioma=idioma)
+
             login(request, user)  # Auto-login after registration
             return redirect('completar_detalles', aspirante_id=aspirante.id)  # Redirect to a profile or another page
     else:
         user_form = CustomUserCreationForm()
         aspirante_form = AspiranteCreationForm()
         redes_sociales_form = RedesSocialesForm(prefix='redes_sociales')
-
+        idioma_form = IdiomaAspiranteForm()  # Inicializar el formulario de idiomas
 
     return render(request, 'register_aspirante.html', {
         'user_form': user_form,
         'aspirante_form': aspirante_form,
         'redes_sociales_form': redes_sociales_form,  # Pasa el formulario al contexto
+        'idioma_form': idioma_form,  # Pasar el formulario de idiomas al contexto
 
     })
-
 
 def registrar_reclutador(request):
     if request.method == 'POST':
@@ -74,26 +78,24 @@ def registrar_reclutador(request):
 
 def completar_detalles(request, aspirante_id):
     aspirante = Aspirante.objects.get(id=aspirante_id)
+
     if request.method == 'POST':
-        idioma_form = IdiomaAspiranteForm(request.POST)
         formacion_form = FormacionAspiranteForm(request.POST)
 
-        if idioma_form.is_valid() and formacion_form.is_valid():
-            idioma = idioma_form.save(commit=False)
-            idioma.aspirante = aspirante
-            idioma.save()
-
+        if formacion_form.is_valid():
             formacion = formacion_form.save(commit=False)
             formacion.aspirante = aspirante
             formacion.save()
 
+            if 'añadir mas' in request.POST:
+                return redirect('completar_detalles', aspirante_id=aspirante_id)
+
             return redirect('home_aspirante')  # Redirect to a profile or another page
+
     else:
-        idioma_form = IdiomaAspiranteForm()
         formacion_form = FormacionAspiranteForm()
 
     return render(request, 'completar_detalles.html', {
-        'idioma_form': idioma_form,
         'formacion_form': formacion_form
     })
 
@@ -172,25 +174,41 @@ def editar_perfil_aspirante(request):
     user = request.user  # Assuming the user is logged in
     aspirante_instance = Aspirante.objects.get(usuario=user)
     redes_sociales_instance = aspirante_instance.redes_sociales
+    idiomas_actuales = IdiomaAspirante.objects.filter(aspirante=aspirante_instance).values_list('idioma', flat=True)
 
     if request.method == 'POST':
         user_form = CustomUserCreationForm(request.POST, request.FILES, instance=user)
         aspirante_form = AspiranteCreationForm(request.POST, request.FILES, instance=aspirante_instance)
         redes_sociales_form = RedesSocialesForm(request.POST, instance=redes_sociales_instance)
+        idioma_form = IdiomaAspiranteForm(request.POST)
 
-        if user_form.is_valid() and aspirante_form.is_valid() and redes_sociales_form.is_valid():
+        if user_form.is_valid() and aspirante_form.is_valid() and redes_sociales_form.is_valid() and idioma_form.is_valid():
             user_form.save()
             aspirante_form.save()
             redes_sociales_form.save()
+
+            nuevos_idiomas = idioma_form.cleaned_data['idiomas']
+            IdiomaAspirante.objects.filter(aspirante=aspirante_instance).exclude(idioma__in=nuevos_idiomas).delete()
+            for idioma in nuevos_idiomas:
+                if not IdiomaAspirante.objects.filter(aspirante=aspirante_instance, idioma=idioma).exists():
+                    IdiomaAspirante.objects.create(aspirante=aspirante_instance, idioma=idioma)
+
             return redirect('mi_perfil')  # Redirect to the same page after saving
+
 
     else:
         user_form = CustomUserCreationForm(instance=user)
         aspirante_form = AspiranteCreationForm(instance=aspirante_instance)
         redes_sociales_form = RedesSocialesForm(instance=redes_sociales_instance)
+        idioma_form = IdiomaAspiranteForm(initial={'idiomas': list(idiomas_actuales)})  # Cargar los idiomas actuales
+
 
     return render(request, 'editar_perfil_aspirante.html', {
         'user_form': user_form,
         'aspirante_form': aspirante_form,
         'redes_sociales_form': redes_sociales_form,
+        'idioma_form': idioma_form
     })
+
+def mi_perfil_reclutador(request):
+    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
