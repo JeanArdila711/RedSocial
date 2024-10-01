@@ -19,6 +19,9 @@
                             <p class="card-text">{{ aspirante.usuario.email }}</p>
                             <p class="card-text">{{ aspirante.descripcion }}</p>
                         </div>
+                        <div class="row mx-5 px-5 mb-4">
+                                <a href="{% url 'base_ver_perfil_aspirante' aspirante.id %}" class="btn btn-success">Ver perfil completo</a>
+                        </div>
                     </div>
                 </div>
             {% endfor %}

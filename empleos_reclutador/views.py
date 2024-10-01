@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmpleoForm, VideoPostEmpleo_form
 from .models import Empleo, VideoPostEmpleo
-from users.models import Reclutador_empresa, Aspirante
+from users.models import Reclutador_empresa, Aspirante, IdiomaAspirante
 from buscador_aspirante.models import Postulacion
 
 
@@ -118,3 +118,13 @@ def postulaciones_empleos_reclutador(request):
     }
     return render(request, 'postulaciones_empleos_reclutador.html', context)
 
+
+def perfil_aspirante(request, aspirante_id):
+    aspirante = get_object_or_404(Aspirante, id=aspirante_id)
+    idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
+    return render(request, 'base_ver_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas})
+
+def ver_perfil_asociado_empleo(request, aspirante_id):
+    aspirante = get_object_or_404(Aspirante, id=aspirante_id)
+    idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
+    return render(request, 'ver_perfil_asociado_empleo.html', {'aspirante': aspirante, 'idiomas': idiomas})

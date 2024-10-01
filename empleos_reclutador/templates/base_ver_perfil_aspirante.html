@@ -1,0 +1,207 @@
+{% extends 'base_reclutador.html' %}
+
+{% block title %}Perfil Aspirante{% endblock %}
+{% block content %}
+
+    <div class="container mt-4">
+        <!-- Primera fila -->
+        <div class="row">
+            <!-- Columna izquierda: Foto de perfil -->
+            <div class="col-md-4">
+                <img src="{{aspirante.usuario.foto_perfil.url}}" class="img-fluid rounded" alt="Foto de perfil">
+            </div>
+            <!-- Columna derecha: Nombre y otros datos en dos columnas -->
+            <div class="col-md-8 text-center" >
+                <div class="row mb-2">
+                    <div class="col-md-12">
+                        <h3>{{aspirante.usuario.nombre}}</h3>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Email: </strong>
+                            {{aspirante.usuario.email}}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Documento identidad: </strong>
+                            {{aspirante.usuario.documento_identidad}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Pais: </strong>
+                            {{aspirante.usuario.pais}}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Ciudad: </strong>
+                            {{aspirante.usuario.ciudad}}
+                        </p>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Indicativo Numero: </strong>
+                            {{aspirante.usuario.indicativo_pais}}
+                        </p>
+                    </div>
+                    <div class="col-md-6">
+                        <p>
+                            <strong>Telefono: </strong>
+                            {{aspirante.usuario.telefono}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Segunda fila -->
+        <div class="row mt-4">
+            <!-- Columna izquierda: Más texto -->
+            <div class="col-md-4">
+                <p>
+                    <strong>Sector laboral: </strong>
+                    {{aspirante.sector_laboral}}
+                </p>
+
+                <p>
+                    <strong>Salario Deseado: </strong>
+                    {{aspirante.salario}}
+                </p>
+
+                <p>
+                    <strong>Sector laboral: </strong>
+                    {{aspirante.sector_laboral}}
+                </p>
+
+                <p>
+                    <strong>Modalidad Trabajo Deseado: </strong>
+                    {{aspirante.modalidad_trabajo}}
+                </p>
+
+                <p>
+                    <strong>Disponibilidad para Empezar: </strong>
+                    {{aspirante.disponibilidad_empezar}}
+                </p>
+
+                <p>
+                    <strong>Disponibilidad para Viajar: </strong>
+                    {{aspirante.disponibilidad_viajar}}
+                </p>
+
+                <p>
+                    <strong>Modalidad Trabajo Deseado: </strong>
+                    {{aspirante.modalidad_trabajo}}
+                </p>
+
+                <ul class="list-inline d-flex justify-content-between mt-4">
+                    {% if aspirante.redes_sociales.facebook %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.facebook }}" target="_blank" class="d-flex align-items-center justify-content-center text-primary">
+                            <i class="fab fa-facebook fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if aspirante.redes_sociales.linkedin %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.linkedin }}" target="_blank" class="d-flex align-items-center justify-content-center text-info">
+                            <i class="fab fa-linkedin fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if aspirante.redes_sociales.twitter %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.twitter }}" target="_blank" class="d-flex align-items-center justify-content-center text-info">
+                            <i class="fab fa-twitter fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if aspirante.redes_sociales.instagram %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.instagram }}" target="_blank" class="d-flex align-items-center justify-content-center text-danger">
+                            <i class="fab fa-instagram fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if aspirante.redes_sociales.github %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.github }}" target="_blank" class="d-flex align-items-center justify-content-center">
+                            <i class="fab fa-github fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% if aspirante.redes_sociales.youtube %}
+                    <li class="list-inline-item bg-transparent">
+                        <a href="{{ postulacion.aspirante.redes_sociales.youtube }}" target="_blank" class="d-flex align-items-center justify-content-center text-danger">
+                            <i class="fab fa-youtube fa-2x me-2"></i>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </div>
+            <!-- Columna derecha: Video -->
+            <div class="col-md-8">
+                <video class="w-100" controls>
+                    <source src="{{aspirante.video_presentacion.url}}" type="video/mp4">
+                    Tu navegador no soporta la etiqueta de video.
+                </video>
+            </div>
+        </div>
+
+        <!-- Tercera fila (sin diseño específico) -->
+        <div class="row mt-4">
+            <div class="col-2">
+                <h2 class="text-center">Idiomas</h2>
+                {% if idiomas %}
+                    <ul class="list-group list-group-flush list-group-numbered">
+                        {% for idioma in idiomas %}
+                        <li class="list-group-item bg-transparent text-center">{{idioma.idioma}}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                        <div class="col">
+                            <p>No hay videos asociados a este empleo.</p>
+                        </div>
+                {% endif %}
+            </div>
+            <div class="col-10">
+                <p>
+                    <strong>Descripcion: </strong>
+                    {{aspirante.descripcion}}
+                </p>
+                <p>
+                    <strong>Gustos Intereses: </strong>
+                    {{aspirante.gustos_intereses}}
+                </p>
+                <p>
+                    <strong>Competencias Tecnicas: </strong>
+                    {{aspirante.competencias_tecnicas}}
+                </p>
+                <p>
+                    <strong>Habilidades Blandas: </strong>
+                    {{aspirante.habilidades_blandas}}
+                </p>
+            </div>
+        </div>
+        <div class="row mx-5 px-5 mb-4">
+            <a href="#" class="btn btn-success">Ofrecerle alguna oferta</a>
+        </div>
+    </div>
+
+{% endblock %}
+

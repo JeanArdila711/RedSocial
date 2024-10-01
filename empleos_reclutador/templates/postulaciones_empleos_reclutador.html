@@ -21,10 +21,66 @@
                                 <h5 class="card-title"><strong>Nombre: </strong> {{ postulacion.aspirante.usuario.nombre }}</h5>
                                 <p class="card-text"><strong>Descripcion: </strong> {{ postulacion.aspirante.descripcion }}</p>
                                 <p class="card-text"><strong>Objetivos: </strong> {{ postulacion.aspirante.objetivos }}</p>
-                                <p class="card-text"><strong>Proyectos: </strong> {{ postulacion.aspirante.objetivos }}</p>
+                                 <div class="row">
+                                    <div class="col text-center ">
+                                        <a href="{{ postulacion.aspirante.hoja_vida.url }}" class="btn btn-outline-secondary w-100">Hoja de Vida</a>
+                                    </div>
+                                    <div class="col text-center ">
+                                        <a href="{{ aspirante.proyectos.url }}" class="btn btn-outline-secondary w-100 ">Proyectos</a>
+                                    </div>
+                                </div>
+                                <ul class="list-inline d-flex justify-content-center mt-4">
+                                    {% if postulacion.aspirante.redes_sociales.facebook %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.facebook }}" target="_blank" class="d-flex align-items-center justify-content-center text-primary">
+                                            <i class="fab fa-facebook fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if postulacion.aspirante.redes_sociales.linkedin %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.linkedin }}" target="_blank" class="d-flex align-items-center justify-content-center text-info">
+                                            <i class="fab fa-linkedin fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if postulacion.aspirante.redes_sociales.twitter %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.twitter }}" target="_blank" class="d-flex align-items-center justify-content-center text-info">
+                                            <i class="fab fa-twitter fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if postulacion.aspirante.redes_sociales.instagram %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.instagram }}" target="_blank" class="d-flex align-items-center justify-content-center text-danger">
+                                            <i class="fab fa-instagram fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if postulacion.aspirante.redes_sociales.github %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.github }}" target="_blank" class="d-flex align-items-center justify-content-center">
+                                            <i class="fab fa-github fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+
+                                    {% if postulacion.aspirante.redes_sociales.youtube %}
+                                    <li class="list-inline-item bg-transparent">
+                                        <a href="{{ postulacion.aspirante.redes_sociales.youtube }}" target="_blank" class="d-flex align-items-center justify-content-center text-danger">
+                                            <i class="fab fa-youtube fa-2x me-2"></i>
+                                        </a>
+                                    </li>
+                                    {% endif %}
+                                </ul>
                             </div>
                             <div class="row mx-5 px-5 mb-4">
-                                <a href="#" class="btn btn-success">Ver perfil completo</a>
+                                <a href="{% url 'ver_perfil_asociado_empleo' postulacion.aspirante.id %}" class="btn btn-success">Ver perfil completo</a>
                             </div>
                         </div>
                     </div>

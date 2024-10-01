@@ -208,7 +208,7 @@ def editar_reclutador(request):
             user_form.save()
             return redirect('mi_perfil_reclutador')
     else:
-        user_form = CustomUserCreationForm(instance=user)
+        user_form = CustomUserForm_sin_contra(instance=user)
 
     return render(request, 'editar_reclutador.html', {'user_form': user_form})
 

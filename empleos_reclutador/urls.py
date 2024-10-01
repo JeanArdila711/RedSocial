@@ -11,5 +11,6 @@ urlpatterns = [
     path('videos/editar/<int:video_id>/', views.editar_video, name='editar_video'),
     path('videos/eliminar/<int:video_id>/', views.eliminar_video, name='eliminar_video'),
     path('postulaciones-empleos-reclutador/', views.postulaciones_empleos_reclutador, name='postulaciones_empleos_reclutador'),
-
+    path('base-ver-perfil-aspirante/<int:aspirante_id>', views.perfil_aspirante, name='base_ver_perfil_aspirante'),
+    path('ver-perfil-asociado-empleo/<int:aspirante_id>', views.ver_perfil_asociado_empleo, name='ver_perfil_asociado_empleo'),
 ]
