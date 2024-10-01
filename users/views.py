@@ -1,11 +1,13 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm
+from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm, CustomUserForm_sin_contra
 from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirante
 from django.contrib.auth import authenticate, login as auth_login
-from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm,  PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 from redSocialMagneto.services import obtener_recomendacion
+from django.contrib.auth import update_session_auth_hash
+
 
 def registrar_aspirante(request):
     if request.method == 'POST':
@@ -141,35 +143,7 @@ def landing(request):
     return render(request, 'landing.html')
 
 
-@login_required()
-def editar_perfil_reclutador(request):
-    user = request.user  # Assuming the user is logged in
-    reclutador_instance = Reclutador_empresa.objects.get(usuario=user)
-    representante_legal_instance = reclutador_instance.representante_legal
-
-    if request.method == 'POST':
-        user_form = CustomUserCreationForm(request.POST, request.FILES, instance=user)
-        reclutador_form = ReclutadorCreationForm(request.POST, request.FILES, instance=reclutador_instance)
-        representante_legal_form = RepresentanteLegalForm(request.POST, instance=representante_legal_instance)
-
-        if user_form.is_valid() and reclutador_form.is_valid() and representante_legal_form.is_valid():
-            user_form.save()
-            reclutador_form.save()
-            representante_legal_form.save()
-            return redirect('mi_perfil')  # Redirect to the same page after saving
-
-    else:
-        user_form = CustomUserCreationForm(instance=user)
-        reclutador_form = ReclutadorCreationForm(instance=reclutador_instance)
-        representante_legal_form = RepresentanteLegalForm(instance=representante_legal_instance)
-
-    return render(request, 'editar_perfil_reclutador.html', {
-        'user_form': user_form,
-        'reclutador_form': reclutador_form,
-        'representante_legal_form': representante_legal_form,
-    })
-
-@login_required()
+@login_required
 def editar_perfil_aspirante(request):
     user = request.user  # Assuming the user is logged in
     aspirante_instance = Aspirante.objects.get(usuario=user)
@@ -195,7 +169,6 @@ def editar_perfil_aspirante(request):
 
             return redirect('mi_perfil')  # Redirect to the same page after saving
 
-
     else:
         user_form = CustomUserCreationForm(instance=user)
         aspirante_form = AspiranteCreationForm(instance=aspirante_instance)
@@ -210,5 +183,121 @@ def editar_perfil_aspirante(request):
         'idioma_form': idioma_form
     })
 
+
+@login_required
+def editar_empresa(request):
+    user = request.user
+    empresa_instance = Reclutador_empresa.objects.get(usuario=user)
+    if request.method == 'POST':
+        empresa_form = ReclutadorCreationForm(request.POST, request.FILES, instance=empresa_instance)
+        if empresa_form.is_valid():
+            empresa_form.save()
+            return redirect('mi_perfil_reclutador')
+    else:
+        empresa_form = ReclutadorCreationForm(instance=empresa_instance)
+
+    return render(request, 'editar_empresa.html', {'empresa_form': empresa_form})
+
+
+@login_required
+def editar_reclutador(request):
+    user = request.user
+    if request.method == 'POST':
+        user_form = CustomUserForm_sin_contra(request.POST, request.FILES, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('mi_perfil_reclutador')
+    else:
+        user_form = CustomUserCreationForm(instance=user)
+
+    return render(request, 'editar_reclutador.html', {'user_form': user_form})
+
+
+@login_required
+def editar_aspirante_user(request):
+    user = request.user
+    if request.method == 'POST':
+        user_form = CustomUserForm_sin_contra(request.POST, request.FILES, instance=user)
+        if user_form.is_valid():
+            user_form.save()
+            return redirect('mi_perfil_aspirante')
+    else:
+        user_form = CustomUserForm_sin_contra(instance=user)
+    return render(request, 'editar_aspirante_user.html', {'user_form': user_form})
+
+
+
+@login_required
+def editar_representante_legal(request):
+    user = request.user  # Assuming the user is logged in
+    reclutador_instance = Reclutador_empresa.objects.get(usuario=user)
+    representante_legal_instance = reclutador_instance.representante_legal
+
+    if request.method == 'POST':
+        representante_legal_form = RepresentanteLegalForm(request.POST, instance=representante_legal_instance)
+        if representante_legal_form.is_valid():
+            representante_legal_form.save()
+            return redirect('mi_perfil_reclutador')  # Redirect to the same page after saving
+    else:
+        representante_legal_form = RepresentanteLegalForm(instance=representante_legal_instance)
+
+    return render(request, 'editar_representante_legal.html', {
+        'representante_legal_form': representante_legal_form,
+    })
+
+
+@login_required
 def mi_perfil_reclutador(request):
-    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
+    reclutador_empresa = Reclutador_empresa.objects.get(usuario=request.user)
+
+    return render(request, 'mi_perfil_reclutador.html', {'reclutador_empresa': reclutador_empresa})
+
+
+@login_required
+def mi_perfil_aspirante(request):
+    aspirante = Aspirante.objects.get(usuario=request.user)
+    idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
+    return render(request, 'mi_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas})
+
+
+@login_required
+def cambiar_contrasena(request):
+    user = request.user
+
+    # Comprobamos el tipo de usuario y seleccionamos el template correspondiente
+    if user.tipo_usuario == 'Reclutador':
+        template_name = 'cambiar_contrasena_reclutador.html'
+    elif user.tipo_usuario == 'Aspirante':
+        template_name = 'cambiar_contrasena_aspirante.html'
+
+    if request.method == 'POST':
+        password_form = PasswordChangeForm(user=user, data=request.POST)
+        if password_form.is_valid():
+            user = password_form.save()
+            update_session_auth_hash(request, user)  # Mantiene la sesión activa después del cambio
+
+            # Redirigir según el tipo de usuario
+            if user.tipo_usuario == 'Reclutador':
+                return redirect('mi_perfil_reclutador')  # Redirige al perfil del reclutador
+            elif user.tipo_usuario == 'Aspirante':
+                return redirect('mi_perfil_aspirante')  # Redirige al perfil del aspirante
+
+    else:
+        password_form = PasswordChangeForm(user=user)
+
+    return render(request, template_name, {'password_form': password_form})
+
+@login_required
+def editar_aspirante_aspirante(request):
+    user = request.user
+    aspirante_instancia = Aspirante.objects.get(usuario=user)
+    if request.method == 'POST':
+        aspirante_form = AspiranteCreationForm(request.POST, request.FILES, instance=aspirante_instancia)
+        if aspirante_form.is_valid():
+            aspirante_form.save()
+            return redirect('mi_perfil_aspirante')
+    else:
+        aspirante_form = ReclutadorCreationForm(instance=aspirante_instancia)
+
+    return render(request, 'editar_aspirante_aspirante.html', {'aspirante_form': aspirante_form})
+

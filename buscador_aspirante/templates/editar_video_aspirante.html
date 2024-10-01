@@ -1,0 +1,23 @@
+{% extends 'base_aspirante.html' %}
+{% block content %}
+    <div class="container mt-4">
+        <h2>Editar Video</h2>
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="titulo">Título:</label>
+                <input type="text" class="form-control" id="titulo" name="titulo" value="{{ video.titulo }}">
+            </div>
+            <div class="form-group">
+                <label for="descripcion">Descripción:</label>
+                <textarea class="form-control" id="descripcion" name="descripcion">{{ video.descripcion }}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="video_post">Actualizar video:</label>
+                <input type="file" class="form-control-file" id="video_post" name="video_post">
+            </div>
+            <button type="submit" class="btn btn-primary">Guardar cambios</button>
+            <a href="{% url 'mis_videos_posts' %}" class="btn btn-secondary">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

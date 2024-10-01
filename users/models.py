@@ -537,6 +537,8 @@ class Reclutador_empresa(models.Model):
     sede_principal = models.CharField(max_length=255)
     representante_legal = models.ForeignKey(RepresentanteLegal, on_delete=models.CASCADE)
     registro_camara_comercio = models.FileField(upload_to='registros_camara_comercio/')
+    logo = models.ImageField(upload_to='logo_empresas/', default='logo_empresas/Logotipo_empresa.png',
+                                    null=True, blank=True)
 
     def __str__(self):
         return self.nombre_empresa

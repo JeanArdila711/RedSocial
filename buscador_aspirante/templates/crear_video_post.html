@@ -1,0 +1,18 @@
+{% extends 'base_aspirante.html' %}
+{% block title %}Crear un Video Post{% endblock %}
+
+{% block content %}
+
+<div class="container mt-5 bg-success-subtle rounded-4 p-5">
+    <h1 class="mb-4">Crear Video Post</h1>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="mb-4">
+            {{ video_post_form.as_p }}
+        </div>
+        <button type="submit" class="btn btn-success">Crear Video Post</button>
+    </form>
+</div>
+{% endblock %}
+
+

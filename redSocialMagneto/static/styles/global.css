@@ -1,5 +1,5 @@
 body {
-    background-color: #dbdbdb;
+    background-color: white;
 }
 
 textarea {
@@ -7,4 +7,14 @@ textarea {
     max-width: 100%; /* Evita que se extienda más allá de su contenedor */
     height: 100px; /* Ajusta la altura según sea necesario */
     max-height: 150px; /* Altura máxima */
+}
+a{
+    text-decoration: none;
+}
+
+.carousel-control-prev {
+        left: -50px; /* Ajusta el valor según sea necesario */
+    }
+.carousel-control-next {
+    right: -50px; /* Ajusta el valor según sea necesario */
 }

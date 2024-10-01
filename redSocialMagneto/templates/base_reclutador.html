@@ -10,7 +10,7 @@
 <body>
 <!-- Just an image -->
 <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-dark">
-    <a class="navbar-brand ms-5" href="#">
+    <a class="navbar-brand ms-5" href="{% url 'home_empresa' %}"">
         <img src="{% static 'images/MagnetoLogo.png' %}" width="70" height="70" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -19,10 +19,6 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home_empresa' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
-
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'perfiles_aspirantes' %}">Busca perfiles</a>
             </li>
@@ -33,17 +29,11 @@
                 <a class="nav-link" href="{% url 'mis_empleos' %}">Mis empleos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Postulaciones</a>
+                <a class="nav-link" href="{% url 'postulaciones_empleos_reclutador' %}">Postulaciones</a>
             </li>
-            <li class="nav-item dropdown">
-                <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                    Perfil
-                </button>
-                <ul class="dropdown-menu dropdown-menu-dark">
-                    <li><a class="dropdown-item" href="{% url 'mi_perfil_reclutador' %}">Mi Perfil</a></li>
-                    <li><a class="dropdown-item" href="{% url 'editar_perfil_reclutador' %}">Editar Perfil</a></li>
-                    <li><a class="dropdown-item" href="#">Estadisticas</a></li>
-                </ul>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mi_perfil_reclutador' %}" >Mi Perfil</a>
+
             </li>
         </ul>
         <form class="d-flex ms-auto me-5">

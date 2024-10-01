@@ -3,4 +3,221 @@
 {% block title %}Mi Perfil Aspirante{% endblock %}
 
 {% block content %}
+<div class="container-fluid">
+    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
+        <div class="row g-0">
+            <div class="col-md-4">
+                <img src="{{ aspirante.usuario.foto_perfil.url }}" class="img-fluid rounded-start p-5" alt="user image">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title text-center"> {{ aspirante.usuario.nombre }} </h5>
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>documento identidad:</strong>{{ aspirante.usuario.documento_identidad }}
+                        </div>
+                        <div class="col">
+                            <strong>Email:</strong> {{ aspirante.usuario.email }}
+                        </div>
+                    </div>
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Pais:</strong>{{ aspirante.usuario.pais }}
+                        </div>
+                        <div class="col">
+                            <strong>Ciudad:</strong> {{ aspirante.usuario.ciudad }}
+                        </div>
+                    </div>
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Indicativo de telefono:</strong> {{ aspirante.usuario.indicativo_pais }}
+                        </div>
+                        <div class="col">
+                            <strong>Telefono:</strong> {{ aspirante.usuario.telefono }}
+                        </div>
+                    </div>
+                    <div class="row mx-5 px-5">
+                        <a href="{% url 'editar_aspirante_user' %}" class="btn btn-secondary mb-2">Editar mi usuario</a>
+                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-danger">Cambiar Contraseña</a>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
+        <div class="row g-0">
+
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title text-center mt-2"> {{ aspirante.usuario.nombre }} </h5>
+
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Mi Descripcion:</strong> {{ aspirante.descripcion }}
+                        </div>
+                    </div>
+
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Mis Objetivos: </strong> {{ aspirante.objetivos }}
+                        </div>
+                    </div>
+
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Mis Gustos e Intereses:</strong> {{ aspirante.gustos_intereses }}
+                        </div>
+                    </div>
+
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Mis Competencias Tecnicas:</strong> {{ aspirante.competencias_tecnicas }}
+                        </div>
+                    </div>
+
+                    <div class="row align-items-start m-5">
+                        <div class="col">
+                            <strong>Mis Habilidades Blandas:</strong> {{ aspirante.habilidades_blandas }}
+                        </div>
+                    </div>
+
+                    <div class="row mx-5 px-5">
+                        <a href="{% url 'editar_aspirante_aspirante' %}" class="btn btn-secondary mb-2">Actualizar preferencias y requerimentos</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-5 pt-5" >
+                <div class="row align-items-start ">
+                        <div class="col">
+                            <strong>Sector Laboral: </strong> <p>{{ aspirante.sector_laboral }}</p>
+                        </div>
+                        <div class="col">
+                            <strong>Salario: </strong> <p>{{ aspirante.salario }}</p>
+                        </div>
+
+                    </div>
+                <div class="row align-items-start ">
+                    <div class="col">
+                        <strong>Modalidad de Trabajo: </strong> <p>{{ aspirante.modalidad_trabajo }}</p>
+                    </div>
+                    <div class="col">
+                            <strong>Disponibilidad de Empezar: </strong><p>{{ aspirante.disponibilidad_de_empezar|date:"d M Y" }}</p>
+                        </div>
+                </div>
+
+                    <div class="row align-items-start ">
+                        <div class="col">
+                            <strong>Disponibilidad de Viajar: </strong> <p>{{ aspirante.disponibilidad_de_viajar }}/<p>
+                        </div>
+                        <div class="col">
+                            <strong>Idioma Natal:</strong> <p>{{ aspirante.idioma_natal }}</p>
+                        </div>
+                    </div>
+
+                <div class="row">
+                    <div class="col">
+                        <video class="card-img-top p-3" controls>
+                            <source src="{{ aspirante.video_presentacion.url }}" type="video/mp4">
+                            Tu navegador no soporta la etiqueta de video.
+                        </video>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col text-center ms-5">
+                        <a href="{{ aspirante.hoja_vida.url }}" class="btn btn-outline-secondary w-100">Hoja de Vida</a>
+                    </div>
+                    <div class="col text-center me-5">
+                        <a href="{{ aspirante.proyectos.url }}" class="btn btn-outline-secondary w-100 ">Proyectos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
+    <div class="row">
+        <!-- Columna izquierda: Enlaces -->
+        <div class="col-md-6 px-5 pt-3">
+            <h2 class="text-center">Mis Redes Sociales</h2>
+            <ul class="list-group">
+                {% if aspirante.redes_sociales.facebook %}
+                <li class="list-group-item bg-transparent ">
+                    <a href="{{ aspirante.redes_sociales.facebook }}" target="_blank" class="d-flex align-items-center justify-content-center ">
+                        <i class="fab fa-facebook fa-2x me-3 text-primary"></i>
+                        Facebook
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if aspirante.redes_sociales.linkedin %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{{ aspirante.redes_sociales.linkedin }}" target="_blank" class="d-flex align-items-center justify-content-center ">
+                        <i class="fab fa-linkedin fa-2x me-3 text-info"></i>
+                        LinkedIn
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if aspirante.redes_sociales.twitter %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{{ aspirante.redes_sociales.twitter }}" target="_blank" class="d-flex align-items-center justify-content-center">
+                        <i class="fab fa-twitter fa-2x me-3 text-info"></i>
+                        Twitter
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if aspirante.redes_sociales.instagram %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{{ aspirante.redes_sociales.instagram }}" target="_blank" class="d-flex align-items-center justify-content-center">
+                        <i class="fab fa-instagram fa-2x me-3 text-danger"></i>
+                        Instagram
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if aspirante.redes_sociales.github %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{{ aspirante.redes_sociales.github }}" target="_blank" class="d-flex align-items-center justify-content-center">
+                        <i class="fab fa-github fa-2x me-3"></i>
+                        GitHub
+                    </a>
+                </li>
+                {% endif %}
+
+                {% if aspirante.redes_sociales.youtube %}
+                <li class="list-group-item bg-transparent">
+                    <a href="{{ aspirante.redes_sociales.youtube }}" target="_blank" class="d-flex align-items-center justify-content-center ">
+                        <i class="fab fa-youtube fa-2x me-3 text-danger"></i>
+                        YouTube
+                    </a>
+                </li>
+                {% endif %}
+            </ul>
+        </div>
+
+
+
+        <div class="col-md-6 px-5 pt-3">
+            <h2 class="text-center">Idiomas</h2>
+                {% if idiomas %}
+                    <ul class="list-group list-group-numbered">
+                        {% for idioma in idiomas %}
+                        <li class="list-group-item bg-transparent text-center">{{idioma.idioma}}</li>
+                        {% endfor %}
+                    </ul>
+                {% else %}
+                        <div class="col">
+                            <p>No hay videos asociados a este empleo.</p>
+                        </div>
+                {% endif %}
+        </div>
+    </div>
+</div>
+
+</div>
 {% endblock %}

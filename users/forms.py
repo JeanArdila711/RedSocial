@@ -76,11 +76,13 @@ class AspiranteCreationForm(forms.ModelForm):
 class ReclutadorCreationForm(forms.ModelForm):
     class Meta:
         model = Reclutador_empresa
-        fields = ['nombre_empresa', 'NIT', 'mision', 'vision', 'cantidad_empleados', 'sede_principal', 'registro_camara_comercio']
+        fields = ['nombre_empresa', 'NIT', 'mision', 'vision', 'cantidad_empleados', 'sede_principal', 'registro_camara_comercio', 'logo']
         widgets = {
+
             'mision': forms.Textarea(attrs={'class': 'form-control'}),
             'vision': forms.Textarea(attrs={'class': 'form-control'}),
             'registro_camara_comercio': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'logo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }
 
 
@@ -101,4 +103,19 @@ class FormacionAspiranteForm(forms.ModelForm):
             'institucion': forms.TextInput(attrs={'class': 'form-control'}),
             'fecha_inicio': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'fecha_fin': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+        }
+
+class CustomUserForm_sin_contra(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['nombre', 'email', 'documento_identidad', 'indicativo_pais', 'telefono', 'pais', 'ciudad', 'foto_perfil', 'tipo_usuario']
+        widgets = {
+            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
+            'email': forms.EmailInput(attrs={'class': 'form-control'}),
+            'documento_identidad': forms.TextInput(attrs={'class': 'form-control'}),
+            'telefono': forms.TextInput(attrs={'class': 'form-control'}),
+            'pais': forms.Select(attrs={'class': 'form-control'}),
+            'ciudad': forms.TextInput(attrs={'class': 'form-control'}),
+            'foto_perfil': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'tipo_usuario': forms.Select(attrs={'class': 'form-select'}),
         }

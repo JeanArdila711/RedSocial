@@ -9,8 +9,14 @@ urlpatterns = [
     path('login/', views.login_view, name='login'),
     path('home-aspirante/', views.home_aspirante, name='home_aspirante'),
     path('home-empresa/', views.home_empresa, name='home_empresa'),
-    path('editar-perfil-reclutador/', views.editar_perfil_reclutador, name='editar_perfil_reclutador'),
     path('editar-perfil-aspirante/', views.editar_perfil_aspirante, name='editar_perfil_aspirante'),
     path('mi-perfil-reclutador/', views.mi_perfil_reclutador, name='mi_perfil_reclutador'),
+    path('editar-empresa/', views.editar_empresa, name='editar_empresa'),
+    path('editar-reclutador/', views.editar_reclutador, name='editar_reclutador'),
+    path('editar-representante-legal/', views.editar_representante_legal, name='editar_representante_legal'),
+    path('cambiar-contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
+    path('mi-perfil-aspirante/', views.mi_perfil_aspirante, name='mi_perfil_aspirante'),
+    path('editar-aspirante-user/', views.editar_aspirante_user, name='editar_aspirante_user'),
+    path('editar-aspirante-aspirante/', views.editar_aspirante_aspirante, name='editar_aspirante_aspirante'),
 
 ]

@@ -1,0 +1,42 @@
+{% extends 'base_aspirante.html' %}
+
+{% block title %}Empleos disponibles{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Mis postulaciones</h1>
+
+    {% if postulaciones %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Sector</th>
+                    <th>Salario</th>
+                    <th>País</th>
+                    <th>Ciudad</th>
+                    <th>Fecha de creación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for postulacion in postulaciones %}
+                    <tr>
+                        <td>{{ postulacion.empleo.titulo }}</td>
+                        <td>{{ postulacion.empleo.sector_laboral }}</td>
+                        <td>{{ postulacion.empleo.salario }}</td>
+                        <td>{{ postulacion.empleo.pais }}</td>
+                        <td>{{ postulacion.empleo.ciudad }}</td>
+                        <td>{{ postulacion.empleo.fecha_creacion|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'detalle_empleo_aspirante' postulacion.empleo.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No te has postulado.</p>
+    {% endif %}
+</div>
+{% endblock %}

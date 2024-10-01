@@ -1,0 +1,11 @@
+{% extends 'base_reclutador.html' %}
+{% block content %}
+<div class="container mt-5 bg-success-subtle rounded-4 p-5">
+    <h2>Datos Representante Legal</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ representante_legal_form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Cambios</button>
+    </form>
+</div>
+{% endblock %}

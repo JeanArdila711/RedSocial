@@ -1,0 +1,53 @@
+{% extends 'base_aspirante.html' %} {% load static %}
+{% load static %}
+
+{% block content %}
+
+    {% if messages %}
+            <div class="row">
+                <div class="col-md-12">
+                    {% for message in messages %}
+                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                            {{ message }}
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+
+    <div class="container mt-4">
+        <div class="row mx-5 px-5 mb-4">
+            <a href="{% url 'crear_video_post' %}" class="btn btn-success">Crear Nuevo Video</a>
+        </div>
+        <div class="row">
+            {% for video in videos %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <video class="card-img-top" controls>
+                            <source src="{{ video.video_post.url }}" type="video/mp4">
+                            Tu navegador no soporta el elemento de video.
+                        </video>
+                        <div class="card-body">
+                            <h5 class="card-title">Titulo: {{ video.titulo }}</h5>
+                            <p class="card-text">Descripcion: {{ video.descripcion }}</p>
+                            <p class="card-text"><small class="text-muted">Creado el: {{ video.fecha_creacion|date:"d M Y" }}</small></p>
+
+                            <!-- Botones de Editar y Eliminar -->
+                            <div class="d-flex">
+                                <a href="{% url 'editar_video' video.id %}" class="btn btn-primary btn-sm w-50 m-0">Editar</a>
+                                <form action="{% url 'eliminar_video' video.id %}" method="post" class="w-50 m-0">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-danger btn-sm w-100 m-0" onclick="return confirm('¿Estás seguro de que deseas eliminar este video?');">Eliminar</button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% empty %}
+                <p>No hay videos disponibles.</p>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

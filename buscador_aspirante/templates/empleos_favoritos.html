@@ -1,0 +1,44 @@
+{% extends 'base_aspirante.html' %}
+
+{% block title %}Empleos Favoritos{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Mis Favoritos</h1>
+
+    {% if favoritos %}
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>Título</th>
+                    <th>Sector</th>
+                    <th>Salario</th>
+                    <th>País</th>
+                    <th>Ciudad</th>
+                    <th>Fecha de creación</th>
+                    <th>Acciones</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for favorito in favoritos %}
+                    <tr>
+                        <td>{{ favorito.empleo.titulo }}</td>
+                        <td>{{ favorito.empleo.sector_laboral }}</td>
+                        <td>{{ favorito.empleo.salario }}</td>
+                        <td>{{ favorito.empleo.pais }}</td>
+                        <td>{{ favorito.empleo.ciudad }}</td>
+                        <td>{{ favorito.empleo.fecha_creacion|date:"d M Y" }}</td>
+                        <td>
+                            <a href="{% url 'postularme_empleo' favorito.empleo.id %}" class="btn btn-success me-2">Postularme</a>
+                            <a href="{% url 'detalle_empleo_aspirante' favorito.empleo.id %}" class="btn btn-info me-2 ">Ver</a>
+                            <a href="{% url 'anadir_favoritos' favorito.empleo.id %}" class="btn btn-danger me-2">Añadir a favoritos</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No has añadido empleos a favoritos.</p>
+    {% endif %}
+</div>
+{% endblock %}

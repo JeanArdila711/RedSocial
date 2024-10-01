@@ -11,7 +11,7 @@
 <body>
 
 <nav class="navbar navbar-expand-lg navbar-light navbar-dark bg-dark">
-    <a class="navbar-brand ms-5" href="#">
+    <a class="navbar-brand ms-5" href="{% url 'home_aspirante' %}">
         <img src="{% static 'images/MagnetoLogo.png' %}" width="70" height="70" alt="">
     </a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -20,20 +20,23 @@
 
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav">
-            <li class="nav-item active">
-                <a class="nav-link" href="{% url 'home_aspirante' %}">Home <span class="sr-only">(current)</span></a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="{% url 'empleos_aspirante' %}">Empleos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Mis Postulaciones</a>
+                <a class="nav-link" href="{% url 'videos_empleos_disponibles' %}">Posts Empleos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#">Crear Video</a>
+                <a class="nav-link" href="{% url 'empleos_favoritos' %}">Mis Favoritos</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'editar_perfil_aspirante' %}">Mi perfil</a>
+                <a class="nav-link" href="{% url 'mis_postulaciones' %}">Mis Postulaciones</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mis_videos_posts' %}">Mis Videos</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{% url 'mi_perfil_aspirante' %}">Mi perfil</a>
             </li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown link</a>

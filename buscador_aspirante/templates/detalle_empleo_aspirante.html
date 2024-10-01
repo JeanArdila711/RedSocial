@@ -4,6 +4,20 @@
 
 {% block content %}
 <div class="container mt-4">
+    <!-- Mostrar mensajes de éxito o advertencia -->
+    {% if messages %}
+        <div class="row">
+            <div class="col-md-12">
+                {% for message in messages %}
+                    <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+
     <div class="row">
         <div class="col-md-8">
             <h1 class="mb-4">{{ empleo.titulo }}</h1>
@@ -40,9 +54,9 @@
                 </li>
             </ul>
             <div class="mt-4">
-                <a href="#" class="btn btn-warning me-2">Postularme</a>
-                <a href="#" class="btn btn-danger me-2">Otra Opcion</a>
-                <a href="#" class="btn btn-secondary">Otra Opcion</a>
+                <a href="{% url 'postularme_empleo' empleo.id %}" class="btn btn-success me-2">Postularme</a>
+                <a href="{% url 'anadir_favoritos' empleo.id %}" class="btn btn-danger me-2">Añadir a favoritos</a>
+                <a href="#" class="btn btn-secondary">Otra Opción</a>
             </div>
         </div>
     </div>

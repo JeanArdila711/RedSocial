@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .forms import EmpleoForm, VideoPostEmpleo_form
 from .models import Empleo, VideoPostEmpleo
 from users.models import Reclutador_empresa, Aspirante
+from buscador_aspirante.models import Postulacion
 
 
 def crear_empleo(request):
+    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
     if request.method == 'POST':
         form = EmpleoForm(request.POST, request.FILES)
         if form.is_valid():
             empleo = form.save(commit=False)
-            empleo.reclutador = request.user.reclutador_empresa  # Asigna el reclutador actual
+            empleo.reclutador = reclutador  # Asigna el reclutador actual
             empleo.save()
             return redirect('mis_empleos')  # Redirigir a la lista de empleos o a donde prefieras
     else:
@@ -101,4 +103,18 @@ def editar_video(request, video_id):
 
     return render(request, 'editar_video.html', {'form': form, 'video': video})
 
+
+def postulaciones_empleos_reclutador(request):
+    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
+    empleos = Empleo.objects.filter(reclutador=reclutador)
+
+    postulaciones_por_empleo = {}
+    for empleo in empleos:
+        postulaciones = Postulacion.objects.filter(empleo=empleo)
+        postulaciones_por_empleo[empleo] = postulaciones
+
+    context = {
+        'postulaciones_por_empleo': postulaciones_por_empleo,
+    }
+    return render(request, 'postulaciones_empleos_reclutador.html', context)
 
