@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from empleos_reclutador.models import Empleo, VideoPostEmpleo
-from users.models import Aspirante
+from users.models import Aspirante, Reclutador_empresa
 from .models import Postulacion, Favoritos, Video_post
 from django.contrib import messages
 from .forms import CrearVideoForm
@@ -8,8 +8,12 @@ from .forms import CrearVideoForm
 # Create your views here.
 
 
-def empleos_aspirante(request):
-    empleos = Empleo.objects.all()
+def empleos_aspirante(request, empresa_id=None):
+    if empresa_id:
+        empleos = Empleo.objects.filter(
+            reclutador=empresa_id)  # Asegúrate de que este filtro sea correcto según tu modelo
+    else:
+        empleos = Empleo.objects.all()
     return render(request, 'empleos_aspirante.html', {'empleos': empleos})
 
 
@@ -57,7 +61,7 @@ def ver_mis_postulaciones(request):
 
 def empleos_favoritos(request):
     aspirante = Aspirante.objects.get(usuario=request.user)
-    favoritos = Postulacion.objects.filter(aspirante=aspirante)
+    favoritos = Favoritos.objects.filter(aspirante=aspirante)
     return render(request, 'empleos_favoritos.html', {'favoritos': favoritos})
 
 
@@ -103,3 +107,8 @@ def eliminar_video(request, video_id):
         messages.warning(request, 'El video ha sido eliminado correctamente.')
         return redirect('mis_videos_posts')
     return render(request, 'mis_videos_posts')
+
+
+def empresas_aspirante(request):
+    empresas = Reclutador_empresa.objects.all()
+    return render(request, 'empresas_aspirante.html', {'empresas': empresas})

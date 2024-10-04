@@ -1,0 +1,13 @@
+{% extends 'base_aspirante.html' %}
+{% block content %}
+<div class="container mt-5">
+    <h2>Añadir Nueva Experiencia Laboral</h2>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Guardar Experiencia</button>
+        <a href="{% url 'mi_perfil_aspirante' %}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" name="añadir mas" class="btn btn-primary">Agregar más</button>
+    </form>
+</div>
+{% endblock %}

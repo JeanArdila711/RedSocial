@@ -482,6 +482,15 @@ class UserManager(BaseUserManager):
         return self.create_user(email, nombre, password, **extra_fields)
 
 
+class ExperienciaLaboral(models.Model):
+    aspirante = models.ForeignKey('Aspirante', on_delete=models.CASCADE, related_name='experiencias')
+    titulo_puesto = models.CharField(max_length=255)
+    empresa = models.CharField(max_length=255)
+    fecha_inicio = models.DateField()
+    fecha_fin = models.DateField(blank=True, null=True)  # Puede estar en curso
+    descripcion = models.TextField()
+
+
 class FormacionAspirante(models.Model):
     aspirante = models.ForeignKey('Aspirante', on_delete=models.CASCADE, related_name='formaciones')
     titulo = models.CharField(max_length=255)

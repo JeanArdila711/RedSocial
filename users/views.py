@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
-from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm, CustomUserForm_sin_contra
-from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirante
+from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm, CustomUserForm_sin_contra, ExperienciaLaboralForm
+from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirante, FormacionAspirante, ExperienciaLaboral
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm,  PasswordChangeForm
 from django.contrib.auth.decorators import login_required
@@ -257,7 +257,10 @@ def mi_perfil_reclutador(request):
 def mi_perfil_aspirante(request):
     aspirante = Aspirante.objects.get(usuario=request.user)
     idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
-    return render(request, 'mi_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas})
+    formaciones = FormacionAspirante.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
+    experiencias = ExperienciaLaboral.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
+
+    return render(request, 'mi_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas, 'formaciones': formaciones, 'experiencias': experiencias,})
 
 
 @login_required
@@ -301,3 +304,34 @@ def editar_aspirante_aspirante(request):
 
     return render(request, 'editar_aspirante_aspirante.html', {'aspirante_form': aspirante_form})
 
+
+@login_required
+def agregar_formacion(request):
+    if request.method == 'POST':
+        form = FormacionAspiranteForm(request.POST)
+        if form.is_valid():
+            nueva_formacion = form.save(commit=False)
+            nueva_formacion.aspirante = request.user.aspirante  # Asocia la formación con el aspirante actual
+            nueva_formacion.save()
+            return redirect('mi_perfil_aspirante')  # Redirige al perfil después de añadir la formación
+    else:
+        form = FormacionAspiranteForm()
+
+    return render(request, 'agregar_formacion.html', {'form': form})
+
+
+def agregar_experiencia(request):
+    if request.method == 'POST':
+        form = ExperienciaLaboralForm(request.POST)
+        if form.is_valid():
+            nueva_experiencia = form.save(commit=False)
+            nueva_experiencia.aspirante = request.user.aspirante  # Asocia la experiencia al aspirante
+            nueva_experiencia.save()
+            if 'añadir mas' in request.POST:
+                return redirect('agregar_experiencia')
+
+            return redirect('mi_perfil_aspirante')
+    else:
+        form = ExperienciaLaboralForm()
+
+    return render(request, 'agregar_experiencia.html', {'form': form})

@@ -1,0 +1,39 @@
+{% extends 'base_aspirante.html' %}
+{% block content %}
+
+  <div class="container-fluid">
+      <div class="card mb-3 m-5  bg-transparent border border-0" >
+          {% for empresa in empresas %}
+
+          <div class="row g-0 border-5 border border-dark-subtle mb-5">
+              <div class="col-md-4">
+                  <img src="{{ empresa.logo.url }}" class="img-fluid rounded-start p-5" alt="logo empresa">
+              </div>
+
+              <div class="col-md-8">
+                  <div class="card-body">
+                      <h5 class="card-title text-center">{{ empresa.nombre_empresa }}</h5>
+                      <div class="row align-items-start m-5">
+                          <div class="col">
+                              <strong>NIT:</strong>{{ empresa.NIT }}
+                          </div>
+                          <div class="col">
+                              <strong>Número de empleados:</strong> {{ empresa.cantidad_empleados }}
+                          </div>
+                          <div class="col">
+                              <strong>Sede principal:</strong> {{ empresa.sede_principal }}
+                          </div>
+                      </div>
+                      <p class="card-text my-5"><strong>Visión:</strong> {{ empresa.vision }}</p>
+                      <p class="card-text my-5"><strong>Misión:</strong> {{ empresa.mision }}</p>
+
+                      <div class="row mx-5 px-5">
+                        <a href="{% url 'empleos_aspirante' empresa.id %}" class="btn btn-secondary">Empleos Disponibles</a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          {% endfor %}
+      </div>
+  </div>
+{% endblock %}

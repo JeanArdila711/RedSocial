@@ -18,5 +18,7 @@ urlpatterns = [
     path('mi-perfil-aspirante/', views.mi_perfil_aspirante, name='mi_perfil_aspirante'),
     path('editar-aspirante-user/', views.editar_aspirante_user, name='editar_aspirante_user'),
     path('editar-aspirante-aspirante/', views.editar_aspirante_aspirante, name='editar_aspirante_aspirante'),
+    path('agregar_formacion/', views.agregar_formacion, name='agregar_formacion'),
+    path('agregar_experiencia/', views.agregar_experiencia, name='agregar_experiencia'),
 
 ]

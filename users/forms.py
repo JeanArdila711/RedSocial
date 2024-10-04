@@ -1,5 +1,5 @@
 from django import forms
-from .models import User, Aspirante, Reclutador_empresa, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales, Idiomas
+from .models import User, Aspirante, Reclutador_empresa, RepresentanteLegal, IdiomaAspirante, FormacionAspirante, RedesSociales, Idiomas, ExperienciaLaboral
 from django.contrib.auth.forms import UserCreationForm
 
 
@@ -104,6 +104,21 @@ class FormacionAspiranteForm(forms.ModelForm):
             'fecha_inicio': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'fecha_fin': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
         }
+
+
+class ExperienciaLaboralForm(forms.ModelForm):
+    class Meta:
+        model = ExperienciaLaboral
+        fields = ['titulo_puesto', 'empresa', 'fecha_inicio', 'fecha_fin', 'descripcion']
+
+        widgets = {
+            'titulo_puesto': forms.TextInput(attrs={'class': 'form-control'}),
+            'empresa': forms.TextInput(attrs={'class': 'form-control'}),
+            'fecha_inicio': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'fecha_fin': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
+            'descripcion': forms.TextInput(attrs={'class': 'form-control'}),
+        }
+
 
 class CustomUserForm_sin_contra(forms.ModelForm):
     class Meta:
