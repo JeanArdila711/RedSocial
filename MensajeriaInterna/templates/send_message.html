@@ -1,0 +1,9 @@
+<h1>Enviar Mensaje</h1>
+<form method="POST">
+  {% csrf_token %}
+  <label for="receiver">Usuario:</label>
+  <input type="text" name="receiver" id="receiver" required><br>
+  <label for="message">Mensaje:</label>
+  <textarea name="message" id="message" required></textarea><br>
+  <button type="submit">Enviar</button>
+</form>
