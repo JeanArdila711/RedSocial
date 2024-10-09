@@ -1,0 +1,7 @@
+<h1>Inbox</h1>
+<ul>
+  {% for message in messages %}
+    <li><strong>{{ message.sender.username }}:</strong> {{ message.content }} <small>{{ message.timestamp }}</small></li>
+  {% endfor %}
+</ul>
+<a href="{% url 'send_message' %}">Enviar nuevo mensaje</a>

@@ -5,8 +5,11 @@ from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirant
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm,  PasswordChangeForm
 from django.contrib.auth.decorators import login_required
+<<<<<<< HEAD
 from redSocialMagneto.services import obtener_recomendacion
 from django.contrib.auth import update_session_auth_hash
+=======
+>>>>>>> a134604848189ed18d9b37f5259fee7ce82eb386
 
 
 def registrar_aspirante(request):
@@ -143,12 +146,6 @@ def login_view(request):
 
     return render(request, 'login.html', {'form': form})
 
-def recomendacion_view(request):
-    if request.method == 'POST':
-        mensajeUsuario = request.POST.get('mensaje')
-        respuestaChatcito = obtener_recomendacion(mensajeUsuario)
-        return render(request, 'recomendacion.html', {'respuesta': respuestaChatcito})
-    return render(request, 'recomendacion.html')
 
 
 @login_required
