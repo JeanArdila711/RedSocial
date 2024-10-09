@@ -92,13 +92,37 @@ def completar_detalles(request, aspirante_id):
             if 'añadir mas' in request.POST:
                 return redirect('completar_detalles', aspirante_id=aspirante_id)
 
-            return redirect('home_aspirante')  # Redirect to a profile or another page
+            return redirect('completar_detalles_experiencia',  aspirante_id=aspirante_id)  # Redirect to a profile or another page
 
     else:
         formacion_form = FormacionAspiranteForm()
 
     return render(request, 'completar_detalles.html', {
         'formacion_form': formacion_form
+    })
+
+
+def completar_detalles_experiencia(request, aspirante_id):
+    aspirante = Aspirante.objects.get(id=aspirante_id)
+
+    if request.method == 'POST':
+        experiencia_form = ExperienciaLaboralForm(request.POST)
+
+        if experiencia_form.is_valid():
+            experiencia = experiencia_form.save(commit=False)
+            experiencia.aspirante = aspirante
+            experiencia.save()
+
+            if 'añadir mas' in request.POST:
+                return redirect('completar_detalles_experiencia', aspirante_id=aspirante_id)
+
+            return redirect('home_aspirante')  # Redirect to a profile or another page
+
+    else:
+        experiencia_form = ExperienciaLaboralForm()
+
+    return render(request, 'completar_detalles_experiencia.html', {
+        'experiencia_form': experiencia_form
     })
 
 

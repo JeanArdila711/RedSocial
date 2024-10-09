@@ -4,9 +4,6 @@ from djmoney.models.fields import MoneyField
 from django.utils import timezone
 
 
-
-
-
 # Create your models here.
 class Empleo(models.Model):
     reclutador = models.ForeignKey(Reclutador_empresa, on_delete=models.CASCADE)
