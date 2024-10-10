@@ -18,3 +18,14 @@ class MessageForm(forms.ModelForm):
         labels = {
             'content': 'Mensaje',
         }
+
+class MessageForm2(forms.ModelForm):
+    class Meta:
+        model = Message
+        fields = [ 'content']
+        widgets = {
+            'content': forms.Textarea(attrs={'rows': 3, 'class': 'form-control'}),  # Agregar clase Bootstrap aquí
+        }
+        labels = {
+            'content': 'Mensaje',
+        }
