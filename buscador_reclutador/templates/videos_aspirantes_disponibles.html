@@ -1,0 +1,85 @@
+{% extends 'base_reclutador.html' %}{% load static %}
+
+
+{% block title %}Videos de aspirantes{% endblock %}
+
+{% block content %}
+<div id="videoCarousel" class="carousel slide" data-bs-ride="false">
+    <div class="carousel-inner">
+        {% for video in videos %}
+            <div class="carousel-item {% if forloop.first %}active{% endif %} z-1 position-relative">
+                <video id="video{{ forloop.counter }}" class="d-block w-100" controls muted>
+                    <source src="{{ video.video_post.url }}" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+                <div class="carousel-caption">
+                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
+                        Mostrar Descripción
+                    </button>
+
+                    <div class="collapse" id="description{{ forloop.counter }}">
+                        <div class="card card-body bg-dark text-white  bg-opacity-25">
+                            <h5 class="card-title">{{ video.titulo }}</h5> <!-- Título adicional -->
+                            <p>Nombre: {{ video.aspirante.usuario.nombre }}</p> <!-- Descripción existente -->
+                            <p>Descripción Aspirante: {{ video.aspirante.descripcion|slice:":350" }}...</p>
+                            <p>Fecha Creacion Empleo: {{video.fecha_creacion}}</p>
+                            <p>Descripcion Video: {{video.descripcion}}</p>
+                            <a href="#" class="btn btn-info btn-sm">Ver Perfil</a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <button class="carousel-control-prev" type="button" data-bs-target="#videoCarousel" data-bs-slide="prev" style="top: 50%; transform: translateY(-50%);">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Anterior</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#videoCarousel" data-bs-slide="next" style="top: 50%; transform: translateY(-50%);">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Siguiente</span>
+    </button>
+</div>
+
+<script src="{% static 'js/bootstrap.bundle.min.js' %}"></script> <!-- Ruta de Bootstrap -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const carouselElement = document.getElementById('videoCarousel');
+        const carousel = new bootstrap.Carousel(carouselElement, {
+            interval: false,  // Deshabilita la reproducción automática
+            ride: false
+        });
+
+        // Reproduce el video actual al cargar
+        let currentVideo = document.querySelector('.carousel-item.active video');
+        currentVideo.play();
+
+        document.querySelectorAll('.carousel-item video').forEach((video, index) => {
+            video.onended = function() {
+                carousel.next(); // Mueve al siguiente video en el carrusel
+
+                // Esperar hasta que el siguiente video esté activo y luego reproducirlo
+                const nextVideo = carouselElement.querySelector('.carousel-item.active video');
+                if (nextVideo) {
+                    nextVideo.play();
+                }
+            };
+        });
+
+        // Detiene cualquier reproducción de video que no esté en el elemento activo
+        carouselElement.addEventListener('slid.bs.carousel', function () {
+            document.querySelectorAll('.carousel-item video').forEach(video => {
+                video.pause();
+                video.currentTime = 0;
+            });
+            const activeVideo = carouselElement.querySelector('.carousel-item.active video');
+            if (activeVideo) {
+                activeVideo.play();
+            }
+        });
+    });
+</script>
+
+{% endblock %}
