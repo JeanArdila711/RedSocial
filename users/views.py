@@ -5,11 +5,10 @@ from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirant
 from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm,  PasswordChangeForm
 from django.contrib.auth.decorators import login_required
-<<<<<<< HEAD
+
 from redSocialMagneto.services import obtener_recomendacion
 from django.contrib.auth import update_session_auth_hash
-=======
->>>>>>> a134604848189ed18d9b37f5259fee7ce82eb386
+
 
 
 def registrar_aspirante(request):

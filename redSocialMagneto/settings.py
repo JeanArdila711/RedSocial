@@ -42,6 +42,8 @@ INSTALLED_APPS = [
     'empleos_reclutador',
     'buscador_reclutador',
     'buscador_aspirante',
+    'MensajeriaInterna',
+
 ]
 
 MIDDLEWARE = [

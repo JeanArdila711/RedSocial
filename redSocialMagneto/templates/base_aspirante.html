@@ -42,14 +42,16 @@
                 <a class="nav-link" href="{% url 'mi_perfil_aspirante' %}">Mi perfil</a>
             </li>
             <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown link</a>
-
-            <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                <a class="dropdown-item" href="#">funcion1</a>
-                <a class="dropdown-item" href="#">funcion2</a>
-                <a class="dropdown-item" href="#">funcion3</a>
-            </div>
-            </li>
+            <div class="dropdown">
+          <button class="btn btn-secondary dropdown-toggle bg-transparent border border-0" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+            Dropdown button
+          </button>
+          <ul class="dropdown-menu ">
+            <li><a class="dropdown-item" href="{% url 'inbox' %}">Inbox</a></li>
+            <li><a class="dropdown-item" href="{% url 'send_message' %}">Send Message</a></li>
+            <li><a class="dropdown-item" href="#">Something else here</a></li>
+          </ul>
+        </div>
         </ul>
         <form class="d-flex ms-auto me-5">
             <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">

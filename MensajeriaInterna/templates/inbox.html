@@ -1,7 +1,23 @@
-<h1>Inbox</h1>
-<ul>
-  {% for message in messages %}
-    <li><strong>{{ message.sender.username }}:</strong> {{ message.content }} <small>{{ message.timestamp }}</small></li>
-  {% endfor %}
-</ul>
-<a href="{% url 'send_message' %}">Enviar nuevo mensaje</a>
+<head>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+
+<div class="container mt-4">
+  <h1 class="mb-4">Inbox</h1>
+
+  <ul class="list-group">
+    {% for message in messages %}
+      <li class="list-group-item d-flex justify-content-between align-items-center">
+        <div>
+          <strong>{{ message.sender.username }}:</strong> {{ message.content }}
+        </div>
+        <small class="text-muted">{{ message.timestamp }}</small>
+      </li>
+    {% endfor %}
+  </ul>
+
+  <div class="mt-4">
+    <a href="{% url 'send_message' %}" class="btn btn-primary">Enviar nuevo mensaje</a>
+  </div>
+</div>
