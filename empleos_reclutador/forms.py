@@ -8,7 +8,7 @@ class EmpleoForm(forms.ModelForm):
         fields = [
             'titulo', 'sector_laboral', 'salario', 'pais', 'ciudad',
             'descripcion', 'habilidades', 'experiencia', 'nivel_estudios', 'modalidad_trabajo',
-            'palabras_clave', 'tipo_contrato', 'competencias_tecnicas', 'video_presentacion'
+            'palabras_clave', 'tipo_contrato', 'competencias_tecnicas', 'habilidades_blandas', 'video_presentacion'
         ]
 
         widgets = {
@@ -23,6 +23,7 @@ class EmpleoForm(forms.ModelForm):
             'modalidad_trabajo': forms.Select(attrs={'class': 'form-control'}),
             'tipo_contrato': forms.Select(attrs={'class': 'form-control'}),
             'palabras_clave': forms.Textarea(attrs={'class': 'form-control'}),
+            'habilidades_blandas': forms.Textarea(attrs={'class': 'form-control'}),
             'competencias_tecnicas': forms.Textarea(attrs={'class': 'form-control'}),
             'video_presentacion': forms.ClearableFileInput(attrs={'class': 'form-control'}),
 

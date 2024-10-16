@@ -6,7 +6,7 @@
         {% csrf_token %}
         <h2 class="h4">Experiencia</h2>
         <div class="mb-4">
-            {{ agregar_experiencia.as_p }}
+            {{ experiencia_form.as_p }}
         </div>
         <button type="submit" name="añadir mas" class="btn btn-primary">Agregar más</button>
         <button type="submit" name="finish" class="btn btn-success">Finalizar</button>

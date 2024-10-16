@@ -1,0 +1,6 @@
+django
+pillow
+django-money
+openai
+numpy
+python-decouple

@@ -50,11 +50,10 @@ class AspiranteCreationForm(forms.ModelForm):
 
     class Meta:
         model = Aspirante
-        fields = ['hoja_vida', 'descripcion', 'objetivos', 'sector_laboral', 'gustos_intereses', 'salario', 'modalidad_trabajo', 'disponibilidad_de_empezar', 'disponibilidad_viajar', 'proyectos', 'competencias_tecnicas', 'habilidades_blandas', 'idioma_natal', 'video_presentacion']
+        fields = ['hoja_vida', 'descripcion', 'objetivos', 'sector_laboral', 'gustos_intereses', 'salario', 'modalidad_trabajo', 'disponibilidad_de_empezar', 'disponibilidad_viajar', 'proyectos', 'competencias_tecnicas', 'habilidades_blandas','palabras_clave', 'idioma_natal', 'video_presentacion']
         widgets = {
             'sector_laboral': forms.Select(attrs={'class': 'form-control'}),
             'hoja_vida': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'salario': forms.Select(attrs={'class': 'form-control'}),
             'modalidad_trabajo': forms.Select(attrs={'class': 'form-control'}),
             'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
             'objetivos': forms.Textarea(attrs={'class': 'form-control'}),
@@ -64,6 +63,7 @@ class AspiranteCreationForm(forms.ModelForm):
             'disponibilidad_de_empezar': forms.DateInput(attrs={'type': 'date', 'class': 'form-control'}),
             'competencias_tecnicas': forms.Textarea(attrs={'class': 'form-control'}),
             'habilidades_blandas': forms.Textarea(attrs={'class': 'form-control'}),
+            'palabras_clave': forms.Textarea(attrs={'class': 'form-control'}),
 
         }
     def save(self, commit=True):
@@ -76,11 +76,13 @@ class AspiranteCreationForm(forms.ModelForm):
 class ReclutadorCreationForm(forms.ModelForm):
     class Meta:
         model = Reclutador_empresa
-        fields = ['nombre_empresa', 'NIT', 'mision', 'vision', 'cantidad_empleados', 'sede_principal', 'registro_camara_comercio', 'logo']
+        fields = ['nombre_empresa', 'NIT', 'mision', 'vision', 'cantidad_empleados', 'sede_principal', 'registro_camara_comercio', 'logo', 'descripcion', 'palabras_clave']
         widgets = {
 
             'mision': forms.Textarea(attrs={'class': 'form-control'}),
             'vision': forms.Textarea(attrs={'class': 'form-control'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
+            'palabras_clave': forms.Textarea(attrs={'class': 'form-control'}),
             'registro_camara_comercio': forms.ClearableFileInput(attrs={'class': 'form-control'}),
             'logo': forms.ClearableFileInput(attrs={'class': 'form-control'}),
         }

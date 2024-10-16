@@ -6,7 +6,7 @@
 {% block content %}
 <div id="videoCarousel" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
-        {% for video in videos %}
+        {% for video, similitud in videos %}
             <div class="carousel-item {% if forloop.first %}active{% endif %} z-1 position-relative">
                 <video id="video{{ forloop.counter }}" class="d-block w-100" controls muted>
                     <source src="{{ video.video_post.url }}" type="video/mp4">
@@ -24,7 +24,8 @@
                             <p>Descripción Aspirante: {{ video.aspirante.descripcion|slice:":350" }}...</p>
                             <p>Fecha Creacion Empleo: {{video.fecha_creacion}}</p>
                             <p>Descripcion Video: {{video.descripcion}}</p>
-                            <a href="#" class="btn btn-info btn-sm">Ver Perfil</a>
+                            <p>Similitud: {{ similitud|floatformat:2 }} </p>
+                            <a href="{% url 'base_ver_perfil_aspirante' video.aspirante.id %}" class="btn btn-info btn-sm">Ver Perfil</a>
                         </div>
                     </div>
 

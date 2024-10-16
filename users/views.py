@@ -29,6 +29,8 @@ def registrar_aspirante(request):
             aspirante.redes_sociales = redes_sociales
             aspirante.save()
 
+            aspirante.set_embeddings()  # Llamar al método para generar embeddings
+
             idiomas_seleccionados = idioma_form.cleaned_data['idiomas']
             for idioma in idiomas_seleccionados:
                 IdiomaAspirante.objects.create(aspirante=aspirante, idioma=idioma)

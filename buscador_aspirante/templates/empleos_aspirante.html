@@ -6,7 +6,7 @@
 <div class="container">
     <h1>Empleos disponibles</h1>
 
-    {% if empleos %}
+    {% if resultados %}
         <table class="table table-striped">
             <thead>
                 <tr>
@@ -17,10 +17,12 @@
                     <th>Ciudad</th>
                     <th>Fecha de creación</th>
                     <th>Acciones</th>
+                    <th>Similitud</th>
+
                 </tr>
             </thead>
             <tbody>
-                {% for empleo in empleos %}
+                {% for empleo, similitud in resultados %}
                     <tr>
                         <td>{{ empleo.titulo }}</td>
                         <td>{{ empleo.sector_laboral }}</td>
@@ -33,6 +35,7 @@
                             <a href="{% url 'detalle_empleo_aspirante' empleo.id %}" class="btn btn-info me-2 ">Ver</a>
                             <a href="{% url 'anadir_favoritos' empleo.id %}" class="btn btn-danger me-2">Añadir a favoritos</a>
                         </td>
+                        <td>{{ similitud|floatformat:2 }}</td>
                     </tr>
                 {% endfor %}
             </tbody>

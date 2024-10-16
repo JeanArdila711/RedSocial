@@ -1,6 +1,14 @@
 from django.db import models
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager, PermissionsMixin
 from django.utils.translation import gettext_lazy as _
+from djmoney.models.fields import MoneyField
+import openai
+import json
+from decouple import config
+import openai
+import json
+from django.conf import settings
+
 
 
 class RepresentanteLegal(models.Model):
@@ -540,6 +548,7 @@ class Reclutador_empresa(models.Model):
     usuario = models.OneToOneField(User, on_delete=models.CASCADE)
     nombre_empresa = models.CharField(max_length=255)
     NIT = models.CharField(max_length=50)
+    descripcion = models.TextField(null=True, blank=True)
     mision = models.TextField()
     vision = models.TextField()
     cantidad_empleados = models.IntegerField()
@@ -548,6 +557,33 @@ class Reclutador_empresa(models.Model):
     registro_camara_comercio = models.FileField(upload_to='registros_camara_comercio/')
     logo = models.ImageField(upload_to='logo_empresas/', default='logo_empresas/Logotipo_empresa.png',
                                     null=True, blank=True)
+    palabras_clave = models.TextField(blank=True, null=True)
+    embeddings = models.TextField(blank=True, null=True)
+
+    def set_embeddings(self):
+        """Genera y almacena el embedding para la empresa."""
+        # Concatenar todos los campos relevantes en un solo texto
+        texto_completo = (
+            f"{self.mision} "
+            f"{self.descripcion if self.descripcion else ''} "
+            f"{self.vision} "
+            f"{self.palabras_clave if self.palabras_clave else ''}"
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        # Generar embeddings con OpenAI
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+            self.save()
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
 
     def __str__(self):
         return self.nombre_empresa
@@ -560,7 +596,21 @@ class Aspirante(models.Model):
     objetivos = models.TextField()
     sector_laboral = models.CharField(max_length=50, choices=SectoresLaborales.choices)
     gustos_intereses = models.TextField()
-    salario = models.CharField(max_length=50, choices=SalarioRango.choices)
+    salario = MoneyField(
+        max_digits=14,
+        decimal_places=2,
+        default_currency='COP',  # Moneda predeterminada para Colombia
+        currency_choices=[
+            ('COP', 'Peso colombiano (COP)'),  # Empleos locales
+            ('USD', 'Dólar estadounidense (USD)'),  # Empleos virtuales (EE.UU.)
+            ('EUR', 'Euro (EUR)'),  # Empleos virtuales (Europa)
+            ('GBP', 'Libra esterlina (GBP)'),  # Empleos virtuales (Reino Unido)
+            ('CAD', 'Dólar canadiense (CAD)'),  # Empleos virtuales (Canadá)
+            ('AUD', 'Dólar australiano (AUD)'),  # Empleos virtuales (Australia)
+            ('BTC', 'Bitcoin (BTC)'),  # Criptomonedas
+            ('ETH', 'Ethereum (ETH)'),  # Criptomonedas
+        ]
+    )
     MODALIDAD_TRABAJO = [('virtual', 'virtual'), ('presencial', 'presencial'), ('mixto', 'mixto'), ('cualquiera', 'cualquiera')]
     modalidad_trabajo = models.CharField(max_length=50, choices=MODALIDAD_TRABAJO)
     disponibilidad_de_empezar = models.DateField()
@@ -568,9 +618,36 @@ class Aspirante(models.Model):
     proyectos = models.FileField(upload_to='proyectos/', blank=True, null=True)
     competencias_tecnicas = models.TextField()
     habilidades_blandas = models.TextField()
+    palabras_clave = models.TextField(blank=True, null=True)
     redes_sociales = models.OneToOneField(RedesSociales, on_delete=models.CASCADE, null=True, blank=True)
     idioma_natal = models.CharField(max_length=20, choices=Idiomas.choices)  # Almacena idiomas y niveles
     video_presentacion = models.FileField(upload_to='videos_presentacion/')
+    embeddings = models.TextField(blank=True, null=True)  # Para almacenar embeddings en formato JSON
+
+    def set_embeddings(self):
+        """Genera y almacena el embedding para el aspirante."""
+        # Concatenar todos los campos relevantes en un solo texto
+        texto_completo = (
+            f"{self.descripcion} "
+            f"{self.gustos_intereses} "
+            f"{self.competencias_tecnicas} "
+            f"{self.habilidades_blandas} "
+            f"{self.palabras_clave}"
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+            self.save()
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
 
     def __str__(self):
         return self.usuario.nombre

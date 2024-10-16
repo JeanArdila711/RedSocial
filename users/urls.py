@@ -20,6 +20,6 @@ urlpatterns = [
     path('editar-aspirante-aspirante/', views.editar_aspirante_aspirante, name='editar_aspirante_aspirante'),
     path('agregar_formacion/', views.agregar_formacion, name='agregar_formacion'),
     path('agregar_experiencia/', views.agregar_experiencia, name='agregar_experiencia'),
-    path('completar-detalles-experiencia/', views.completar_detalles_experiencia, name='completar_detalles_experiencia'),
+    path('completar-detalles-experiencia/<int:aspirante_id>/', views.completar_detalles_experiencia, name='completar_detalles_experiencia'),
 
 ]

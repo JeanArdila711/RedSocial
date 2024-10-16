@@ -13,6 +13,7 @@ def crear_empleo(request):
             empleo = form.save(commit=False)
             empleo.reclutador = reclutador  # Asigna el reclutador actual
             empleo.save()
+            empleo.set_embeddings()  # Generar y guardar los embeddings
             return redirect('mis_empleos')  # Redirigir a la lista de empleos o a donde prefieras
     else:
         form = EmpleoForm()

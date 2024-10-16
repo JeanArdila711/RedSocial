@@ -4,17 +4,9 @@ from users.models import Aspirante, Reclutador_empresa
 from .models import Postulacion, Favoritos, Video_post
 from django.contrib import messages
 from .forms import CrearVideoForm
-
+import numpy as np
+import json
 # Create your views here.
-
-
-def empleos_aspirante(request, empresa_id=None):
-    if empresa_id:
-        empleos = Empleo.objects.filter(
-            reclutador=empresa_id)  # Asegúrate de que este filtro sea correcto según tu modelo
-    else:
-        empleos = Empleo.objects.all()
-    return render(request, 'empleos_aspirante.html', {'empleos': empleos})
 
 
 def detalle_empleo_aspirante(request, empleo_id):
@@ -23,8 +15,21 @@ def detalle_empleo_aspirante(request, empleo_id):
 
 
 def videos_empleos_disponibles(request):
-    videos = VideoPostEmpleo.objects.all()
-    return render(request, 'videos_empleos_disponibles.html', {'videos': videos})
+    aspirante = Aspirante.objects.get(usuario=request.user)
+    embedding_aspirante = np.array(json.loads(aspirante.embeddings)).flatten()
+    empleos = Empleo.objects.all()
+    resultados = []
+
+    for empleo in empleos:
+        embedding_empleo = np.array(json.loads(empleo.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
+        videos_empleo = VideoPostEmpleo.objects.filter(empleo=empleo.id)
+        resultados.append((empleo, similitud, videos_empleo))
+
+    resultados.sort(key=lambda x: x[1], reverse=True)
+
+    return render(request, 'videos_empleos_disponibles.html', {'resultados': resultados})
+
 
 
 def postularme_empleo(request, empleo_id):
@@ -112,3 +117,40 @@ def eliminar_video(request, video_id):
 def empresas_aspirante(request):
     empresas = Reclutador_empresa.objects.all()
     return render(request, 'empresas_aspirante.html', {'empresas': empresas})
+
+
+def calcular_similitud(embedding_aspirante, embedding_empleo):
+    """Calcula la similitud coseno entre dos embeddings."""
+    dot_product = np.dot(embedding_aspirante, embedding_empleo)
+    norm_aspirante = np.linalg.norm(embedding_aspirante)
+    norm_empleo = np.linalg.norm(embedding_empleo)
+    return dot_product / (norm_aspirante * norm_empleo)
+
+
+def empleos_aspirante(request, empresa_id=None):
+    aspirante = Aspirante.objects.get(usuario=request.user)
+    embedding_aspirante = np.array(json.loads(aspirante.embeddings)).flatten()
+    if empresa_id:
+        empleos = Empleo.objects.filter(reclutador=empresa_id)
+        resultados = []
+
+        for empleo in empleos:
+            embedding_empleo = np.array(json.loads(empleo.embeddings)).flatten()
+            similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
+            resultados.append((empleo, similitud))
+
+        resultados.sort(key=lambda x: x[1], reverse=True)
+    else:
+        empleos = Empleo.objects.all()
+        resultados = []
+
+        for empleo in empleos:
+            embedding_empleo = np.array(json.loads(empleo.embeddings)).flatten()
+            similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
+            resultados.append((empleo, similitud))
+
+        resultados.sort(key=lambda x: x[1], reverse=True)
+
+    return render(request, 'empleos_aspirante.html', {
+        'resultados': resultados,
+    })

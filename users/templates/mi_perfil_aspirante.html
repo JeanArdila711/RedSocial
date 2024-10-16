@@ -129,10 +129,16 @@
                 <div class="row">
                     <div class="col text-center ms-5">
                         <a href="{{ aspirante.hoja_vida.url }}" class="btn btn-outline-secondary w-100">Hoja de Vida</a>
+
                     </div>
                     <div class="col text-center me-5">
-                        <a href="{{ aspirante.proyectos.url }}" class="btn btn-outline-secondary w-100 ">Proyectos</a>
+                        {% if aspirante.proyectos %}
+                            <a href="{{ aspirante.proyectos.url }}" class="btn btn-outline-secondary w-100 ">Proyectos</a>
+                        {% else %}
+                            <p>No projects uploaded.</p>
+                        {% endif %}
                     </div>
+
                 </div>
             </div>
         </div>

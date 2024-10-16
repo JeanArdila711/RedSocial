@@ -43,6 +43,8 @@ def send_message(request, user_reciever_id=None):
             'user_reciever': user_reciever,
             'base_template': base_template
         })
+
+
     else:
         if request.method == 'POST':
             form = MessageForm(request.POST)
