@@ -16,7 +16,6 @@ def inbox(request):
     return render(request, 'inbox.html', {'messages': messages_received, 'base_template': base_template})
 
 
-
 def send_message(request, user_reciever_id=None):
     if request.user.tipo_usuario == 'Aspirante':
         base_template = 'base_aspirante.html'

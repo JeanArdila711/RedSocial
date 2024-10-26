@@ -24,12 +24,13 @@ def videos_empleos_disponibles(request):
         embedding_empleo = np.array(json.loads(empleo.embeddings)).flatten()
         similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
         videos_empleo = VideoPostEmpleo.objects.filter(empleo=empleo.id)
-        resultados.append((empleo, similitud, videos_empleo))
+        if videos_empleo:
+            for video in videos_empleo:
+                resultados.append((empleo, similitud, video))
 
     resultados.sort(key=lambda x: x[1], reverse=True)
 
     return render(request, 'videos_empleos_disponibles.html', {'resultados': resultados})
-
 
 
 def postularme_empleo(request, empleo_id):

@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'buscador_reclutador',
     'buscador_aspirante',
     'MensajeriaInterna',
+    'grupos_interes'
 
 ]
 

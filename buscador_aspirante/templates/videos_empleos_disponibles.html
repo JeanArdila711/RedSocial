@@ -6,8 +6,7 @@
 {% block content %}
 <div id="videoCarousel" class="carousel slide" data-bs-ride="false">
     <div class="carousel-inner">
-        {% for empleo, similitud, videos in resultados %}
-            {% for video in videos %}
+        {% for empleo, similitud, video in resultados %}
             <div class="carousel-item {% if forloop.first %}active{% endif %} z-1 position-relative">
                 <video id="video{{ forloop.counter }}" class="d-block w-100" controls muted>
                     <source src="{{ video.video_file.url }}" type="video/mp4">
@@ -37,10 +36,8 @@
                             <a href="{% url 'detalle_empleo_aspirante' video.empleo.id %}" class="btn btn-info btn-sm">Ver Empleo</a>
                         </div>
                     </div>
-
                 </div>
             </div>
-        {% endfor %}
         {% endfor %}
     </div>
 

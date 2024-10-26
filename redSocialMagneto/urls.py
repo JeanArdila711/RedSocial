@@ -27,6 +27,7 @@ urlpatterns = [
     path('', include('buscador_reclutador.urls')),
     path('', include('buscador_aspirante.urls')),
     path('', include('MensajeriaInterna.urls')),
+    path('', include('grupos_interes.urls')),
 
 ]
 

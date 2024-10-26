@@ -1,0 +1,15 @@
+{% extends base %}
+
+{% block content %}
+  <h1>Añadir Comentario a la Publicación</h1>
+  
+  <form method="post">
+    {% csrf_token %}
+    <div class="form-group">
+      {{ form.as_p }}
+    </div>
+    
+    <button type="submit" class="btn btn-primary">Enviar Comentario</button>
+    <a href="{% url 'publicaciones' grupo_interes_id=publicacion.grupo.id %}" class="btn btn-secondary">Cancelar</a>
+  </form>
+{% endblock %}

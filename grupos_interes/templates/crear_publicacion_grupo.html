@@ -1,0 +1,99 @@
+{% extends base %}
+
+{% block content %}
+<div class="container">
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- Tipo de Publicación -->
+    <div class="mb-3">
+        {{ form.tipo.label_tag }}
+        {{ form.tipo }}
+    </div>
+
+    <!-- Contenido de la Publicación -->
+    <div class="mb-3">
+        {{ form.contenido.label_tag }}
+        {{ form.contenido }}
+    </div>
+
+    <!-- Recurso Adicional -->
+    <div class="mb-3">
+        {{ form.recurso.label_tag }}
+        {{ form.recurso }}
+    </div>
+
+    <!-- Selección de qué recomendar (Visible solo si tipo es "recomendacion") -->
+    <div class="mb-3" id="que-recomendar-container" style="display: none;">
+        <label for="que-recomendar">¿Qué deseas recomendar?</label>
+        <select id="que-recomendar" class="form-select">
+            <option value="">Selecciona una opción</option>
+            <option value="reclutador">Reclutador</option>
+            <option value="aspirante">Aspirante</option>
+            <option value="empleo">Empleo</option>
+        </select>
+    </div>
+
+    <!-- Selección de Reclutador Empresa -->
+    <div class="mb-3" id="reclutador-select-container" style="display: none;">
+        {{ form.reclutador_empresa.label_tag }}
+        {{ form.reclutador_empresa }}
+    </div>
+
+    <!-- Selección de Aspirante -->
+    <div class="mb-3" id="aspirante-select-container" style="display: none;">
+        {{ form.aspirante.label_tag }}
+        {{ form.aspirante }}
+    </div>
+
+    <!-- Selección de Empleo -->
+    <div class="mb-3" id="empleo-select-container" style="display: none;">
+        {{ form.empleo.label_tag }}
+        {{ form.empleo }}
+    </div>
+
+    <button type="submit" class="btn btn-primary">Crear Publicación</button>
+</form>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const tipoSelect = document.getElementById("tipo");
+        const queRecomendarContainer = document.getElementById("que-recomendar-container");
+        const queRecomendarSelect = document.getElementById("que-recomendar");
+        const reclutadorContainer = document.getElementById("reclutador-select-container");
+        const aspiranteContainer = document.getElementById("aspirante-select-container");
+        const empleoContainer = document.getElementById("empleo-select-container");
+
+        // Mostrar u ocultar el campo "¿Qué deseas recomendar?"
+        function toggleQueRecomendar() {
+            if (tipoSelect.value === "recomendacion") {
+                queRecomendarContainer.style.display = "block";
+            } else {
+                queRecomendarContainer.style.display = "none";
+                reclutadorContainer.style.display = "none";
+                aspiranteContainer.style.display = "none";
+                empleoContainer.style.display = "none";
+                queRecomendarSelect.value = "";  // Reiniciar selección
+            }
+        }
+
+        // Mostrar la lista correspondiente según la selección en "¿Qué deseas recomendar?"
+        function toggleRecomendacionFields() {
+            const selectedOption = queRecomendarSelect.value;
+            reclutadorContainer.style.display = selectedOption === "reclutador" ? "block" : "none";
+            aspiranteContainer.style.display = selectedOption === "aspirante" ? "block" : "none";
+            empleoContainer.style.display = selectedOption === "empleo" ? "block" : "none";
+        }
+
+        // Eventos para cambiar la visibilidad
+        tipoSelect.addEventListener("change", toggleQueRecomendar);
+        queRecomendarSelect.addEventListener("change", toggleRecomendacionFields);
+
+        // Ejecutar al cargar la página
+        toggleQueRecomendar();
+    });
+</script>
+{% endblock %}
+

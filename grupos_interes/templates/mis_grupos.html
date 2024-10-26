@@ -1,0 +1,28 @@
+{% extends base %}
+
+{% block content %}
+<div class="container my-5">
+    <h2 class="text-center mb-4">Mis Grupos de Interés</h2>
+    <div class="row">
+        {% for grupo in grupos %}
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <img src="{{ grupo.image.url }}" class="card-img-top" alt="Imagen de {{ grupo.nombre }}">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ grupo.nombre }}</h5>
+                        <p class="card-text">{{ grupo.descripcion|truncatewords:20 }}</p>
+                    </div>
+                    <div class="card-footer text-center">
+                        <a href="{% url 'detalle_grupo' grupo.id %}" class="btn btn-primary">Detalle</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p class="text-center">No tienes grupos de interés aún.</p>
+        {% endfor %}
+    </div>
+    <div class="row mx-5 px-5">
+        <a href="{% url 'crear_grupo' %}" class="btn btn-success">Crea un grupo</a>
+    </div>
+</div>
+{% endblock %}

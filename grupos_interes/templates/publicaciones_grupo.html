@@ -1,0 +1,43 @@
+{% extends base %}
+
+{% block content %}
+  <h1>Publicaciones en "{{ grupo.nombre }}"</h1>
+  
+  <div class="container mt-4">
+    <div class="row">
+      {% for publicacion in publicaciones %}
+        <div class="col-md-4 mb-4">
+          <div class="card">
+            {% if publicacion.recurso %}
+              <div class="card-body">
+                <h5 class="card-title">{{ publicacion.tipo|capfirst }}</h5>
+                <p class="card-text">{{ publicacion.contenido }}</p>
+                <a href="{{ publicacion.recurso.url }}" class="btn btn-primary" target="_blank">Ver Recurso</a>
+              </div>
+              <img src="{{ publicacion.recurso.url }}" class="card-img-bottom" alt="Recurso" style="max-height: 200px;">
+            {% else %}
+              <div class="card-body">
+                <h5 class="card-title">{{ publicacion.tipo|capfirst }}</h5>
+                <p class="card-text">{{ publicacion.contenido }}</p>
+              </div>
+            {% endif %}
+            <div class="card-footer text-muted">
+              Publicado por {{ publicacion.autor.username }} el {{ publicacion.fecha_creacion|date:"d M Y" }}
+              <div class="mt-2">
+                <span class="badge bg-secondary">Likes: {{ publicacion.likes.count }}</span>
+                <span class="badge bg-secondary">Comentarios: {{ publicacion.comentarios.count }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="row mx-5 px-5">
+            <a href="{% url 'anadir_comentario_grupo' publicacion.id %}" class="btn btn-success">añade una reseña</a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12">
+          <p>No hay publicaciones en este grupo.</p>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
