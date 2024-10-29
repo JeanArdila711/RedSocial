@@ -8,7 +8,9 @@ from django.contrib.auth.decorators import login_required
 
 from redSocialMagneto.services import obtener_recomendacion
 from django.contrib.auth import update_session_auth_hash
-
+from empleos_reclutador.models import Empleo
+import numpy as np
+import json
 
 
 def registrar_aspirante(request):
@@ -152,7 +154,42 @@ def login_view(request):
 @login_required
 def home_aspirante(request):
     aspirante = Aspirante.objects.get(usuario=request.user)
-    return render(request, 'home_aspirante.html', {'aspirante': aspirante})
+    embedding_aspirante = np.array(json.loads(aspirante.embeddings)).flatten()
+    empleos = Empleo.objects.all()
+    empresas = Reclutador_empresa.objects.all()
+    resultados = []
+    resultados_empresas = []
+
+
+    for empleo in empleos:
+        embedding_empleo = np.array(json.loads(empleo.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
+        resultados.append((empleo, similitud))
+
+    for empresa in empresas:
+        embedding_empresa = np.array(json.loads(empresa.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_aspirante, embedding_empresa)
+        resultados_empresas.append((empresa, similitud))
+
+    resultados_empresas.sort(key=lambda x: x[1], reverse=True)
+    resultadoFemp = resultados_empresas[:50]
+
+
+    resultados.sort(key=lambda x: x[1], reverse=True)
+    resultadoF = resultados[:9]
+    grouped_cards = [resultadoF[i:i+3] for i in range(0, len(resultadoF), 3)]
+
+
+    return render(request, 'home_aspirante.html', {'aspirante': aspirante, 'grouped_cards': grouped_cards, 'resultadoFemp': resultadoFemp})
+
+
+def calcular_similitud(embedding_aspirante, embedding_empleo):
+    """Calcula la similitud coseno entre dos embeddings."""
+    dot_product = np.dot(embedding_aspirante, embedding_empleo)
+    norm_aspirante = np.linalg.norm(embedding_aspirante)
+    norm_empleo = np.linalg.norm(embedding_empleo)
+    return dot_product / (norm_aspirante * norm_empleo)
+
 
 
 @login_required

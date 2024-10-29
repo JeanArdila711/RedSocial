@@ -6,5 +6,5 @@ urlpatterns = [
     path('detalle_grupo/<int:grupo_interes_id>/', views.detalle_grupo, name='detalle_grupo'),
     path('crear_publicacion_grupo/<int:grupo_interes_id>/', views.crear_publicacion_grupo, name='crear_publicacion_grupo'),
     path('publicaciones_grupo/<int:grupo_interes_id>/', views.publicaciones_grupo, name='publicaciones_grupo'),
-    path('anadir_comentario/<int:publicacion_id>/', views.anadir_comentario, name='anadir_comentario'),
+    path('anadir_comentario_grupo/<int:publicacion_id>/', views.anadir_comentario_grupo, name='anadir_comentario_grupo'),
 ]

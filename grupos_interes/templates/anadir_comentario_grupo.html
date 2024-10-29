@@ -10,6 +10,6 @@
     </div>
     
     <button type="submit" class="btn btn-primary">Enviar Comentario</button>
-    <a href="{% url 'publicaciones' grupo_interes_id=publicacion.grupo.id %}" class="btn btn-secondary">Cancelar</a>
+    <a href="{% url 'publicaciones_grupo' publicacion %}" class="btn btn-secondary">Cancelar</a>
   </form>
 {% endblock %}

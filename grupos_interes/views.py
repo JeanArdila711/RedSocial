@@ -69,7 +69,7 @@ def crear_publicacion_grupo(request, grupo_interes_id):
         form = PublicacionForm(request.POST, request.FILES)
         if form.is_valid():
             publicacion = form.save(commit=False)
-            publicacion.grupo = get_object_or_404(Publicacion, id=grupo_interes_id)
+            publicacion.grupo = get_object_or_404(GrupoInteres, id=grupo_interes_id)
             publicacion.autor = user
             publicacion = form.save()
             return redirect('mis_grupos')
@@ -90,11 +90,12 @@ def publicaciones_grupo(request, grupo_interes_id):
         base = 'base_reclutador.html'
 
     publicaciones = Publicacion.objects.filter(grupo=grupo)
+    nombre_grupo = grupo.nombre
 
-    return render(request, 'publicaciones_grupo.html', {'publicaciones': publicaciones, 'base': base})
+    return render(request, 'publicaciones_grupo.html', {'publicaciones': publicaciones, 'base': base, 'nombre_grupo': nombre_grupo})
 
 
-def anadir_comentario(request, publicacion_id):
+def anadir_comentario_grupo(request, publicacion_id):
     user = request.user
     publicacion = get_object_or_404(Publicacion, id=publicacion_id)
     grupo_interes_id = publicacion.grupo.id  # Asume que la publicación tiene una relación con GrupoInteres
@@ -113,11 +114,11 @@ def anadir_comentario(request, publicacion_id):
             comentario.autor = user
             comentario = form.save()
             publicacion.comentarios.add(comentario)
-            return redirect('publicaciones', grupo_interes_id=grupo_interes_id)
+            return redirect('publicaciones_grupo', grupo_interes_id)
     else:
         form = ComentarioForm()
 
-    return render(request, 'anadir_comentario_grupo.html', {'form': form, 'base': base})
+    return render(request, 'anadir_comentario_grupo.html', {'form': form, 'base': base, 'publicacion': publicacion_id})
 
 
 

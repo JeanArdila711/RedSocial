@@ -2,6 +2,13 @@ body {
     background-color: white;
 }
 
+.color_m{
+    color: #00D460
+}
+.fondo_verde{
+    background-color: #00D460;
+}
+
 textarea {
     width: 100%; /* Ajusta el ancho al 100% del contenedor */
     max-width: 100%; /* Evita que se extienda más allá de su contenedor */
@@ -17,4 +24,88 @@ a{
     }
 .carousel-control-next {
     right: -50px; /* Ajusta el valor según sea necesario */
+}
+
+.titulo_magneto_1 {
+    font-size: 7rem;
+    font-family: 'Minimo', sans-serif !important;
+    font-weight: bold;
+}
+.titulo_magneto_2 {
+    font-size: 3rem;
+    font-family: 'Minimo', sans-serif !important;
+    font-weight: bold;
+}
+
+.bg_gradiente_morado{
+background: rgb(69,177,177);
+background: linear-gradient(0deg, rgba(69,177,177,1) 0%, rgba(34,19,89,1) 60%);
+    color: white;
+}
+
+.color_morado{
+    background: rgb(34,19,89,1);
+
+}
+.color_morado_text{
+    color: rgb(34,19,89,1);
+
+}
+.logo-carousel {
+  overflow: hidden;
+  position: relative;
+  width: 100%;
+}
+
+.logo-track {
+  display: flex;
+  animation: scroll 20s linear infinite;
+}
+
+.logo-track img {
+  width: 150px; /* Ajusta el tamaño de los logos según sea necesario */
+  margin: 0 15px;
+}
+
+@keyframes scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+
+
+.slider{
+    position: relative;
+    width: 100%;
+    height: 800px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.item{
+    position: absolute;
+    transition: 0.5s;
+}
+#next, #prev{
+    position: absolute;
+    top: 40%;
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    font-size: xxx-large;
+    font-family: monospace;
+    font-weight: bold;
+    transform: translateY(-50%);
+}
+#next {
+    right: 10px;
+}
+
+#prev {
+    left: 10px;
 }
