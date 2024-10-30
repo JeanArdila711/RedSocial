@@ -8,9 +8,11 @@ from django.contrib.auth.decorators import login_required
 
 from redSocialMagneto.services import obtener_recomendacion
 from django.contrib.auth import update_session_auth_hash
-from empleos_reclutador.models import Empleo
+from empleos_reclutador.models import Empleo, VideoPostEmpleo
 import numpy as np
 import json
+from grupos_interes.models import GrupoInteres
+
 
 
 def registrar_aspirante(request):
@@ -157,8 +159,11 @@ def home_aspirante(request):
     embedding_aspirante = np.array(json.loads(aspirante.embeddings)).flatten()
     empleos = Empleo.objects.all()
     empresas = Reclutador_empresa.objects.all()
+    grupos = GrupoInteres.objects.all()
     resultados = []
     resultados_empresas = []
+    resultados_grupos = []
+    resultados_video_post = []
 
 
     for empleo in empleos:
@@ -166,10 +171,26 @@ def home_aspirante(request):
         similitud = calcular_similitud(embedding_aspirante, embedding_empleo)
         resultados.append((empleo, similitud))
 
+        videos_empleo = VideoPostEmpleo.objects.filter(empleo=empleo.id)
+        if videos_empleo:
+            for video in videos_empleo:
+                resultados_video_post.append((video, similitud))
+
+
     for empresa in empresas:
         embedding_empresa = np.array(json.loads(empresa.embeddings)).flatten()
         similitud = calcular_similitud(embedding_aspirante, embedding_empresa)
         resultados_empresas.append((empresa, similitud))
+
+    for grupo in grupos:
+        embedding_grupo = np.array(json.loads(grupo.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_aspirante, embedding_grupo)
+        resultados_grupos.append((grupo, similitud))
+
+    resultados_grupos.sort(key=lambda x: x[1], reverse=True)
+    resultados_grupos_ord = resultados_grupos[:12]
+    grouped_grupos = [resultados_grupos_ord[i:i+3] for i in range(0, len(resultados_grupos_ord), 3)]
+
 
     resultados_empresas.sort(key=lambda x: x[1], reverse=True)
     resultadoFemp = resultados_empresas[:50]
@@ -178,9 +199,11 @@ def home_aspirante(request):
     resultados.sort(key=lambda x: x[1], reverse=True)
     resultadoF = resultados[:9]
     grouped_cards = [resultadoF[i:i+3] for i in range(0, len(resultadoF), 3)]
+    resultados_video_post.sort(key=lambda x: x[1], reverse=True)
+    resultados_video_post_ord = resultados_video_post[:5]
 
 
-    return render(request, 'home_aspirante.html', {'aspirante': aspirante, 'grouped_cards': grouped_cards, 'resultadoFemp': resultadoFemp})
+    return render(request, 'home_aspirante.html', {'aspirante': aspirante, 'grouped_cards': grouped_cards, 'resultadoFemp': resultadoFemp, 'grouped_grupos': grouped_grupos, 'resultados_video_post_ord': resultados_video_post_ord})
 
 
 def calcular_similitud(embedding_aspirante, embedding_empleo):
@@ -319,7 +342,7 @@ def mi_perfil_aspirante(request):
     formaciones = FormacionAspirante.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
     experiencias = ExperienciaLaboral.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
 
-    return render(request, 'mi_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas, 'formaciones': formaciones, 'experiencias': experiencias,})
+    return render(request, 'mi_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas, 'formaciones': formaciones, 'experiencias': experiencias})
 
 
 @login_required

@@ -13,7 +13,7 @@
                     Tu navegador no soporta el elemento de video.
                 </video>
                 <div class="carousel-caption">
-                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
+                    <button class="btn fondo_verde" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
                         Mostrar Descripción
                     </button>
 
@@ -33,7 +33,7 @@
                             <p>Fecha Creacion Empleo: {{video.empleo.fecha_creacion}}</p>
                             <p>Descripcion: {{video.empleo.descripcion}}</p>
                             <p>Similitud: {{ similitud|floatformat:2 }} </p>
-                            <a href="{% url 'detalle_empleo_aspirante' video.empleo.id %}" class="btn btn-info btn-sm">Ver Empleo</a>
+                            <a href="{% url 'detalle_empleo_aspirante' video.empleo.id %}" class="btn fondo_verde btn-sm">Ver Empleo</a>
                         </div>
                     </div>
                 </div>

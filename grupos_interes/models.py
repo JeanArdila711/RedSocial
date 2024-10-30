@@ -2,6 +2,10 @@ from django.db import models
 from django.utils import timezone
 from users.models import User, Reclutador_empresa, Aspirante
 from empleos_reclutador.models import Empleo
+import json
+import numpy as np
+import openai
+from django.conf import settings
 
 
 class GrupoInteres(models.Model):
@@ -11,8 +15,29 @@ class GrupoInteres(models.Model):
     miembros = models.ManyToManyField(User, related_name="grupos_interes", blank=True)
     fecha_creacion = models.DateTimeField(default=timezone.now)
     image = models.ImageField(upload_to='image_grupo_interes/', default='image_grupo_interes/def.png', null=True, blank=True)
-
     activo = models.BooleanField(default=True)
+    embeddings = models.TextField(blank=True, null=True)
+
+    def set_embeddings(self):
+        """Genera y almacena el embedding para el video post."""
+        texto_completo = (
+            f"Nombre del grupo: {self.nombre}"
+            f"Descripcion: {self.descripcion} "
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+            self.save()
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
 
     def __str__(self):
         return self.nombre

@@ -29,7 +29,7 @@
                         <td>{{ postulacion.empleo.ciudad }}</td>
                         <td>{{ postulacion.empleo.fecha_creacion|date:"d M Y" }}</td>
                         <td>
-                            <a href="{% url 'detalle_empleo_aspirante' postulacion.empleo.id %}" class="btn btn-info btn-sm">Ver Detalles</a>
+                            <a href="{% url 'detalle_empleo_aspirante' postulacion.empleo.id %}" class="btn fondo_verde btn-sm">Ver Detalles</a>
                         </td>
                     </tr>
                 {% endfor %}

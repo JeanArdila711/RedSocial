@@ -648,7 +648,6 @@ class Aspirante(models.Model):
             self.save()
         except AttributeError as e:
             print(f'Error al acceder a los embeddings: {e}')
-
     def __str__(self):
         return self.usuario.nombre
 
