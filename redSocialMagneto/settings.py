@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-#ytvu9a#unnxvegn=pu0rk@2-)g-v*)asc4#^i2pflo5@gx9v3
 
 from decouple import config
 
-OPENAI_API_KEY = config('OPENAI_API_KEY')
+OPEN_API_KEY = config('OPEN_API_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -168,5 +168,3 @@ CURRENCY_RATES = {
     'ETH': 9000000,    # Ejemplo: 1 ETH = 9,000,000 COP
 }
 
-# Clave chatgpt
-OPEN_API_KEY = os.getenv('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')
