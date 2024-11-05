@@ -3,113 +3,119 @@
 {% block title %}Mi Perfil Reclutador{% endblock %}
 
 {% block content %}
+
 <div class="container-fluid">
-    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{{ reclutador_empresa.logo.url }}" class="img-fluid rounded-start p-5" alt="logo empresa">
-            </div>
-
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title text-center">{{ reclutador_empresa.nombre_empresa }}</h5>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>NIT:</strong>{{ reclutador_empresa.NIT }}
-                        </div>
-                        <div class="col">
-                            <strong>Número de empleados:</strong> {{ reclutador_empresa.cantidad_empleados }}
-                        </div>
-                        <div class="col">
-                            <strong>Sede principal:</strong> {{ reclutador_empresa.sede_principal }}
-                        </div>
-                        <div class="col text-end">
-                            <a href="{{ reclutador_empresa.registro_camara_comercio.url }}" class="btn btn-outline-secondary">Registro cámara comercio</a>
-                        </div>
-                    </div>
-                    <p class="card-text my-5"><strong>Visión:</strong> {{ reclutador_empresa.vision }}</p>
-                    <p class="card-text my-5"><strong>Misión:</strong> {{ reclutador_empresa.mision }}</p>
-
-                    <div class="row mx-5 px-5">
-                        <a href="{% url 'editar_empresa' %}" class="btn btn-secondary">Editar Empresa</a>
-                </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
-        <div class="row g-0">
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title text-center"> {{ reclutador_empresa.usuario.nombre }} </h5>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>documento identidad:</strong>{{ reclutador_empresa.usuario.documento_identidad }}
-                        </div>
-                        <div class="col">
-                            <strong>Email:</strong> {{ reclutador_empresa.usuario.email }}
-                        </div>
-                    </div>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>Pais:</strong>{{ reclutador_empresa.usuario.pais }}
-                        </div>
-                        <div class="col">
-                            <strong>Ciudad:</strong> {{ reclutador_empresa.usuario.ciudad }}
-                        </div>
-                    </div>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>Indicativo de telefono:</strong> {{ reclutador_empresa.usuario.indicativo_pais }}
-                        </div>
-                        <div class="col">
-                            <strong>Telefono:</strong> {{ reclutador_empresa.usuario.telefono }}
-                        </div>
-                    </div>
-                    <div class="row mx-5 px-5">
-                        <a href="{% url 'editar_reclutador' %}" class="btn btn-secondary mb-2">Editar mi usuario</a>
-                        <a href="{% url 'cambiar_contrasena' %}" class="btn btn-danger">Cambiar Contraseña</a>
-
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+                <div class="card mb-3 m-5 bg-transparent shadow-sm">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                        <img src="{{ reclutador_empresa.logo.url }}" class="img-fluid rounded-start p-5" alt="logo empresa">
                     </div>
 
-                </div>
-            </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title text-center titulo_magneto_2">{{ reclutador_empresa.nombre_empresa }}</h5>
+                            <div class="row align-items-start m-5">
+                                <div class="col">
+                                    <strong>NIT:</strong>{{ reclutador_empresa.NIT }}
+                                </div>
+                                <div class="col">
+                                    <strong>Número de empleados:</strong> {{ reclutador_empresa.cantidad_empleados }}
+                                </div>
+                                <div class="col">
+                                    <strong>Sede principal:</strong> {{ reclutador_empresa.sede_principal }}
+                                </div>
+                                <div class="col text-end">
+                                    <a href="{{ reclutador_empresa.registro_camara_comercio.url }}" class="btn btn-outline-secondary">Registro cámara comercio</a>
+                                </div>
+                            </div>
+                            <p class="card-text my-5"><strong>Visión:</strong> {{ reclutador_empresa.vision }}</p>
+                            <p class="card-text my-5"><strong>Misión:</strong> {{ reclutador_empresa.mision }}</p>
 
-            <div class="col-md-4">
-                <img src="{{ reclutador_empresa.usuario.foto_perfil.url }}" class="img-fluid rounded-start p-5" alt="user image">
-            </div>
-        </div>
-    </div>
+                            <div class="row mx-5 px-5">
+                                <a href="{% url 'editar_empresa' %}" class="btn btn-outline-light btn-sm w-100 fondo_azul border-0">Editar Empresa</a>
+                        </div>
+                        </div>
 
-
-    <div class="card mb-3 m-5 border border-dark-subtle bg-transparent border-5">
-        <div class="row g-0">
-            <div class="col-md-4">
-                <img src="{% static 'images/user.png' %}" class="img-fluid rounded-start p-5" alt="Repr image">
-            </div>
-            <div class="col-md-8">
-                <div class="card-body">
-                    <h5 class="card-title text-center"> {{ reclutador_empresa.representante_legal.nombre }} </h5>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>documento identidad:</strong>{{ reclutador_empresa.representante_legal.documento_identidad }}
-                        </div>
-                        <div class="col">
-                            <strong>Email:</strong> {{ reclutador_empresa.representante_legal.email }}
-                        </div>
-                    </div>
-                    <div class="row align-items-start m-5">
-                        <div class="col">
-                            <strong>Telefono:</strong> {{ reclutador_empresa.representante_legal.telefono }}
-                        </div>
-                    </div>
-                    <div class="row mx-5 px-5">
-                        <a href="{% url 'editar_representante_legal' %}" class="btn btn-secondary">Editar el representante legal</a>
                     </div>
                 </div>
             </div>
+
+                <div class="card mb-3 m-5 bg-transparent shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-center titulo_magneto_2"> {{ reclutador_empresa.usuario.nombre }} </h5>
+                                <div class="row align-items-start m-5">
+                                    <div class="col">
+                                        <strong>documento identidad:</strong>{{ reclutador_empresa.usuario.documento_identidad }}
+                                    </div>
+                                    <div class="col">
+                                        <strong>Email:</strong> {{ reclutador_empresa.usuario.email }}
+                                    </div>
+                                </div>
+                                <div class="row align-items-start m-5">
+                                    <div class="col">
+                                        <strong>Pais:</strong>{{ reclutador_empresa.usuario.pais }}
+                                    </div>
+                                    <div class="col">
+                                        <strong>Ciudad:</strong> {{ reclutador_empresa.usuario.ciudad }}
+                                    </div>
+                                </div>
+                                <div class="row align-items-start m-5">
+                                    <div class="col">
+                                        <strong>Indicativo de telefono:</strong> {{ reclutador_empresa.usuario.indicativo_pais }}
+                                    </div>
+                                    <div class="col">
+                                        <strong>Telefono:</strong> {{ reclutador_empresa.usuario.telefono }}
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <a href="{% url 'editar_reclutador' %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mx-auto">Editar mi usuario</a>
+                                    <a href="{% url 'change_password' %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mx-auto">Cambiar Contraseña</a>
+
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <img src="{{ reclutador_empresa.usuario.foto_perfil.url }}" class="img-fluid rounded-start p-5" alt="user image">
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="card mb-3 m-5 bg-transparent shadow-sm">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                            <img src="{% static 'images/user.png' %}" class="img-fluid rounded-start p-5" alt="Repr image">
+                        </div>
+                        <div class="col-md-8">
+                            <div class="card-body">
+                                <h5 class="card-title text-center titulo_magneto_2"> {{ reclutador_empresa.representante_legal.nombre }} </h5>
+                                <div class="row align-items-start m-5">
+                                    <div class="col">
+                                        <strong>documento identidad:</strong>{{ reclutador_empresa.representante_legal.documento_identidad }}
+                                    </div>
+                                    <div class="col">
+                                        <strong>Email:</strong> {{ reclutador_empresa.representante_legal.email }}
+                                    </div>
+                                </div>
+                                <div class="row align-items-start m-5">
+                                    <div class="col">
+                                        <strong>Telefono:</strong> {{ reclutador_empresa.representante_legal.telefono }}
+                                    </div>
+                                </div>
+                                <div class="row mx-5 px-5">
+                                    <a href="{% url 'editar_representante_legal' %}" class="btn btn-outline-light btn-sm w-100 fondo_azul border-0">Editar el representante legal</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
         </div>
     </div>
 </div>

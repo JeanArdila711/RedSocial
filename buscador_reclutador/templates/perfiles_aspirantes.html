@@ -1,34 +1,123 @@
 {% extends 'base_reclutador.html' %}
 {% block content %}
 {% load static %}
-
-<div class="container-fluid p-5">
-    <h1 class="mb-4">Lista Aspirantes</h1>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+cd
+<div class="container-fluid">
     {% if aspirantes %}
-        <div class="row">
-            {% for aspirante, similitud in aspirantes %}
-                <div class="col-md-4">
-                    <div class="card text-bg-dark mb-3 ">
-                        {% if aspirante.usuario.foto_perfil %}
-                            <img src="{{ aspirante.usuario.foto_perfil.url }}" class="card-img-top" alt="Foto de perfil">
-                        {% else %}
-                            <img src="{% static 'default_profile.jpg' %}" class="card-img-top" alt="Default profile">
-                        {% endif %}
-                        <div class="card-body">
-                            <h5 class="card-title">{{ aspirante.usuario.nombre }}</h5>
-                            <p class="card-text">{{ aspirante.usuario.email }}</p>
-                            <p class="card-text">{{ aspirante.descripcion }}</p>
-                            <p class="card-text">similitud: {{  similitud|floatformat:2  }}</p>
+        <div class="row m-4">
+            <div class="container-md rounded " style="background-color: #e9e9f6;">
+                <div class="row g-2 m-5 ">
+                    <div class="col-md-8">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5 class="">Salario Promedio por Sector:</h5>
+                            </div>
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <canvas class="" id="salarioChart"></canvas>
+                            </div>
                         </div>
-                        <div class="row mx-5 px-5 mb-4">
-                                <a href="{% url 'base_ver_perfil_aspirante' aspirante.id %}" class="btn btn-success">Ver perfil completo</a>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5>Interes en mi empresa:</h5>
+                            </div>
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <canvas class="" id="myPieChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5>Modalidades de trabajo preferidas:</h5>
+                            </div>
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <canvas class="mh-80 mw-80" id="grafico_modalidades"></canvas>
+
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8" >
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5>Aspirantes por sector laboral:</h5>
+                            </div>
+                            <div class="card-body d-flex justify-content-center align-items-center">
+                                <canvas class="mh-80 mw-80" id="sectoresChart"></canvas>
+                            </div>
                         </div>
                     </div>
                 </div>
-            {% endfor %}
+            </div>
+
+            <script>
+            const chartData = {
+                num_favoritos: {{ num_favoritos }},
+                num_aspirantes: {{ num_aspirantes }},
+            };
+
+            window.chartLabels = {{ labels|safe }};
+            window.chartData = {{ data|safe }};
+
+            const chartData_salario = {
+                sectores: {{ sectores|safe }},
+                salarios: {{ salarios|safe }},
+            };
+            const chartData_modalidades = {
+                modalidades: {{ modalidades|safe }},
+                valores: {{ valores|safe }},
+            };
+            console.log(chartData_modalidades);
+
+        </script>
+        </div>
+
+        <div class="row m-4">
+            <div class="container-md rounded " style="background-color: #e9e9f6;">
+                <h2 class="align-middle mt-4 titulo_magneto_2">Aspirantes reco<span class="color_m_font">m</span>endados</h2>
+                <div class="row g-4 m-5 mt-0">
+                    {% for aspirante, similitud in aspirantes %}
+                    <div class="col-md-3 ">
+                        <div class="card h-100 ">
+                            {% if aspirante.usuario.foto_perfil %}
+                                <img src="{{ aspirante.usuario.foto_perfil.url }}" class="card-img-top p-4 border-bottom border-4 " alt="Foto de perfil">
+                            {% else %}
+                                <img src="{% static 'default_profile.jpg' %}" class="card-img-top p-4" alt="Default profile">
+                            {% endif %}
+                            <div class="card-body">
+                                <h3 class="card-title"><strong>{{ aspirante.usuario.nombre }}</strong></h3>
+                                <p class="card-text">{{ aspirante.sector_laboral }}</p>
+                                <p class="card-text">{{ aspirante.usuario.pais}} | {{ aspirante.usuario.ciudad }}</p>
+                                <p class="card-text"><strong>Modalidad de trabajo:</strong>  {{aspirante.modalidad_trabajo}}</p>
+
+                                <p class="card-text"><strong>Salario Deseado: </strong>{{aspirante.salario}}</p>
+
+
+                                <p class="card-text"> <strong>Disponibilidad empezar: </strong>  {{aspirante.disponibilidad_de_empezar}}</p>
+                                <p class="card-text"> <strong>Disponibilidad viajar: </strong>{{aspirante.disponibilidad_viajar}}</p>
+
+                                <p class="card-text">similitud: {{  similitud|floatformat:2  }}</p>
+                            </div>
+                            <div class="card-footer border-0">
+                                    <a href="{% url 'base_ver_perfil_aspirante' aspirante.id %}" class="btn btn-outline-light btn-sm w-50 fondo_azul border-0">Ver</a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
         </div>
     {% else %}
         <p>No hay aspirantes disponibles.</p>
     {% endif %}
-{% endblock %}
+    <script src="{% static 'js/grafica_aspirante.js' %}"></script>
 </div>
+{% endblock content%}
+

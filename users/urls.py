@@ -14,12 +14,13 @@ urlpatterns = [
     path('editar-empresa/', views.editar_empresa, name='editar_empresa'),
     path('editar-reclutador/', views.editar_reclutador, name='editar_reclutador'),
     path('editar-representante-legal/', views.editar_representante_legal, name='editar_representante_legal'),
-    path('cambiar-contrasena/', views.cambiar_contrasena, name='cambiar_contrasena'),
+    path('change_password/', views.change_password, name='change_password'),
     path('mi-perfil-aspirante/', views.mi_perfil_aspirante, name='mi_perfil_aspirante'),
     path('editar-aspirante-user/', views.editar_aspirante_user, name='editar_aspirante_user'),
     path('editar-aspirante-aspirante/', views.editar_aspirante_aspirante, name='editar_aspirante_aspirante'),
     path('agregar_formacion/', views.agregar_formacion, name='agregar_formacion'),
     path('agregar_experiencia/', views.agregar_experiencia, name='agregar_experiencia'),
     path('completar-detalles-experiencia/<int:aspirante_id>/', views.completar_detalles_experiencia, name='completar_detalles_experiencia'),
+    path('logout/', views.logout_view, name='logout'),
 
 ]

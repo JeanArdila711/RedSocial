@@ -2,28 +2,22 @@
 
 {% block title %}Video de Empleo{% endblock %}
 {% block content %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <title>Cargar Video</title>
-</head>
-<body>
-    <div class="container mt-5">
-        <h1>Cargar Video para Empleo</h1>
+<div class="container-fluid">
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+            <div class="col-md-8 m-5 mx-auto">
 
-        <form method="POST" enctype="multipart/form-data">  <!-- Importante: enctype para manejar archivos -->
-            {% csrf_token %}
-            {{ form.as_p }}  <!-- Muestra los campos del formulario -->
-            <button type="submit" class="btn btn-primary">Cargar Video</button>
-        </form>
+                <h1 class="titulo_magneto_2">Cargar Video para Empleo</h1>
+
+                <form method="POST" enctype="multipart/form-data">  <!-- Importante: enctype para manejar archivos -->
+                    {% csrf_token %}
+                    {{ form.as_p }}  <!-- Muestra los campos del formulario -->
+                    <button type="submit" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mt-3">Cargar Video</button>
+                </form>
+            </div>
+        </div>
     </div>
+</div>
 
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</body>
-</html>
+
 {% endblock %}

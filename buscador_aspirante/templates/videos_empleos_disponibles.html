@@ -13,9 +13,20 @@
                     Tu navegador no soporta el elemento de video.
                 </video>
                 <div class="carousel-caption">
-                    <button class="btn fondo_verde" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
+                    <button class="btn btn-outline-light btn-sm  fondo_verde border-0 mx-1" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
                         Mostrar Descripción
                     </button>
+                    <form action="{% url 'toggle_like_video_post_empresa' empleo.id %}" method="post" class="btn btn-danger btn-outline-success btn-sm border-0">
+                    {% csrf_token %}
+                      <button type="submit" class="border-0 bg-transparent text-white">
+                        {% if request.user in video.likes.all %}
+                        <i class="fas fa-thumbs-down"></i>Dislike
+                        {% else %}
+                          <i class="fas fa-thumbs-up" type="submit"></i>Like
+                        {% endif %}
+                      </button>
+                  </form>
+
 
                     <div class="collapse" id="description{{ forloop.counter }}">
                         <div class="card card-body bg-dark text-white  bg-opacity-25">
@@ -33,7 +44,7 @@
                             <p>Fecha Creacion Empleo: {{video.empleo.fecha_creacion}}</p>
                             <p>Descripcion: {{video.empleo.descripcion}}</p>
                             <p>Similitud: {{ similitud|floatformat:2 }} </p>
-                            <a href="{% url 'detalle_empleo_aspirante' video.empleo.id %}" class="btn fondo_verde btn-sm">Ver Empleo</a>
+                            <a href="{% url 'detalle_empleo_aspirante' video.empleo.id %}" class="btn btn-outline-light btn-sm  fondo_verde border-0 mx-1">Ver Empleo</a>
                         </div>
                     </div>
                 </div>

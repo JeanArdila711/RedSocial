@@ -1,14 +1,239 @@
 {% extends 'base_reclutador.html' %}
-
-{% block title %}Home teacher{% endblock %}
-
+{% load static %}
 {% block content %}
-    <h1>Bienvenido, {{ reclutador.usuario.nombre }}</h1>
-    <p>Nombre de la empresa: {{ reclutador.nombre_empresa }}</p>
-    <p>NIT: {{ reclutador.NIT }}</p>
-    <p>Misión: {{ reclutador.mision }}</p>
-    <p>Visión: {{ reclutador.vision }}</p>
-    <p>Cantidad de empleados: {{ reclutador.cantidad_empleados }}</p>
+<div class="container">
+    <div class="header text-center mt-4">
+        <h1 class="titulo_magneto_1">
+            <span class="color_logo_empresa">m</span>agneto <span class="color_logo_empresa">empleo</span>
+        </h1>
+        <div class="container mx-auto px-5 mt-4 ">
+            <h4 class="mx-5 px-5 text-center" style="font-weight:normal ;">
+                Bienvenido de nuevo {{empresa.usuario.nombre}} en representacion de {{empresa.nombre_empresa}}, el grupo de <span class="color_logo_empresa_col">m</span>agneto <span class="color_logo_empresa_col">empleos</span> estamos a tu disposicion para la busqueda de tu Aspirante soñado
+            </h4>
+        </div>
+    </div>
 
+    <div class="input-group mb-3 justify-content-center ">
+        <input type="text" class="form-control w-50 " style="background-color: #e9e9f6;" placeholder="Buscar empleo" aria-label="Buscar empleo">
+        <select class="form-control w-10 " style="background-color: #e9e9f6;">
+            <option selected>Categoría</option>
+            <option>Sector Laboral</option>
+            <option>Desarrollo</option>
+            <option>Diseño</option>
+            <option>Administración</option>
+        </select>
+        <div class="input-group-append ">
+            <button class="btn btn-outline-light fondo_azul " type="button">
+                    <i class="fa-solid fa-check fa-2x"></i>
+            </button>
+        </div>
+    </div>
+
+    <div>
+    <div class="d-flex justify-content-left mt-2 align-items-center">
+        <small><strong>Búsqueda rápida: </strong></small>
+        <button class="btn btn-outline-secondary mx-1">Educacion</button>
+        <button class="btn btn-outline-secondary mx-1">Salud</button>
+        <button class="btn btn-outline-secondary mx-1">Diseño</button>
+        <button class="btn btn-outline-secondary mx-1">Construccion</button>
+        <button class="btn btn-outline-secondary mx-1">Ingenieria</button>
+    </div>
+</div>
+
+    <div class="container my-5 py-5">
+        <h2 class="titulo_magneto_2 text-center mb-4">
+            Co<span class="color_logo_empresa">m</span>unidades
+        </h2>
+        <h5 class="text-center mb-5"> Podrian ser de tu agrado estas co<span class="color_logo_empresa_col ">m</span>unidades, Ani<span class="color_logo_empresa_col ">m</span>ate...</h5>
+
+        <div class="row">
+            <div class="col-md-8 border border-top-0 border-bottom-0 p-3">
+                <section class="">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-6">
+                                <h3 class="mb-3">Te recomendamos.. </h3>
+                            </div>
+                            <div class="col-6 text-right">
+                                <a class="btn fondo_verde mb-3 mr-1" href="#carouselExampleIndicators2" role="button" data-slide="prev">
+                                    <i class="fa fa-arrow-left"></i>
+                                </a>
+                                <a class="btn fondo_verde mb-3 " href="#carouselExampleIndicators2" role="button" data-slide="next">
+                                    <i class="fa fa-arrow-right"></i>
+                                </a>
+                            </div>
+                            <div class="col-12">
+                                <div id="carouselExampleIndicators2" class="carousel slide" data-ride="carousel" data-interval="3000">
+                                    <div class="carousel-inner">
+                                        {% for grupos in grouped_grupos %}
+                                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                                <div class="row">
+                                                    {% for grupo, sim in grupos %}
+                                                        <div class="col-md-4">
+                                                            <div class="card_grupo card" style="background-color: #e9e9f6;">
+                                                                <img class="img-fluid p-2"  alt="100%x280" src="{{ grupo.image.url }}">
+                                                                <div class="card-body">
+                                                                    <h4 class="card-title">{{grupo.nombre}}</h4>
+                                                                    <p class="card-text">{{grupo.descripcion |truncatewords:20}}</p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+            </div>
+            <div class="col-md-4">
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit... Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab autem cum cumque dicta dolores enim est facere fuga fugiat magnam maxime minima nemo officia porro qui quisquam, tenetur veritatis voluptate.</p>
+                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit... Lorem ipsum dolor sit amet, consecteolores enim est face  quritatis voluptate.</p>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="col align-items-stretch">
+            <h2 class="titulo_magneto_2 text-center mb-5">
+                Aspirantes
+            </h2>
+            <h5 class="text-center"> Segun tu perfil te reco<span class="color_logo_empresa_col ">m</span>enda<span class="color_logo_empresa_col ">m</span>os...</h5>
+        </div>
+            <div class="row">
+                <div class="col-md-12 align-items-stretch">
+                    <div class="container mb-5">
+
+                        <div class="slider">
+                            {% for aspirante, sim in aspirantes %}
+                            <div class="item card" style="width: 20rem;">
+                                <h5 class="card-header text-center" style="font-family: 'Minimo', sans-serif !important; font-size: 2rem">{{aspirante.usuario.nombre}}</h5>
+                                <img src="{{ aspirante.usuario.foto_perfil.url }}" class="card-img-top p-2" alt="...">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        <li class="list-group-item"><strong>Salario: </strong> {{ aspirante.salario }}</li>
+                                        <li class="list-group-item"><strong>País: </strong> {{ aspirante.usuario.pais }}</li>
+                                        <li class="list-group-item"><strong>Sector laboral: </strong> {{ aspirante.sector_laboral }}</li>
+                                        <li class="list-group-item"><strong>Descripcion: </strong> {{ aspirante.descripcion|truncatewords:20 }}</li>
+
+                                        </ul>
+                                </div>
+                                <div class="card-footer text-body-secondary">
+                                    <a href="{% url 'base_ver_perfil_aspirante' aspirante.id %}" class="btn btn-outline-light btn-sm w-100 fondo_azul border-0 "><strong>mirar</strong></a>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            <button id="next">></button>
+                            <button id="prev"><</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+    </div>
+
+    <div class="container mb-5">
+        <h2 class="titulo_magneto_2 text-center ">
+            <span class="color_logo_empresa">m</span>atch-neto
+        </h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A adipisci aperiam commodi cum cumque dolore, earum exercitationem impedit libero mollitia nemo nostrum nulla obcaecati provident quae quod sapiente tempora voluptate.</p>
+        <div class="wrapper mt-4">
+            <div class="container_video_post">
+                {% for video, sim in videos %}
+
+                <input type="radio" name="slide" id="c{{ forloop.counter }}" {% if forloop.first %}checked{% endif %}>
+                <label for="c{{ forloop.counter }}" class="card_video_post">
+                <video autoplay muted loop class="background_video" id="video{{ forloop.counter }}">
+                    <source src="{{ video.video_post.url }}" type="video/mp4">
+                    Tu navegador no soporta el elemento de video.
+                </video>
+                <button class="pause_button" onclick="togglePlayPause({{ forloop.counter }})">⏯️</button>
+                <button class="volume_button" onclick="toggleMute({{ forloop.counter }})">🔊</button>
+                <div class="row_video_post">
+                    <div class="icon_video_post">
+                        <a href="{% url 'base_ver_perfil_aspirante' video.aspirante.id %}" class="text-white" ><strong>ver</strong></a>
+                    </div>
+                    <div class="description_video_post">
+                        <h4>{{video.titulo}}</h4>
+                        <p>{{video.descripcion|truncatewords:10}}</p>
+                    </div>
+                </div>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+</div>
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <script>
+        let items = document.querySelectorAll('.slider .item');
+        let next = document.getElementById('next');
+        let prev = document.getElementById('prev');
+
+        let active = 3;
+        function loadShow(){
+            let stt = 0;
+            items[active].style.transform = `none`;
+            items[active].style.zIndex = 1;
+            items[active].style.filter = 'none';
+            items[active].style.opacity = 1;
+            for(var i = active + 1; i < items.length; i++){
+                stt++;
+                items[i].style.transform = `translateX(${120*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(-1deg)`;
+                items[i].style.zIndex = -stt;
+                items[i].style.filter = 'blur(5px)';
+                items[i].style.opacity = stt > 2 ? 0 : 0.6;
+            }
+            stt = 0;
+            for(var i = active - 1; i >= 0; i--){
+                stt++;
+                items[i].style.transform = `translateX(${-120*stt}px) scale(${1 - 0.2*stt}) perspective(16px) rotateY(1deg)`;
+                items[i].style.zIndex = -stt;
+                items[i].style.filter = 'blur(5px)';
+                items[i].style.opacity = stt > 2 ? 0 : 0.6;
+            }
+        }
+        loadShow();
+        next.onclick = function(){
+            active = active + 1 < items.length ? active + 1 : active;
+            loadShow();
+        }
+        prev.onclick = function(){
+            active = active - 1 >= 0 ? active - 1 : active;
+            loadShow();
+        }
+    </script>
+
+    <script>
+        function togglePlayPause(index) {
+            const video = document.getElementById(`video${index}`);
+            const pauseButton = document.querySelector(`.pause_button[onclick="togglePlayPause(${index})"]`);
+
+            if (video.paused) {
+                video.play();
+                pauseButton.textContent = "⏸️"; // Cambia el icono a pausa
+            } else {
+                video.pause();
+                pauseButton.textContent = "▶️"; // Cambia el icono a play
+            }
+        }
+
+        function toggleMute(index) {
+            const video = document.getElementById(`video${index}`);
+            video.muted = !video.muted;
+            const volumeButton = document.querySelector(`.volume_button[onclick="toggleMute(${index})"]`);
+            volumeButton.textContent = video.muted ? "🔇" : "🔊";
+        }
+    </script>
 
 {% endblock %}

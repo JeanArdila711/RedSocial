@@ -4,3 +4,4 @@ django-money
 openai
 numpy
 python-decouple
+django-filter

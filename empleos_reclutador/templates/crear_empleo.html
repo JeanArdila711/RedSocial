@@ -2,15 +2,118 @@
 {% block title %}Crear un Empleo{% endblock %}
 
 {% block content %}
-
-<div class="container mt-5 bg-success-subtle rounded-4 p-5">
-    <h1 class="mb-4">Crear Empleo</h1>
-    <form method="post" enctype="multipart/form-data">
+<div class="container-fluid">
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+            <div class="row g-4 m-5 mt-0">
+                <h1 class="mb-4 titulo_magneto_2">Crear E<span class="color_logo_empresa">m</span>pleo</h1>
+    <!--            <form method="post" enctype="multipart/form-data">-->
+    <!--                {% csrf_token %}-->
+    <!--                <div class="mb-4">-->
+    <!--                    {{ form.as_p }}-->
+    <!--                </div>-->
+    <!--                <button type="submit" class="btn btn-success">Crear Empleo</button>-->
+    <!--            </form>-->
+                <form method="post" enctype="multipart/form-data">
         {% csrf_token %}
-        <div class="mb-4">
-            {{ form.as_p }}
+        <div class="container">
+            <!-- Información Básica -->
+            <h5 class="text-start border-pers pt-3 p-4">Información Básica</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.titulo.label_tag }}
+                    {{ form.titulo }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.sector_laboral.label_tag }}
+                    {{ form.sector_laboral }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    {{ form.salario.label_tag }}
+                    {{ form.salario}}
+                </div>
+            </div>
+
+            <!-- Ubicación -->
+            <h5 class="text-start border-pers pt-3 p-4">Ubicación</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.pais.label_tag }}
+                    {{ form.pais }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.ciudad.label_tag }}
+                    {{ form.ciudad }}
+                </div>
+            </div>
+
+            <!-- Descripción y Requisitos -->
+            <h5 class="text-start border-pers pt-3 p-4">Descripción y Requisitos</h5>
+            <div class="row">
+                <div class="col-md-12 mb-3">
+                    {{ form.descripcion.label_tag }}
+                    {{ form.descripcion }}
+                </div>
+                <div class="col-md-12 mb-3">
+                    {{ form.experiencia.label_tag }}
+                    {{ form.experiencia }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.habilidades.label_tag }}
+                    {{ form.habilidades }}
+                </div>
+
+                <div class="col-md-6 mb-3">
+                    {{ form.nivel_estudios.label_tag }}
+                    {{ form.nivel_estudios }}
+                </div>
+            </div>
+
+            <!-- Modalidad y Contrato -->
+            <h5 class="text-start border-pers pt-3 p-4">Modalidad y Contrato</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.modalidad_trabajo.label_tag }}
+                    {{ form.modalidad_trabajo }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.tipo_contrato.label_tag }}
+                    {{ form.tipo_contrato }}
+                </div>
+            </div>
+
+            <!-- Competencias -->
+            <h5 class="text-start border-pers pt-3 p-4">Competencias</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.competencias_tecnicas.label_tag }}
+                    {{ form.competencias_tecnicas }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.habilidades_blandas.label_tag }}
+                    {{ form.habilidades_blandas }}
+                </div>
+            </div>
+
+            <!-- Presentación y Palabras Clave -->
+            <h5 class="text-start border-pers pt-3 p-4">Presentación y Palabras Clave</h5>
+            <div class="row">
+                <div class="col-md-6 mb-3">
+                    {{ form.video_presentacion.label_tag }}
+                    {{ form.video_presentacion }}
+                </div>
+                <div class="col-md-6 mb-3">
+                    {{ form.palabras_clave.label_tag }}
+                    {{ form.palabras_clave }}
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-outline-light btn-sm w-50 fondo_azul border-0">Guardar</button>
         </div>
-        <button type="submit" class="btn btn-success">Crear Empleo</button>
     </form>
+
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}

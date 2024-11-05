@@ -1,42 +1,59 @@
 {% extends base %}
 
 {% block content %}
-  <h1>Publicaciones en "{{ nombre_grupo }}"</h1>
-  
-  <div class="container mt-4">
-    <div class="row">
-      {% for publicacion in publicaciones %}
-        <div class="col-md-4 mb-4">
-          <div class="card">
-            {% if publicacion.recurso %}
-              <div class="card-body">
-                <h5 class="card-title">{{ publicacion.tipo|capfirst }}</h5>
-                <p class="card-text">{{ publicacion.contenido }}</p>
-                <a href="{{ publicacion.recurso.url }}" class="btn btn-primary" target="_blank">Ver Recurso</a>
-              </div>
-              <img src="{{ publicacion.recurso.url }}" class="card-img-bottom" alt="Recurso" style="max-height: 200px;">
-            {% else %}
-              <div class="card-body">
-                <h5 class="card-title">{{ publicacion.tipo|capfirst }}</h5>
-                <p class="card-text">{{ publicacion.contenido }}</p>
-              </div>
-            {% endif %}
-            <div class="card-footer text-muted">
-              Publicado por {{ publicacion.autor.username }} el {{ publicacion.fecha_creacion|date:"d M Y" }}
-              <div class="mt-2">
-                <span class="badge bg-secondary">Likes: {{ publicacion.likes.count }}</span>
-                <span class="badge bg-secondary">Comentarios: {{ publicacion.comentarios.count }}</span>
-                <a href="{% url 'anadir_comentario_grupo' publicacion.id %}" class="btn btn-success badge btn-sm">añade una reseña</a>
+
+  <div class="container-fluid">
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+
+                      <h1 class="titulo_magneto_2">Publicaciones en "{{ nombre_grupo }}"</h1>
+
+          {% for publicacion in publicaciones %}
+          <div class="col-md-4 ">
+            <div class="card ">
+              {% if publicacion.recurso %}
+                <div class="card-body pb-0">
+                  <h4 class="card-title"><strong> {{ publicacion.tipo|capfirst }}</strong></h4>
+                  <p class="card-text">{{ publicacion.contenido }}</p>
+                  <a href="{{ publicacion.recurso.url }}" class="btn btn-outline-secondary btn-sm " target="_blank">Ver Recurso</a>
+                </div>
+              {% endif %}
+
+                <div class="card-body mt-0">
+                  <h5 class="card-title"><strong>{{ publicacion.tipo|capfirst }}: </strong></h5>
+                  <p class="card-text">{{ publicacion.contenido }}</p>
+                  <p><strong>Publicado por: </strong> {{ publicacion.autor.nombre }} el {{ publicacion.fecha_creacion|date:"d M Y" }}</p>
+                </div>
+
+              <div class="card-footer text-muted">
+
+                <div class="">
+                  <span class="badge bg-secondary">Likes: {{ publicacion.likes.count }}</span>
+                  <span class="badge bg-secondary">Comentarios: {{ publicacion.comentarios.count }}</span>
+                  <a href="{% url 'anadir_comentario_grupo' publicacion.id %}" class="btn btn-success badge btn-sm">añade una reseña</a>
+
+                  <form action="{% url 'toggle_like' publicacion.id %}" method="post" class="btn btn-danger badge btn-sm ">
+                    {% csrf_token %}
+                      <button type="submit" class="border-0 bg-transparent text-white">
+                        {% if request.user in publicacion.likes.all %}
+                        <i class="fas fa-thumbs-down"></i>Dislike
+                        {% else %}
+                          <i class="fas fa-thumbs-up" type="submit"></i>Like
+                        {% endif %}
+                      </button>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-
+        {% empty %}
         </div>
-      {% empty %}
-        <div class="col-12">
-          <p>No hay publicaciones en este grupo.</p>
-        </div>
-      {% endfor %}
+          <div class="col-12">
+            <p>No hay publicaciones en este grupo.</p>
+          </div>
+        {% endfor %}
+      </div>
     </div>
   </div>
+
 {% endblock %}

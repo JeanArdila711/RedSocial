@@ -4,33 +4,35 @@
 {% block title %}Videos de aspirantes{% endblock %}
 
 {% block content %}
-<div id="videoCarousel" class="carousel slide" data-bs-ride="false">
+<div id="videoCarousel" class="carousel slide mt-2 mx-2" data-bs-ride="false">
     <div class="carousel-inner">
         {% for video, similitud in videos %}
-            <div class="carousel-item {% if forloop.first %}active{% endif %} z-1 position-relative">
-                <video id="video{{ forloop.counter }}" class="d-block w-100" controls muted>
+
+            <div class="carousel-item {% if forloop.first %}active{% endif %} z-1 position-relative card">
+                <h2 class="card-header titulo_magneto_2" >{{video.titulo}}</h2>
+                <video id="video{{ forloop.counter }}" class="d-block w-100 card-body m-0 p-0" controls muted>
                     <source src="{{ video.video_post.url }}" type="video/mp4">
                     Tu navegador no soporta el elemento de video.
                 </video>
-                <div class="carousel-caption">
-                    <button class="btn btn-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#description{{ forloop.counter }}" aria-expanded="false" aria-controls="description{{ forloop.counter }}">
-                        Mostrar Descripción
-                    </button>
-
-                    <div class="collapse" id="description{{ forloop.counter }}">
-                        <div class="card card-body bg-dark text-white  bg-opacity-25">
-                            <h5 class="card-title">{{ video.titulo }}</h5> <!-- Título adicional -->
-                            <p>Nombre: {{ video.aspirante.usuario.nombre }}</p> <!-- Descripción existente -->
-                            <p>Descripción Aspirante: {{ video.aspirante.descripcion|slice:":350" }}...</p>
-                            <p>Fecha Creacion Empleo: {{video.fecha_creacion}}</p>
-                            <p>Descripcion Video: {{video.descripcion}}</p>
-                            <p>Similitud: {{ similitud|floatformat:2 }} </p>
-                            <a href="{% url 'base_ver_perfil_aspirante' video.aspirante.id %}" class="btn btn-info btn-sm">Ver Perfil</a>
-                        </div>
-                    </div>
-
+                <div class="card-footer text-body-secondary">
+                    <h4>{{video.aspirante.usuario.nombre}}</h4>
+                    <p>{{video.descripcion|truncatewords:50}}</p>
+                    <p>{{video.fecha_creacion}}</p>
+                    <a href="{% url 'base_ver_perfil_aspirante' video.aspirante.id %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0">Ver Perfil</a>
+                    <form action="{% url 'toggle_like_video_post_aspirante' video.aspirante.id %}" method="post" class="btn btn-danger btn-outline-info btn-sm border-0">
+                    {% csrf_token %}
+                      <button type="submit" class="border-0 bg-transparent text-white">
+                        {% if request.user in video.likes.all %}
+                        <i class="fas fa-thumbs-down"></i>Dislike
+                        {% else %}
+                          <i class="fas fa-thumbs-up" type="submit"></i>Like
+                        {% endif %}
+                      </button>
+                  </form>
                 </div>
+
             </div>
+
         {% endfor %}
     </div>
 

@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, get_object_or_404, redirect
 from empleos_reclutador.models import Empleo, VideoPostEmpleo
 from users.models import Aspirante, Reclutador_empresa
@@ -7,6 +8,21 @@ from .forms import CrearVideoForm
 import numpy as np
 import json
 # Create your views here.
+
+@login_required
+def toggle_like_video_post_empresa(request, video_post_empresa_id):
+    # Obtiene la publicación por ID o devuelve 404 si no existe
+    VideoPost = get_object_or_404(Video_post, id=video_post_empresa_id)
+
+    # Verifica si el usuario actual ya ha dado "me gusta" a la publicación
+    if request.user in VideoPost.likes.all():
+        # Si el usuario ya ha dado like, lo quitamos
+        VideoPost.likes.remove(request.user)
+    else:
+        # Si el usuario no ha dado like, lo añadimos
+        VideoPost.likes.add(request.user)
+
+    return redirect(request.META.get('HTTP_REFERER'))
 
 
 def detalle_empleo_aspirante(request, empleo_id):

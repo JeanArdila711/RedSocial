@@ -10,7 +10,6 @@ import json
 from django.conf import settings
 
 
-
 class RepresentanteLegal(models.Model):
     nombre = models.CharField(max_length=255)
     documento_identidad = models.CharField(max_length=20)
@@ -560,6 +559,38 @@ class Reclutador_empresa(models.Model):
     palabras_clave = models.TextField(blank=True, null=True)
     embeddings = models.TextField(blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        # Llama a set_embeddings antes de guardar el objeto
+        self.set_embeddings_edit_save()
+        super().save(*args, **kwargs)  # Llama al método save original
+
+
+    def set_embeddings_edit_save(self):
+        """Genera y almacena el embedding para la empresa."""
+        # Concatenar todos los campos relevantes en un solo texto
+        texto_completo = (
+            f"{self.mision} "
+            f"{self.descripcion if self.descripcion else ''} "
+            f"{self.vision} "
+            f"{self.palabras_clave if self.palabras_clave else ''}"
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        # Generar embeddings con OpenAI
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+            print(f'el {self.nombre_empresa} se modifico el embbedding')
+
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
+
     def set_embeddings(self):
         """Genera y almacena el embedding para la empresa."""
         # Concatenar todos los campos relevantes en un solo texto
@@ -623,6 +654,35 @@ class Aspirante(models.Model):
     idioma_natal = models.CharField(max_length=20, choices=Idiomas.choices)  # Almacena idiomas y niveles
     video_presentacion = models.FileField(upload_to='videos_presentacion/')
     embeddings = models.TextField(blank=True, null=True)  # Para almacenar embeddings en formato JSON
+
+    def save(self, *args, **kwargs):
+        # Llama a set_embeddings antes de guardar el objeto
+        self.set_embeddings_edit_save()
+        super().save(*args, **kwargs)  # Llama al método save original
+
+    def set_embeddings_edit_save(self):
+        """Genera y almacena el embedding para el aspirante."""
+        # Concatenar todos los campos relevantes en un solo texto
+        texto_completo = (
+            f"{self.descripcion} "
+            f"{self.gustos_intereses} "
+            f"{self.competencias_tecnicas} "
+            f"{self.habilidades_blandas} "
+            f"{self.palabras_clave}"
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
 
     def set_embeddings(self):
         """Genera y almacena el embedding para el aspirante."""

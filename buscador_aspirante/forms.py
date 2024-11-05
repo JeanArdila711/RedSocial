@@ -9,8 +9,8 @@ class CrearVideoForm(forms.ModelForm):
             'titulo', 'descripcion', 'video_post', 'palabras_clave'
         ]
         widgets = {
-            'titulo': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
-            'video_post': forms.ClearableFileInput(attrs={'class': 'form-control'}),
-            'palabras_clave': forms.Textarea(attrs={'class': 'form-control'}),
+            'titulo': forms.TextInput(attrs={'class': 'form-control bg-dark-subtle'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control bg-dark-subtle'}),
+            'video_post': forms.ClearableFileInput(attrs={'class': 'form-control bg-dark-subtle'}),
+            'palabras_clave': forms.Textarea(attrs={'class': 'form-control bg-dark-subtle'}),
         }

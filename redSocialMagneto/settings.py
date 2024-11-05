@@ -157,5 +157,16 @@ CURRENCY_CHOICES = [
     ('ETH', 'Ethereum (ETH)'),
 ]
 
+CURRENCY_RATES = {
+    'COP': 1,
+    'USD': 4000,  # Ejemplo: 1 USD = 4000 COP
+    'EUR': 4600,  # Ejemplo: 1 EUR = 4600 COP
+    'GBP': 5200,  # Ejemplo: 1 GBP = 5200 COP
+    'CAD': 3000,  # Ejemplo: 1 CAD = 3000 COP
+    'AUD': 2900,  # Ejemplo: 1 AUD = 2900 COP
+    'BTC': 140000000,  # Ejemplo: 1 BTC = 140,000,000 COP
+    'ETH': 9000000,    # Ejemplo: 1 ETH = 9,000,000 COP
+}
+
 # Clave chatgpt
 OPEN_API_KEY = os.getenv('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')

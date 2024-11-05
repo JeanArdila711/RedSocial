@@ -1,11 +1,12 @@
 from django.db import models
-from users.models import Reclutador_empresa, SectoresLaborales, Paises
+from users.models import Reclutador_empresa, SectoresLaborales, Paises, Aspirante, User
 from djmoney.models.fields import MoneyField
 from django.utils import timezone
 import openai
 import json
 from decouple import config
 from django.conf import settings
+from django import forms
 
 
 # Create your models here.
@@ -26,7 +27,7 @@ class Empleo(models.Model):
             ('AUD', 'Dólar australiano (AUD)'),  # Empleos virtuales (Australia)
             ('BTC', 'Bitcoin (BTC)'),  # Criptomonedas
             ('ETH', 'Ethereum (ETH)'),  # Criptomonedas
-        ]
+        ],
     )
     pais = models.CharField(max_length=50, choices=Paises.choices)
     ciudad = models.CharField(max_length=100)
@@ -60,6 +61,12 @@ class Empleo(models.Model):
     video_presentacion = models.FileField(upload_to='videos_presentacion_empleo/')
     embeddings = models.TextField(blank=True, null=True)  # Para almacenar embeddings en formato JSON
 
+    def save(self, *args, **kwargs):
+        # Llama a set_embeddings antes de guardar el objeto
+        self.set_embeddings_edit_save()
+        super().save(*args, **kwargs)  # Llama al método save original
+
+
     def set_embeddings(self):
         """Genera y almacena el embedding para el empleo."""
 
@@ -79,6 +86,25 @@ class Empleo(models.Model):
         except AttributeError as e:
             print(f'Error al acceder a los embeddings: {e}')
 
+
+    def set_embeddings_edit_save(self):
+        """Genera y almacena el embedding para el empleo."""
+
+        texto_completo = f"{self.descripcion} {self.habilidades} {self.experiencia} {self.nivel_estudios} {self.palabras_clave}"
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
+
     def __str__(self):
         return self.titulo
 
@@ -88,12 +114,11 @@ class VideoPostEmpleo(models.Model):
     video_file = models.FileField(upload_to='post_video_empleo/')
     thumbnail = models.ImageField(upload_to='thumbnails/', blank=True)
     fecha_creacion = models.DateTimeField(default=timezone.now)
-    likes = models.PositiveIntegerField(default=0)
+    likes = models.ManyToManyField(User, related_name='likes_VideoPostEmpleo', blank=True)
 
 
-class Like(models.Model):
-    Empleo = models.ForeignKey(Empleo, on_delete=models.CASCADE)
-    VideoPostEmpleo = models.ForeignKey(VideoPostEmpleo, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('Empleo', 'VideoPostEmpleo')
+class Oferta(models.Model):
+    reclutador_empresa = models.ForeignKey(Reclutador_empresa, on_delete=models.CASCADE)
+    aspirante = models.ForeignKey(Aspirante, on_delete=models.CASCADE)
+    empleo = models.ForeignKey(Empleo, on_delete=models.CASCADE, null=True, blank=True)
+    mensaje = models.TextField()

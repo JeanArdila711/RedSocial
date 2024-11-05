@@ -3,53 +3,58 @@
 {% extends base %}
 
 {% block content %}
-<div class="container-lg mt-5">
-    <div class="card mx-auto" style="max-width: 600px;">
-        <!-- Imagen del grupo -->
-        <img src="{{ grupo.image.url }}" class="card-img-top" alt="Imagen del grupo de interés">
+<div class="container-fluid">
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+                <div class="card border-0 m-5">
+                    <!-- Imagen del grupo -->
+                    <img src="{{ grupo.image.url }}" class="card-img-top mx-auto mt-5" alt="Imagen del grupo de interés" style="width: 18rem;">
 
-        <!-- Detalles del grupo -->
-        <div class="card-body">
-            <h2 class="card-title">{{ grupo.nombre }}</h2>
-            <p class="card-text">{{ grupo.descripcion }}</p>
-            <p class="text-muted">
-                <small>Creado por: {{ grupo.creador.username }} | Fecha: {{ grupo.fecha_creacion|date:"d M Y" }}</small>
-            </p>
+                    <!-- Detalles del grupo -->
+                    <div class="card-body">
+                        <h2 class="card-title">{{ grupo.nombre }}</h2>
+                        <p class="card-text">{{ grupo.descripcion }}</p>
+                        <p class="text-muted">
+                            <small>Creado por: {{ grupo.creador.username }} | Fecha: {{ grupo.fecha_creacion|date:"d M Y" }}</small>
+                        </p>
 
-            <!-- Botón de estado del grupo -->
-            {% if grupo.activo %}
-                <span class="badge bg-success">Activo</span>
-            {% else %}
-                <span class="badge bg-secondary">Inactivo</span>
-            {% endif %}
-        </div>
+                        <!-- Botón de estado del grupo -->
+                        {% if grupo.activo %}
+                            <span class="badge bg-success">Activo</span>
+                        {% else %}
+                            <span class="badge bg-secondary">Inactivo</span>
+                        {% endif %}
+                    </div>
 
-        <!-- Lista de miembros -->
-        <div class="card-footer">
-            <h5>Miembros</h5>
-            <div class="row">
-                {% for miembro in miembros %}
-                <div class="col-3 text-center mb-3">
-                    <img src="{{ miembro.foto_perfil.url }}" alt="Avatar de {{ miembro.nombre }}" class="rounded-circle" style="width: 60px; height: 60px;">
-                    <p class="small mt-1">{{ miembro.nombre }}</p>
+                    <!-- Lista de miembros -->
+                    <div class="card-footer">
+                        <h5>Miembros</h5>
+                        <div class="row">
+                            {% for miembro in miembros %}
+                            <div class="col-3 text-center mb-3">
+                                <img src="{{ miembro.foto_perfil.url }}" alt="Avatar de {{ miembro.nombre }}" class="rounded-circle" style="width: 60px; height: 60px;">
+                                <p class="small mt-1">{{ miembro.nombre }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="d-flex justify-content-between mb-3">
+
+
+                    {% if base == 'base_aspirante.html' %}
+                        <a href="{% url 'publicaciones_grupo' grupo.id %}" class="btn btn-outline-light btn-sm  w-25 fondo_verde border-0 mt-3">Mira las publicaciones</a>
+                        <a href="{% url 'crear_publicacion_grupo' grupo.id %}" class="btn btn-outline-light btn-sm  w-25 fondo_verde border-0 mt-3">Crea una publicacion</a>
+                        <a href="{% url 'mis_grupos' %}" class="btn btn-outline-light btn-sm  w-25 fondo_verde border-0 mt-3">Volver a Mis Grupos</a>
+                    {% else %}
+                        <a href="{% url 'publicaciones_grupo' grupo.id %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mt-3">Mira las publicaciones</a>
+                        <a href="{% url 'crear_publicacion_grupo' grupo.id %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mt-3">Crea una publicacion</a>
+                        <a href="{% url 'mis_grupos' %}" class="btn btn-outline-light btn-sm w-25 fondo_azul border-0 mt-3">Volver a Mis Grupos</a>
+                    {% endif %}
+                    </div>
+
                 </div>
-                {% endfor %}
-            </div>
-        </div>
 
-        <a href="{% url 'mis_grupos' %}" class="btn btn-secondary">Volver a Mis Grupos</a>
-
-        <div class="row">
-            <div class="col">
-                <a href="{% url 'publicaciones_grupo' grupo.id %}" class="btn btn-success">Mira las publicaciones</a>
-            </div>
-            <div class="col">
-                <a href="{% url 'crear_publicacion_grupo' grupo.id %}" class="btn btn-success">Crea una publicacion</a>
-            </div>
         </div>
     </div>
 </div>
 {% endblock %}
-
-
-

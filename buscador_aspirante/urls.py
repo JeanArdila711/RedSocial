@@ -15,5 +15,6 @@ urlpatterns = [
     path('empresas_aspirante', views.empresas_aspirante, name='empresas_aspirante'),
     path('empleos_aspirante/', views.empleos_aspirante, name='empleos_aspirante'),
     path('empleos/<int:empresa_id>/', views.empleos_aspirante, name='empleos_aspirante'),
+    path('video_post_empresa/<int:video_post_empresa_id>/like/', views.toggle_like_video_post_empresa, name='toggle_like_video_post_empresa'),
 
 ]

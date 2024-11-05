@@ -11,44 +11,44 @@ class GrupoInteresForm(forms.ModelForm):
         fields = ['nombre', 'descripcion', 'image']
 
         widgets = {
-            'nombre': forms.TextInput(attrs={'class': 'form-control'}),
-            'descripcion': forms.Textarea(attrs={'class': 'form-control'}),
-            'image': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'nombre': forms.TextInput(attrs={'class': 'form-control bg-dark-subtle'}),
+            'descripcion': forms.Textarea(attrs={'class': 'form-control bg-dark-subtle'}),
+            'image': forms.ClearableFileInput(attrs={'class': 'form-control bg-dark-subtle'}),
         }
 
 
 class PublicacionForm(forms.ModelForm):
     tipo = forms.ChoiceField(
         choices=Publicacion.TIPO_PUBLICACION,
-        widget=forms.Select(attrs={'class': 'form-select', 'id': 'tipo'})
+        widget=forms.Select(attrs={'class': 'form-select bg-dark-subtle', 'id': 'tipo'})
     )
 
     reclutador_empresa = forms.ModelChoiceField(
         queryset=Reclutador_empresa.objects.all(),
         label="reclutador empresa",
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-select bg-dark-subtle'})
     )
 
     aspirante = forms.ModelChoiceField(
         queryset=Aspirante.objects.all(),
         label="aspirante",
         required=False,
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-select bg-dark-subtle'})
     )
 
     empleo = forms.ModelChoiceField(
         queryset=Empleo.objects.all(),
         label="empleo",
         required=False,
-        widget=forms.Select(attrs={'class': 'form-select'})
+        widget=forms.Select(attrs={'class': 'form-select bg-dark-subtle'})
     )
 
     class Meta:
         model = Publicacion
         fields = ['tipo', 'contenido', 'recurso', 'reclutador_empresa', 'aspirante', 'empleo']
         widgets = {
-            'contenido': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Escribe tu pregunta, consejo o recomendación aquí'}),
-            'recurso': forms.ClearableFileInput(attrs={'class': 'form-control'}),
+            'contenido': forms.Textarea(attrs={'class': 'form-control bg-dark-subtle', 'placeholder': 'Escribe tu pregunta, consejo o recomendación aquí'}),
+            'recurso': forms.ClearableFileInput(attrs={'class': 'form-control bg-dark-subtle'}),
         }
 
 
@@ -57,5 +57,5 @@ class ComentarioForm(forms.ModelForm):
         model = Comentario
         fields = ['contenido']
         widgets = {
-            'contenido': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Deja tu comentario'}),
+            'contenido': forms.Textarea(attrs={'class': 'form-control bg-dark-subtle', 'placeholder': 'Deja tu comentario'}),
         }

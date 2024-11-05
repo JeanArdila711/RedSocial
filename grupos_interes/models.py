@@ -18,6 +18,11 @@ class GrupoInteres(models.Model):
     activo = models.BooleanField(default=True)
     embeddings = models.TextField(blank=True, null=True)
 
+    def save(self, *args, **kwargs):
+        # Llama a set_embeddings antes de guardar el objeto
+        self.set_embeddings_edit_save()
+        super().save(*args, **kwargs)  # Llama al método save original
+
     def set_embeddings(self):
         """Genera y almacena el embedding para el video post."""
         texto_completo = (
@@ -38,6 +43,27 @@ class GrupoInteres(models.Model):
             self.save()
         except AttributeError as e:
             print(f'Error al acceder a los embeddings: {e}')
+
+    def set_embeddings_edit_save(self):
+        """Genera y almacena el embedding para el video post."""
+        texto_completo = (
+            f"Nombre del grupo: {self.nombre}"
+            f"Descripcion: {self.descripcion} "
+        )
+
+        openai.api_key = settings.OPENAI_API_KEY
+
+        response = openai.embeddings.create(
+            input=texto_completo,
+            model="text-embedding-ada-002"
+        )
+
+        try:
+            embedding_data = response.data[0].embedding
+            self.embeddings = json.dumps(embedding_data)  # Almacenar como un único embedding
+        except AttributeError as e:
+            print(f'Error al acceder a los embeddings: {e}')
+
 
     def __str__(self):
         return self.nombre

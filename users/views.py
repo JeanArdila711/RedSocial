@@ -1,5 +1,5 @@
 from django.shortcuts import render, redirect
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from .forms import CustomUserCreationForm, AspiranteCreationForm, ReclutadorCreationForm, RepresentanteLegalForm, IdiomaAspiranteForm, FormacionAspiranteForm, RedesSocialesForm, CustomUserForm_sin_contra, ExperienciaLaboralForm
 from .models import Aspirante, Reclutador_empresa, RedesSociales, IdiomaAspirante, FormacionAspirante, ExperienciaLaboral
 from django.contrib.auth import authenticate, login as auth_login
@@ -12,19 +12,22 @@ from empleos_reclutador.models import Empleo, VideoPostEmpleo
 import numpy as np
 import json
 from grupos_interes.models import GrupoInteres
+from buscador_aspirante.models import Video_post
+
+from django.contrib import messages
 
 
 
 def registrar_aspirante(request):
     if request.method == 'POST':
-        user_form = CustomUserCreationForm(request.POST, request.FILES)
+        user_form = CustomUserCreationForm(request.POST, request.FILES, prefix='user')
         aspirante_form = AspiranteCreationForm(request.POST, request.FILES)
         redes_sociales_form = RedesSocialesForm(request.POST, request.FILES, prefix='redes_sociales')
         idioma_form = IdiomaAspiranteForm(request.POST)
 
         if user_form.is_valid() and aspirante_form.is_valid() and redes_sociales_form.is_valid() and idioma_form.is_valid():
             user = user_form.save(commit=False)
-            user.tipo_usuario = 'Aspirante'  # Set the user type
+            user.tipo_usuario = 'aspirante'  # Set the user type
             user.save()
 
             aspirante = aspirante_form.save(commit=False)
@@ -33,8 +36,6 @@ def registrar_aspirante(request):
             aspirante.redes_sociales = redes_sociales
             aspirante.save()
 
-            aspirante.set_embeddings()  # Llamar al método para generar embeddings
-
             idiomas_seleccionados = idioma_form.cleaned_data['idiomas']
             for idioma in idiomas_seleccionados:
                 IdiomaAspirante.objects.create(aspirante=aspirante, idioma=idioma)
@@ -42,7 +43,7 @@ def registrar_aspirante(request):
             login(request, user)  # Auto-login after registration
             return redirect('completar_detalles', aspirante_id=aspirante.id)  # Redirect to a profile or another page
     else:
-        user_form = CustomUserCreationForm()
+        user_form = CustomUserCreationForm(prefix='user')
         aspirante_form = AspiranteCreationForm()
         redes_sociales_form = RedesSocialesForm(prefix='redes_sociales')
         idioma_form = IdiomaAspiranteForm()  # Inicializar el formulario de idiomas
@@ -63,7 +64,7 @@ def registrar_reclutador(request):
 
         if user_form.is_valid() and representante_legal_form.is_valid() and reclutador_form.is_valid():
             user = user_form.save(commit=False)
-            user.tipo_usuario = 'Reclutador'  # Set the user type
+            user.tipo_usuario = 'reclutador'  # Set the user type
             user.save()
 
             representante_legal = representante_legal_form.save()
@@ -142,9 +143,9 @@ def login_view(request):
             auth_login(request, user)
 
             # Redireccionar basado en el tipo de usuario
-            if user.tipo_usuario == 'Aspirante':
+            if user.tipo_usuario == 'aspirante':
                 return redirect('home_aspirante')
-            elif user.tipo_usuario == 'Reclutador':
+            elif user.tipo_usuario == 'reclutador':
                 return redirect('home_empresa')
     else:
         form = AuthenticationForm()
@@ -206,6 +207,50 @@ def home_aspirante(request):
     return render(request, 'home_aspirante.html', {'aspirante': aspirante, 'grouped_cards': grouped_cards, 'resultadoFemp': resultadoFemp, 'grouped_grupos': grouped_grupos, 'resultados_video_post_ord': resultados_video_post_ord})
 
 
+@login_required
+def home_empresa(request):
+    user = request.user
+    empresa = Reclutador_empresa.objects.get(usuario=user)
+    embedding_empresa = np.array(json.loads(empresa.embeddings)).flatten()
+    aspirantes = Aspirante.objects.all()
+    grupos = GrupoInteres.objects.all()
+    video_posts = Video_post.objects.all()
+    resultados_aspirante = []
+    resultados_grupos = []
+    resultados_video_post = []
+
+    for video_post in video_posts:
+        embedding_video_post = np.array(json.loads(video_post.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_empresa, embedding_video_post)
+        resultados_video_post.append((video_post, similitud))
+
+    for grupo in grupos:
+        embedding_grupo = np.array(json.loads(grupo.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_empresa, embedding_grupo)
+        resultados_grupos.append((grupo, similitud))
+
+
+    for aspirante in aspirantes:
+        embedding_aspirante = np.array(json.loads(aspirante.embeddings)).flatten()
+        similitud = calcular_similitud(embedding_empresa, embedding_aspirante)
+        resultados_aspirante.append((aspirante, similitud))
+
+
+    resultados_grupos.sort(key=lambda x: x[1], reverse=True)
+    resultados_grupos_ord = resultados_grupos[:12]
+    grouped_grupos = [resultados_grupos_ord[i:i + 3] for i in range(0, len(resultados_grupos_ord), 3)]
+
+
+
+    resultados_aspirante.sort(key=lambda x: x[1], reverse=True)
+    aspirantes = resultados_aspirante[:10]
+
+    resultados_video_post.sort(key=lambda x: x[1], reverse=True)
+    videos = resultados_video_post[:5]
+
+    return render(request, 'home_empresa.html', {'empresa': empresa, 'grouped_grupos': grouped_grupos, 'aspirantes': aspirantes, 'videos': videos})
+
+
 def calcular_similitud(embedding_aspirante, embedding_empleo):
     """Calcula la similitud coseno entre dos embeddings."""
     dot_product = np.dot(embedding_aspirante, embedding_empleo)
@@ -215,10 +260,7 @@ def calcular_similitud(embedding_aspirante, embedding_empleo):
 
 
 
-@login_required
-def home_empresa(request):
-    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
-    return render(request, 'home_empresa.html', {'reclutador': reclutador})
+
 
 
 def landing(request):
@@ -346,31 +388,25 @@ def mi_perfil_aspirante(request):
 
 
 @login_required
-def cambiar_contrasena(request):
-    user = request.user
+def change_password(request):
+    base_template = 'base_aspirante.html' if hasattr(request.user, 'aspirante') else 'base_reclutador.html'
 
-    # Comprobamos el tipo de usuario y seleccionamos el template correspondiente
-    if user.tipo_usuario == 'Reclutador':
-        template_name = 'cambiar_contrasena_reclutador.html'
-    elif user.tipo_usuario == 'Aspirante':
-        template_name = 'cambiar_contrasena_aspirante.html'
-
+    # Crear el formulario de cambio de contraseña
     if request.method == 'POST':
-        password_form = PasswordChangeForm(user=user, data=request.POST)
-        if password_form.is_valid():
-            user = password_form.save()
-            update_session_auth_hash(request, user)  # Mantiene la sesión activa después del cambio
+        form = PasswordChangeForm(request.user, request.POST)
 
-            # Redirigir según el tipo de usuario
-            if user.tipo_usuario == 'Reclutador':
-                return redirect('mi_perfil_reclutador')  # Redirige al perfil del reclutador
-            elif user.tipo_usuario == 'Aspirante':
-                return redirect('mi_perfil_aspirante')  # Redirige al perfil del aspirante
+        if form.is_valid():
 
+            user = form.save()
+            update_session_auth_hash(request, user)
+            messages.success(request, 'Tu contraseña ha sido cambiada exitosamente')
+            return redirect('mi_perfil_reclutador' if user.tipo_usuario == 'reclutador' else 'mi_perfil_aspirante')
+        else:
+            messages.error(request, 'Por favor corrige los errores.')
     else:
-        password_form = PasswordChangeForm(user=user)
+        form = PasswordChangeForm(request.user)
 
-    return render(request, template_name, {'password_form': password_form})
+    return render(request, 'cambiar_contrasena.html', {'form': form, 'base_template': base_template})
 
 @login_required
 def editar_aspirante_aspirante(request):
@@ -417,3 +453,7 @@ def agregar_experiencia(request):
         form = ExperienciaLaboralForm()
 
     return render(request, 'agregar_experiencia.html', {'form': form})
+
+def logout_view(request):
+    logout(request)
+    return redirect('landing')

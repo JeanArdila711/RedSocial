@@ -3,51 +3,44 @@
 
 {% block content %}
 
-    {% if messages %}
-            <div class="row">
-                <div class="col-md-12">
-                    {% for message in messages %}
-                        <div class="alert alert-{{ message.tags }} alert-dismissible fade show" role="alert">
-                            {{ message }}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                        </div>
-                    {% endfor %}
-                </div>
+
+<div class="container-fluid">
+    <div class="row m-5">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+            <div class="row mt-5 mb-0">
+                <h2 class="titulo_magneto_2"><span class="color_m_font_big_3">m</span>is videoPost</h2>
+                <a href="{% url 'crear_video_post' %}" class="btn btn-outline-light btn-sm fondo_verde border-0 w-25 mx-auto">Crear Nuevo Video</a>
             </div>
-        {% endif %}
 
+            <div class="row g-4 m-5 mt-2">
+                {% for video in videos %}
+                    <div class="col-md-3">
+                        <div class="card shadow h-100">
+                            <video class="card-img-top p-3" controls>
+                                <source src="{{ video.video_post.url }}" type="video/mp4">
+                                Tu navegador no soporta el elemento de video.
+                            </video>
+                            <div class="card-body">
+                                <h5 class="card-title"><strong>{{ video.titulo }}</strong></h5>
+                                <p class="card-text">Descripcion: {{ video.descripcion }}</p>
+                                <p class="card-text"><small class="text-muted">Creado el: {{ video.fecha_creacion|date:"d M Y" }}</small></p>
+                                <p class="card-text"><small class="text-muted">Likes: {{ video.likes.count }}</small></p>
 
-    <div class="container mt-4">
-        <div class="row mx-5 px-5 mb-4">
-            <a href="{% url 'crear_video_post' %}" class="btn fondo_verde">Crear Nuevo Video</a>
-        </div>
-        <div class="row">
-            {% for video in videos %}
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <video class="card-img-top" controls>
-                            <source src="{{ video.video_post.url }}" type="video/mp4">
-                            Tu navegador no soporta el elemento de video.
-                        </video>
-                        <div class="card-body">
-                            <h5 class="card-title">Titulo: {{ video.titulo }}</h5>
-                            <p class="card-text">Descripcion: {{ video.descripcion }}</p>
-                            <p class="card-text"><small class="text-muted">Creado el: {{ video.fecha_creacion|date:"d M Y" }}</small></p>
-
-                            <!-- Botones de Editar y Eliminar -->
-                            <div class="d-flex">
-                                <a href="{% url 'editar_video' video.id %}" class="btn btn-primary btn-sm w-50 m-0">Editar</a>
-                                <form action="{% url 'eliminar_video' video.id %}" method="post" class="w-50 m-0">
-                                    {% csrf_token %}
-                                    <button type="submit" class="btn btn-danger btn-sm w-100 m-0" onclick="return confirm('¿Estás seguro de que deseas eliminar este video?');">Eliminar</button>
-                                </form>
+                                <!-- Botones de Editar y Eliminar -->
+                                <div class="d-flex align-content-center align-content-center justify-content-center">
+                                    <a href="{% url 'editar_video' video.id %}" class="btn btn-outline-light btn-sm fondo_verde border-0 mx-1">Editar</a>
+                                    <form action="{% url 'eliminar_video' video.id %}" method="post" class="">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-outline-light btn-sm fondo_verde border-0 mx-1" onclick="return confirm('¿Estás seguro de que deseas eliminar este video?');">Eliminar</button>
+                                    </form>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            {% empty %}
-                <p>No hay videos disponibles.</p>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
+</div>
+
 {% endblock %}

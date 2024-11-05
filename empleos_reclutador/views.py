@@ -1,7 +1,8 @@
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect, get_object_or_404
-from .forms import EmpleoForm, VideoPostEmpleo_form
+from .forms import EmpleoForm, VideoPostEmpleo_form, OfertaForm
 from .models import Empleo, VideoPostEmpleo
-from users.models import Reclutador_empresa, Aspirante, IdiomaAspirante
+from users.models import Reclutador_empresa, Aspirante, IdiomaAspirante, FormacionAspirante, ExperienciaLaboral
 from buscador_aspirante.models import Postulacion
 
 
@@ -86,13 +87,13 @@ def cargar_video_post_empleo(request, empleo_id):
     return render(request, 'cargar_video_post_empleo.html', {'form': form})
 
 
-def eliminar_video(request, video_id):
+def eliminar_video_reclutador(request, video_id):
     video = get_object_or_404(VideoPostEmpleo, id=video_id)
     video.delete()
     return redirect('detalle_empleo', empleo_id=video.empleo.id)
 
 
-def editar_video(request, video_id):
+def editar_video_reclutador(request, video_id):
     video = get_object_or_404(VideoPostEmpleo, id=video_id)
     if request.method == 'POST':
         form = VideoPostEmpleo_form(request.POST, request.FILES, instance=video)
@@ -123,9 +124,51 @@ def postulaciones_empleos_reclutador(request):
 def perfil_aspirante(request, aspirante_id):
     aspirante = get_object_or_404(Aspirante, id=aspirante_id)
     idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
-    return render(request, 'base_ver_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas})
+    formaciones = FormacionAspirante.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
+    experiencias = ExperienciaLaboral.objects.filter(aspirante=aspirante).order_by('fecha_inicio')
 
-def ver_perfil_asociado_empleo(request, aspirante_id):
+    referer_postulacion = False
+    referer = request.META.get('HTTP_REFERER', '')
+
+    if "postulaciones-empleos-reclutador" in referer:
+        print("Proviene de una página relacionada con 'postulaciones-empleos-reclutador'")
+        referer_postulacion = True
+
+    return render(request, 'base_ver_perfil_aspirante.html', {'aspirante': aspirante, 'idiomas': idiomas, 'referer_postulacion': referer_postulacion, 'formaciones': formaciones, 'experiencias': experiencias})
+
+
+def enviar_oferta(request, aspirante_id):
     aspirante = get_object_or_404(Aspirante, id=aspirante_id)
-    idiomas = IdiomaAspirante.objects.filter(aspirante=aspirante)
-    return render(request, 'ver_perfil_asociado_empleo.html', {'aspirante': aspirante, 'idiomas': idiomas})
+    reclutador = Reclutador_empresa.objects.get(usuario=request.user)
+    if request.method == 'POST':
+        form = OfertaForm(reclutador, request.POST)
+        if form.is_valid():
+            oferta = form.save(commit=False)
+            oferta.aspirante = aspirante
+            oferta.reclutador_empresa = reclutador
+            form.save()
+            return redirect('base_ver_perfil_aspirante', aspirante_id)
+    else:
+        form = OfertaForm(reclutador)
+
+    return render(request, 'enviar_oferta.html', {'form': form, 'aspirante': aspirante})
+
+@login_required
+def toggle_like_publicacion(request, video_post_empleo_id):
+    # Obtiene la publicación por ID o devuelve 404 si no existe
+    VideoPost = get_object_or_404(VideoPostEmpleo, id=video_post_empleo_id)
+
+    # Verifica si el usuario actual ya ha dado "me gusta" a la publicación
+    if request.user in VideoPost.likes.all():
+        # Si el usuario ya ha dado like, lo quitamos
+        VideoPost.likes.remove(request.user)
+    else:
+        # Si el usuario no ha dado like, lo añadimos
+        VideoPost.likes.add(request.user)
+
+    # Redirige a la página anterior o a la lista de publicaciones
+    return redirect(request.META.get('HTTP_REFERER'))
+
+
+
+

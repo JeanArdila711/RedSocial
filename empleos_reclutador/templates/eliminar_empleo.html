@@ -1,14 +1,20 @@
 {% extends 'base_reclutador.html' %}
 
 {% block content %}
-<div class="container">
-    <h1>Eliminar {{ empleo.titulo }}</h1>
-    <p>¿Estás seguro de que deseas eliminar este empleo?</p>
-    
-    <form method="POST">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-danger">Eliminar</button>
-        <a href="{% url 'detalle_empleo' empleo.id %}" class="btn btn-secondary">Cancelar</a>
-    </form>
+<div class="container-fluid">
+    <div class="row m-4">
+        <div class="container-md rounded " style="background-color: #e9e9f6;">
+            <div class="row m-5">
+                <h1 class="titulo_magneto_2">Eliminar {{ empleo.titulo }}</h1>
+                <p>¿Estás seguro de que deseas eliminar este empleo?</p>
+
+                <form method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Eliminar</button>
+                    <a href="{% url 'detalle_empleo' empleo.id %}" class="btn btn-info">Cancelar</a>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
