@@ -28,14 +28,35 @@
                             <div class="form-group">
                                 <h3 class="h5">Información de Reclutador</h3>
                                 {{ user_form.as_p }}
+                                {% if user_form.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for field, errors in user_form.errors.items %}
+                                            <strong>{{ field }}:</strong> {{ errors|join:", " }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <h3 class="h5">Datos del Representante Legal</h3>
                                 {{ representante_legal_form.as_p }}
+                                {% if representante_legal_form.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for field, errors in representante_legal_form.errors.items %}
+                                            <strong>{{ field }}:</strong> {{ errors|join:", " }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <div class="form-group">
                                 <h3 class="h5">Datos de la empresa</h3>
                                 {{ reclutador_form.as_p }}
+                                {% if reclutador_form.errors %}
+                                    <div class="alert alert-danger">
+                                        {% for field, errors in reclutador_form.errors.items %}
+                                            <strong>{{ field }}:</strong> {{ errors|join:", " }}<br>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
                             </div>
                             <button type="submit" class="btn btn-primary btn-block">Registrar</button>
                         </form>

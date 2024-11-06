@@ -79,6 +79,8 @@ class SalarioRango(models.TextChoices):
 
 
 class SectoresLaborales(models.TextChoices):
+    ESTILISMO_CUIDADO_PERSONAL = 'estilismo_ciudadopersonal', 'Estilismo y cuidado personal'
+    ADMINISTRACION = 'administracion empresarial', 'Administracion Empresarial'
     TECNOLOGIA_DE_LA_INFORMACION = 'tecnologia_de_la_informacion', 'Tecnologia de la Informacion'
     FINANZAS_Y_CONTABILIDAD = 'finanzas_y_contabilidad', 'Finanzas y Contabilidad'
     SALUD = 'salud', 'Salud'

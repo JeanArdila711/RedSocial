@@ -18,48 +18,103 @@
                 <div class="row justify-content-center align-items-center mb-3">
                     <div class="col">
                         {{ user_form.nombre.label }} {{ user_form.nombre }}
+                        {% if user_form.nombre.errors %}
+                            <div class="text-danger">
+                                {{ user_form.nombre.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="row justify-content-center align-items-center mb-3">
                     <div class="col">
                         {{ user_form.email.label }} {{ user_form.email }}
+                        {% if user_form.email.errors %}
+                            <div class="text-danger">
+                                {{ user_form.email.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.documento_identidad.label }} {{ user_form.documento_identidad }}
+                        {% if user_form.documento_identidad.errors %}
+                            <div class="text-danger">
+                                {{ user_form.documento_identidad.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="row justify-content-center align-items-center mb-3">
                     <div class="col">
                         {{ user_form.telefono.label }} {{ user_form.telefono }}
+                        {% if user_form.telefono.errors %}
+                            <div class="text-danger">
+                                {{ user_form.telefono.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.indicativo_pais.label }} {{ user_form.indicativo_pais }}
+                        {% if user_form.indicativo_pais.errors %}
+                            <div class="text-danger">
+                                {{ user_form.indicativo_pais.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.pais.label }} {{ user_form.pais }}
+                        {% if user_form.pais.errors %}
+                            <div class="text-danger">
+                                {{ user_form.pais.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.ciudad.label }} {{ user_form.ciudad }}
+                        {% if user_form.ciudad.errors %}
+                            <div class="text-danger">
+                                {{ user_form.ciudad.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="row justify-content-center align-items-center mb-3">
                     <div class="col">
                         {{ user_form.password1.label }} {{ user_form.password1 }}
+                        {% if user_form.password1.errors %}
+                            <div class="text-danger">
+                                {{ user_form.password1.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.password2.label }} {{ user_form.password2 }}
+                        {% if user_form.password2.errors %}
+                            <div class="text-danger">
+                                {{ user_form.password2.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
 
                 <div class="row justify-content-center align-items-center mb-3">
                     <div class="col">
                         {{ user_form.tipo_usuario.label }} {{ user_form.tipo_usuario }}
+                        {% if user_form.tipo_usuario.errors %}
+                            <div class="text-danger">
+                                {{ user_form.tipo_usuario.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                     <div class="col">
                         {{ user_form.foto_perfil.label }} {{ user_form.foto_perfil }}
+                        {% if user_form.foto_perfil.errors %}
+                            <div class="text-danger">
+                                {{ user_form.foto_perfil.errors }}
+                            </div>
+                        {% endif %}
                     </div>
                 </div>
             </div>
@@ -70,69 +125,140 @@
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.hoja_vida.label }} {{ aspirante_form.hoja_vida }}
+                    {% if aspirante_form.hoja_vida.errors %}
+                            <div class="text-danger">
+                                {{ aspirante_form.hoja_vida.errors }}
+                            </div>
+                        {% endif %}
                 </div>
                 <div class="col">
                     {{ aspirante_form.sector_laboral.label }} {{ aspirante_form.sector_laboral }}
+                    {% if aspirante_form.sector_laboral.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.sector_laboral.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.modalidad_trabajo.label }} {{ aspirante_form.modalidad_trabajo }}
+                    {% if aspirante_form.modalidad_trabajo.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.modalidad_trabajo.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="col">
                     {{ aspirante_form.salario.label }} {{ aspirante_form.salario }}
+                    {% if aspirante_form.salario.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.salario.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.disponibilidad_de_empezar.label }} {{ aspirante_form.disponibilidad_de_empezar }}
+                    {% if aspirante_form.disponibilidad_de_empezar.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.disponibilidad_de_empezar.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="col">
                     {{ aspirante_form.disponibilidad_viajar.label }} {{ aspirante_form.disponibilidad_viajar }}
+                    {% if aspirante_form.disponibilidad_viajar.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.disponibilidad_viajar.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.idioma_natal.label }} {{ aspirante_form.idioma_natal }}
+                    {% if aspirante_form.idioma_natal.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.idioma_natal.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="col">
                     {{ aspirante_form.proyectos.label }} {{ aspirante_form.proyectos }}
+                    {% if aspirante_form.proyectos.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.proyectos.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="col">
                     {{ aspirante_form.video_presentacion.label }} {{ aspirante_form.video_presentacion }}
+                    {% if aspirante_form.video_presentacion.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.video_presentacion.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.descripcion.label }} {{ aspirante_form.descripcion }}
+                    {% if aspirante_form.descripcion.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.descripcion.errors }}
+                        </div>
+                    {% endif %}
+                </div>
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.objetivos.label }} {{ aspirante_form.objetivos }}
+                    {% if aspirante_form.objetivos.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.objetivos.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.gustos_intereses.label }} {{ aspirante_form.gustos_intereses }}
+                    {% if aspirante_form.gustos_intereses.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.gustos_intereses.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.competencias_tecnicas.label }} {{ aspirante_form.competencias_tecnicas }}
+                    {% if aspirante_form.competencias_tecnicas.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.competencias_tecnicas.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
             <div class="row justify-content-center align-items-center mb-3">
                 <div class="col">
                     {{ aspirante_form.habilidades_blandas.label }} {{ aspirante_form.habilidades_blandas }}
+                    {% if aspirante_form.habilidades_blandas.errors %}
+                        <div class="text-danger">
+                            {{ aspirante_form.habilidades_blandas.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
@@ -141,21 +267,51 @@
             <div class="form-row">
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.facebook.label }} {{ redes_sociales_form.facebook }}
+                    {% if redes_sociales_form.facebook.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.facebook.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.linkedin.label }} {{ redes_sociales_form.linkedin }}
+                    {% if redes_sociales_form.linkedin.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.linkedin.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.twitter.label }} {{ redes_sociales_form.twitter }}
+                    {% if redes_sociales_form.twitter.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.twitter.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.instagram.label }} {{ redes_sociales_form.instagram }}
+                    {% if redes_sociales_form.instagram.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.instagram.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.github.label }} {{ redes_sociales_form.github }}
+                    {% if redes_sociales_form.github.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.github.errors }}
+                        </div>
+                    {% endif %}
                 </div>
                 <div class="form-group col-md-6">
                     {{ redes_sociales_form.youtube.label }} {{ redes_sociales_form.youtube }}
+                    {% if redes_sociales_form.youtube.errors %}
+                        <div class="text-danger">
+                            {{ redes_sociales_form.youtube.errors }}
+                        </div>
+                    {% endif %}
                 </div>
             </div>
 
