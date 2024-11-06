@@ -5,3 +5,4 @@ openai
 numpy
 python-decouple
 django-filter
+python-dotenv

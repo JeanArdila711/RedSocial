@@ -6,7 +6,6 @@ from django.contrib.auth import authenticate, login as auth_login
 from django.contrib.auth.forms import AuthenticationForm,  PasswordChangeForm
 from django.contrib.auth.decorators import login_required
 
-from redSocialMagneto.services import obtener_recomendacion
 from django.contrib.auth import update_session_auth_hash
 from empleos_reclutador.models import Empleo, VideoPostEmpleo
 import numpy as np
